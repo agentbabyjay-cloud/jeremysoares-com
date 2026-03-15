@@ -1,26 +1,237 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* The Webflow CSS handles all styling — keep this minimal */
+body {
+  margin: 0;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ── PAGE LOADER ────────────────────────────────────────── */
+.pageloader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #0e1011;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+.pageloader-heading {
+  font-family: 'avenir-next-lt-pro-condensed', 'Avenir Next Condensed', sans-serif;
+  font-size: clamp(4rem, 12vw, 10rem);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #eceae5;
+  text-transform: uppercase;
+  transform: translateY(110%);
+}
+
+/* ── SOLD & RENTED SECTION ──────────────────────────────── */
+.section-home-sold {
+  padding: 8rem 4vw;
+}
+
+.section-home-sold .section-top-heading {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.sold-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-top: 3rem;
+}
+
+.sold-grid-item {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 3/4;
+  cursor: pointer;
+}
+
+.sold-grid-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.sold-grid-item:hover img {
+  transform: scale(1.06);
+}
+
+/* ── HOVER ANIMATIONS — Service items ──────────────────── */
+.home-services-item-image {
+  overflow: hidden;
+}
+
+.home-services-item-image img,
+.home-services-item-image video {
+  transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.home-services-item:hover .home-services-item-image img,
+.home-services-item:hover .home-services-item-image video {
+  transform: scale(1.04);
+}
+
+.home-services-item-content {
+  transition: opacity 0.3s ease;
+}
+
+/* Nav hover underline grow */
+.navbar-menu-item .navbar-item-line {
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.3s ease;
+}
+
+.navbar-menu-item:hover .navbar-item-line {
+  width: 100%;
+}
+
+/* ── MOBILE MENU ─────────────────────────────────────────── */
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 998;
+  background: #0e1011;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-100%);
+  transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.mobile-menu.is-open {
+  transform: translateY(0);
+}
+
+.mobile-menu-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  text-align: center;
+}
+
+.menu-nav-item-text {
+  font-size: clamp(2rem, 7vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #eceae5;
+  transition: opacity 0.2s ease;
+}
+
+.mobile-menu-nav-item:hover .menu-nav-item-text {
+  opacity: 0.5;
+}
+
+/* Hamburger → X transform */
+.mobile-menu-toggle-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 24px;
+}
+
+.menu-toggle-line {
+  height: 1px;
+  background: currentColor;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.menu-is-open .menu-toggle-line.top {
+  transform: translateY(3px) rotate(45deg);
+}
+
+.menu-is-open .menu-toggle-line.bottom {
+  transform: translateY(-3px) rotate(-45deg);
+}
+
+/* ── LANGUAGE TOGGLE (FR/EN) ────────────────────────────── */
+.toggle-color {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 100;
+  cursor: pointer;
+  background: rgba(14, 16, 17, 0.8);
+  border: 1px solid rgba(236, 234, 229, 0.2);
+  border-radius: 99px;
+  padding: 0.4rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #eceae5;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: background 0.2s ease;
+  backdrop-filter: blur(8px);
+}
+
+.toggle-color:hover {
+  background: rgba(236, 234, 229, 0.1);
+}
+
+.toggle-color-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #eceae5;
+  transition: background 0.3s ease;
+}
+
+.toggle-color[data-locale="fr-ca"] .toggle-color-dot {
+  background: #c9a84c;
+}
+
+/* ── RESPONSIVENESS ──────────────────────────────────────── */
+@media (max-width: 991px) {
+  .sold-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (max-width: 767px) {
+  .sold-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+
+  .section-home-sold {
+    padding: 4rem 5vw;
+  }
+
+  .home-hero-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .home-hero-right {
+    padding: 2rem 5vw !important;
+  }
+
+  .home-services-item {
+    flex-direction: column !important;
+  }
+
+  .home-services-item.odd {
+    flex-direction: column-reverse !important;
+  }
+
+  .home-services-item-image,
+  .home-services-item-content {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 479px) {
+  .sold-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
