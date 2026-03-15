@@ -1,121 +1,207 @@
-export default async function ContactPage({
+'use client'
+
+import { use, useState } from 'react'
+
+export default function ContactPage({
   params,
 }: {
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale: string }>
 }) {
-  const { locale } = await params;
-  const isFr = locale === "fr-ca";
+  const { locale } = use(params)
+  const isFr = locale === 'fr-ca'
+
+  const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' })
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setStatus('loading')
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...form, locale }),
+      })
+      if (res.ok) {
+        setStatus('success')
+        setForm({ name: '', email: '', phone: '', message: '' })
+      } else {
+        setStatus('error')
+      }
+    } catch {
+      setStatus('error')
+    }
+  }
 
   return (
-    <>
-      {/* ── PAGE HEADER ──────────────────────────────────────────────────── */}
-      <section
-        style={{ backgroundColor: "#0e1011" }}
-        className="px-6 pt-20 pb-12 md:pt-28 md:pb-16"
-      >
-        <div className="mx-auto max-w-7xl">
-          <p
-            style={{ color: "#eceae5" }}
-            className="text-xs tracking-[0.3em] uppercase opacity-40 mb-4"
-          >
-            {isFr ? "Contact" : "Contact"}
-          </p>
-          <h1
-            style={{ color: "#eceae5" }}
-            className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none"
-          >
-            {isFr ? "Discutons" : "Let's Talk"}
-          </h1>
-        </div>
-      </section>
-
-      {/* ── CONTACT DETAILS ──────────────────────────────────────────────── */}
-      <section
-        style={{ backgroundColor: "#eceae5" }}
-        className="px-6 py-16 md:py-24"
-      >
-        <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-            {/* Contact info */}
-            <div style={{ color: "#0e1011" }}>
-              <p className="text-xs tracking-[0.3em] uppercase opacity-40 mb-8">
-                {isFr ? "Coordonnées" : "Get In Touch"}
-              </p>
-
-              <div className="flex flex-col gap-6">
-                <div>
-                  <p className="text-xs tracking-widest uppercase opacity-40 mb-1">
-                    {isFr ? "Téléphone" : "Phone"}
-                  </p>
-                  <a
-                    href="tel:5145198177"
-                    className="text-2xl md:text-3xl font-bold tracking-tight hover:opacity-60 transition-opacity"
-                  >
-                    514 519-8177
-                  </a>
-                </div>
-
-                <div>
-                  <p className="text-xs tracking-widest uppercase opacity-40 mb-1">
-                    {isFr ? "Courriel" : "Email"}
-                  </p>
-                  <a
-                    href="mailto:JeremySoares@icloud.com"
-                    className="text-2xl md:text-3xl font-bold tracking-tight hover:opacity-60 transition-opacity break-all"
-                  >
-                    JeremySoares@icloud.com
-                  </a>
-                </div>
-
-                <div>
-                  <p className="text-xs tracking-widest uppercase opacity-40 mb-1">
-                    LinkedIn
-                  </p>
-                  <a
-                    href="https://www.linkedin.com/in/jeremysoaresrealestate/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xl font-semibold tracking-tight hover:opacity-60 transition-opacity"
-                  >
-                    linkedin.com/in/jeremysoaresrealestate
-                  </a>
-                </div>
-              </div>
+    <div className="page-wrapper">
+      <main className="main-wrapper">
+        {/* HERO */}
+        <section className="section-home-hero" style={{ minHeight: '40vh', alignItems: 'flex-end', paddingBottom: '4rem' }}>
+          <div style={{ padding: '0 4vw' }}>
+            <div className="overflow-hidden">
+              <h1 className="heading-style-large js-animate-up">
+                {isFr ? "Discutons." : "Let's Talk."}
+              </h1>
             </div>
+            <p className="heading-alt-small js-fade-up" style={{ marginTop: '1.5rem', maxWidth: '480px' }}>
+              {isFr
+                ? "Partagez quelques détails et je vous répondrai rapidement."
+                : "Share a few details and I'll get back to you promptly."}
+            </p>
+          </div>
+        </section>
 
-            {/* CTA */}
-            <div
-              style={{ backgroundColor: "#0e1011", color: "#eceae5" }}
-              className="p-10 md:p-14 flex flex-col justify-between"
-            >
+        {/* CONTACT GRID */}
+        <section style={{ padding: '6rem 4vw', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6rem' }} className="contact-grid">
+          {/* INFO */}
+          <div>
+            <div className="text-meta text-color-muted" style={{ marginBottom: '3rem' }}>
+              (Contact)
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
               <div>
-                <p className="text-xs tracking-[0.3em] uppercase opacity-40 mb-6">
-                  {isFr ? "Formulaire de Contact" : "Contact Form"}
-                </p>
-                <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight leading-tight mb-6">
-                  {isFr
-                    ? "Remplissez notre formulaire pour démarrer"
-                    : "Fill out our form to get started"}
-                </h2>
-                <p className="text-base opacity-60 leading-relaxed mb-10">
-                  {isFr
-                    ? "Partagez quelques détails sur votre projet ou vos besoins et nous vous répondrons dans les plus brefs délais."
-                    : "Share a few details about your project or needs and we'll get back to you promptly."}
+                <div className="text-meta text-color-muted" style={{ marginBottom: '0.5rem' }}>
+                  (Phone)
+                </div>
+                <a href="tel:5145198177" className="heading-style-h2" style={{ textDecoration: 'none' }}>
+                  514 519-8177
+                </a>
+              </div>
+              <div>
+                <div className="text-meta text-color-muted" style={{ marginBottom: '0.5rem' }}>
+                  (Email)
+                </div>
+                <a href="mailto:JeremySoares@icloud.com" className="heading-style-h2" style={{ textDecoration: 'none', fontSize: 'clamp(1rem, 2vw, 1.4rem)' }}>
+                  JeremySoares@icloud.com
+                </a>
+              </div>
+              <div>
+                <div className="text-meta text-color-muted" style={{ marginBottom: '0.5rem' }}>
+                  (Office)
+                </div>
+                <p className="heading-alt-h3">
+                  106–220 Av des Pins O<br />Montréal, QC H2W1R9
                 </p>
               </div>
-              <a
-                href="https://form.jeremysoares.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ backgroundColor: "#eceae5", color: "#0e1011" }}
-                className="inline-block text-sm tracking-widest uppercase font-bold px-8 py-4 text-center hover:opacity-90 transition-opacity"
-              >
-                {isFr ? "Ouvrir le Formulaire" : "Open Form"}
-              </a>
+              <div>
+                <div className="text-meta text-color-muted" style={{ marginBottom: '1rem' }}>
+                  (Socials)
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <a href="https://www.linkedin.com/in/jeremysoaresrealestate/" target="_blank" className="nav-item w-inline-block">
+                    <div className="nav-item-text">LinkedIn</div><div className="nav-item-line"></div>
+                  </a>
+                  <a href="https://www.centris.ca/fr/courtier-immobilier~jeremy-soares~jeremy-soares/h2731" target="_blank" className="nav-item w-inline-block">
+                    <div className="nav-item-text">Centris</div><div className="nav-item-line"></div>
+                  </a>
+                  <a href="https://www.realtor.ca/agent/2079722/jeremy-soares-106-220-av-des-pins-o-montreal-quebec-h2w1r9" target="_blank" className="nav-item w-inline-block">
+                    <div className="nav-item-text">Realtor.ca</div><div className="nav-item-line"></div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-    </>
-  );
+
+          {/* FORM */}
+          <div>
+            <div className="text-meta text-color-muted" style={{ marginBottom: '3rem' }}>
+              ({isFr ? 'Formulaire' : 'Inquiry Form'})
+            </div>
+
+            {status === 'success' ? (
+              <div>
+                <div className="overflow-hidden">
+                  <h2 className="heading-style-h2 js-animate-up">
+                    {isFr ? 'Message envoyé.' : 'Message sent.'}
+                  </h2>
+                </div>
+                <p className="heading-alt-h3" style={{ marginTop: '1.5rem', opacity: 0.6 }}>
+                  {isFr
+                    ? "Je vous répondrai dans les plus brefs délais."
+                    : "I'll be in touch shortly."}
+                </p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                <div className="form-field">
+                  <label className="text-meta text-color-muted">
+                    ({isFr ? 'Nom' : 'Name'})
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    className="contact-input"
+                    placeholder={isFr ? 'Votre nom' : 'Your name'}
+                  />
+                </div>
+                <div className="form-field">
+                  <label className="text-meta text-color-muted">
+                    (Email)
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    value={form.email}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    className="contact-input"
+                    placeholder={isFr ? 'votre@email.com' : 'your@email.com'}
+                  />
+                </div>
+                <div className="form-field">
+                  <label className="text-meta text-color-muted">
+                    ({isFr ? 'Téléphone' : 'Phone'}) <span style={{ opacity: 0.4 }}>(optional)</span>
+                  </label>
+                  <input
+                    type="tel"
+                    value={form.phone}
+                    onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                    className="contact-input"
+                    placeholder="514 000-0000"
+                  />
+                </div>
+                <div className="form-field">
+                  <label className="text-meta text-color-muted">
+                    ({isFr ? 'Message' : 'Message'})
+                  </label>
+                  <textarea
+                    required
+                    rows={5}
+                    value={form.message}
+                    onChange={(e) => setForm({ ...form, message: e.target.value })}
+                    className="contact-input"
+                    placeholder={isFr
+                      ? 'Décrivez votre projet ou vos besoins...'
+                      : 'Tell me about your project or needs...'}
+                    style={{ resize: 'vertical' }}
+                  />
+                </div>
+                {status === 'error' && (
+                  <p style={{ color: '#ff6b6b', fontSize: '0.85rem' }}>
+                    {isFr ? 'Une erreur est survenue. Veuillez réessayer.' : 'Something went wrong. Please try again.'}
+                  </p>
+                )}
+                <button
+                  type="submit"
+                  disabled={status === 'loading'}
+                  className="button primary w-inline-block"
+                  style={{ cursor: status === 'loading' ? 'wait' : 'pointer', border: 'none' }}
+                >
+                  <div className="button-inner-2">
+                    <div className="button-inner-text">
+                      {status === 'loading'
+                        ? (isFr ? 'Envoi...' : 'Sending...')
+                        : (isFr ? 'Envoyer' : 'Send Message')}
+                    </div>
+                  </div>
+                </button>
+              </form>
+            )}
+          </div>
+        </section>
+      </main>
+    </div>
+  )
 }

@@ -191,10 +191,49 @@ body {
   background: #c9a84c;
 }
 
+/* ── CONTACT FORM ───────────────────────────────────────── */
+.contact-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.contact-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(236, 234, 229, 0.25);
+  color: #eceae5;
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.75rem 0;
+  outline: none;
+  transition: border-color 0.2s ease;
+  width: 100%;
+}
+
+.contact-input:focus {
+  border-bottom-color: #eceae5;
+}
+
+.contact-input::placeholder {
+  color: rgba(236, 234, 229, 0.3);
+}
+
 /* ── RESPONSIVENESS ──────────────────────────────────────── */
 @media (max-width: 991px) {
   .sold-grid {
     grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 991px) {
+  .contact-grid {
+    grid-template-columns: 1fr !important;
+    gap: 4rem !important;
   }
 }
 
