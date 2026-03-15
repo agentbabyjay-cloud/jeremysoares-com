@@ -68,8 +68,7 @@ export const metadata: Metadata = {
       'https://cdn.prod.website-files.com/68ba28534a070e692e441089/68bcc66d5ba5fbacdf665853_JNJB-01.png',
   },
   verification: {
-    // Add Google Search Console verification token here when you get it
-    // google: 'your-verification-token',
+    google: '7b1nlA6nQkgyF_MZ28W9yNXbZWQyu_zIyNIrm8Mw1sM',
   },
   alternates: {
     canonical: 'https://jeremysoares.com',
@@ -148,14 +147,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         {/* Google Analytics 4 */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLACEHOLDER" />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-C44LY9E9TK" />
         <script
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', 'G-PLACEHOLDER', { send_page_view: true });
+              gtag('config', 'G-C44LY9E9TK', { send_page_view: true });
             `,
           }}
         />
