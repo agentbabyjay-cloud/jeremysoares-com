@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Marquee } from "@/components/animation/Marquee";
 
 interface FooterProps {
@@ -56,13 +55,7 @@ export default function Footer({ locale }: FooterProps) {
         {/* Top: Logo + CTA */}
         <div className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-8">
           <div>
-            <Image
-              src="https://cdn.prod.website-files.com/68ba28534a070e692e441089/68ba28554a070e692e441344_logo-inverse.svg"
-              alt="Jeremy Soares"
-              width={160}
-              height={42}
-              style={{ height: "auto", marginBottom: "1.25rem" }}
-            />
+            <span style={{ fontFamily: "var(--font-barlow), 'Barlow', sans-serif", fontWeight: 900, fontSize: '22px', letterSpacing: '0.14em', color: 'var(--color-cream)', textTransform: 'uppercase', display: 'block', marginBottom: '1.25rem' }}>SOARES</span>
             <p
               style={{ color: "#eceae5" }}
               className="text-sm tracking-widest uppercase opacity-40 max-w-xs"

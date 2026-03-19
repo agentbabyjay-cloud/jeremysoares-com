@@ -115,9 +115,9 @@ export function Preloader({ children }: PreloaderProps) {
               ref={(el) => { charRefs.current[i] = el }}
               style={{
                 display: 'inline-block',
-                fontFamily: "'avenir-next-lt-pro-condensed', 'Avenir Next Condensed', sans-serif",
+                fontFamily: "var(--font-barlow), 'Barlow', sans-serif",
                 fontSize: 'clamp(4rem, 12vw, 10rem)',
-                fontWeight: 700,
+                fontWeight: 900,
                 letterSpacing: '0.15em',
                 color: '#eceae5',
                 textTransform: 'uppercase',
