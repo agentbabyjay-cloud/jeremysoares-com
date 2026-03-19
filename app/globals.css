@@ -1,29 +1,74 @@
 @import "tailwindcss";
 
-/* The Webflow CSS handles all styling — keep this minimal */
+@theme {
+  /* Colors */
+  --color-void: #0e1011;
+  --color-cream: #eceae5;
+  --color-cream-dim: #d8d4cb;
+  --color-navy: #0e1011;
+  --color-gold: #c9a84c;
+  --color-accent: #e8762a;
+  --color-void-muted: rgba(14, 16, 17, 0.12);
+  --color-cream-muted: rgba(236, 234, 229, 0.15);
+  --color-cream-subtle: rgba(236, 234, 229, 0.40);
+
+  /* Typography scale */
+  --text-xs: 0.625rem;
+  --text-sm: 0.75rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --text-3xl: 2.75rem;
+  --text-4xl: 3.75rem;
+  --text-5xl: clamp(4rem, 7vw, 7rem);
+  --text-display: clamp(5rem, 10vw, 11rem);
+  --text-giant: clamp(7rem, 16vw, 18rem);
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  /* Breakpoints */
+  --breakpoint-sm: 480px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1600px;
+}
+
+/* ── OLD PAGELOADER — suppressed, replaced by Preloader component ── */
+#pageloader {
+  display: none !important;
+}
+
+/* ── BASE ───────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 body {
   margin: 0;
-}
-
-/* ── PAGE LOADER ────────────────────────────────────────── */
-.pageloader {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
   background: #0e1011;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.pageloader-heading {
-  font-family: 'avenir-next-lt-pro-condensed', 'Avenir Next Condensed', sans-serif;
-  font-size: clamp(4rem, 12vw, 10rem);
-  font-weight: 700;
-  letter-spacing: 0.15em;
   color: #eceae5;
-  text-transform: uppercase;
-  transform: translateY(110%);
+  font-family: var(--font-dm-sans), 'DM Sans', system-ui, sans-serif;
 }
 
 /* ── SOLD & RENTED SECTION ──────────────────────────────── */
@@ -274,3 +319,43 @@ body {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* ── SERVICE LABEL HOVER ANIMATIONS ────────────────────── */
+.label.primary {
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+              background-color 0.22s ease,
+              color 0.22s ease;
+  cursor: default;
+}
+
+.label.primary:hover {
+  transform: scale(1.06);
+  background-color: #eceae5 !important;
+  color: #0e1011 !important;
+}
+
+.label.primary:hover .label-text {
+  color: #0e1011;
+}
+
+/* ── PLATFORM TAG HOVER ─────────────────────────────────── */
+.platform-tag {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease !important;
+}
+
+.platform-tag:hover {
+  background-color: rgba(236, 234, 229, 0.12) !important;
+  border-color: rgba(236, 234, 229, 0.6) !important;
+  transform: translateY(-2px);
+}
+
+/* ── COUNTER ANIMATION TARGET ───────────────────────────── */
+.js-counter {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── GSAP REVEAL ANIMATION INITIAL STATES ────────────────── */
+.reveal { opacity: 0; transform: translateY(50px); }
+.reveal-left { opacity: 0; transform: translateX(-40px); }
+.reveal-scale { opacity: 0; transform: scale(0.93); }

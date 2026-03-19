@@ -1,0 +1,11 @@
+{
+  "id": "sold-01",
+  "status": "sold",
+  "address": "4523 Rue Saint-Denis",
+  "neighbourhood": "Plateau Mont-Royal",
+  "city": "Montreal",
+  "type": "residential",
+  "images": ["/images/sold/68ba2bf227d34e40571de5e2_SOLDS-13 2.jpg"],
+  "featured": true,
+  "soldDate": "2025-01-18"
+}

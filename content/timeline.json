@@ -1,0 +1,56 @@
+[
+  {
+    "year": "2019 — Present",
+    "role": "Residential Real Estate Broker",
+    "company": "Soares | Montreal, QC",
+    "description": {
+      "en": "Full-service brokerage, buyer and seller representation across residential and commercial sectors.",
+      "fr": "Courtage complet, représentation des acheteurs et vendeurs dans les secteurs résidentiel et commercial."
+    }
+  },
+  {
+    "year": "2017 — 2020",
+    "role": "Pre-Sale Condo Business Development",
+    "company": "Vancouver, BC",
+    "description": {
+      "en": "New development launches, developer partnerships, pre-sale marketing strategy.",
+      "fr": "Lancements de nouveaux projets, partenariats avec promoteurs, stratégie de marketing de prévente."
+    }
+  },
+  {
+    "year": "2016 — 2021",
+    "role": "Soares/Saniuk Real Estate Team",
+    "company": "Montreal + Vancouver",
+    "description": {
+      "en": "Bi-coastal team managing residential portfolios in both markets.",
+      "fr": "Équipe bi-côtière gérant des portefeuilles résidentiels dans les deux marchés."
+    }
+  },
+  {
+    "year": "2017 — 2019",
+    "role": "Luxury Residential Broker",
+    "company": "Vancouver, BC",
+    "description": {
+      "en": "High-end residential sales, Westside and downtown Vancouver.",
+      "fr": "Ventes résidentielles haut de gamme, Westside et centre-ville de Vancouver."
+    }
+  },
+  {
+    "year": "2016 — 2018",
+    "role": "Real Estate Marketing Specialist",
+    "company": "Independent",
+    "description": {
+      "en": "Digital marketing, website development, and branding for small-scale real estate projects.",
+      "fr": "Marketing numérique, développement web et image de marque pour projets immobiliers à petite échelle."
+    }
+  },
+  {
+    "year": "2013 — 2016",
+    "role": "Student in Architecture",
+    "company": "Montreal",
+    "description": {
+      "en": "Foundation in spatial design, structural thinking, and visual composition.",
+      "fr": "Formation en design spatial, pensée structurelle et composition visuelle."
+    }
+  }
+]

@@ -1,0 +1,15 @@
+{
+  "id": "alleyway-1",
+  "title": "Alleyway I",
+  "slug": "alleyway-1",
+  "medium": "Acrylic on canvas",
+  "dimensions": "24 × 36 in",
+  "year": 2023,
+  "images": ["/images/ART/alleyway-1.jpg"],
+  "coverImage": "/images/ART/alleyway-1.jpg",
+  "editions": 1,
+  "description": {
+    "en": "Montreal back alley captured in muted tones. Part of the Alleyway series.",
+    "fr": "Ruelle montréalaise capturée en tons atténués. Partie de la série Ruelle."
+  }
+}

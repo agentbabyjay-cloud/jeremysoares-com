@@ -1,0 +1,11 @@
+{
+  "id": "sold-05",
+  "status": "sold",
+  "address": "5234 Avenue du Parc",
+  "neighbourhood": "Mile End",
+  "city": "Montreal",
+  "type": "residential",
+  "images": ["/images/sold/68bb145e55f3e2770f820520_sold template 2025-08.png"],
+  "featured": false,
+  "soldDate": "2025-04-03"
+}

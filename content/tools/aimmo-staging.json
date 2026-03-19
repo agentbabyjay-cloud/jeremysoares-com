@@ -1,0 +1,11 @@
+{
+  "id": "aimmo-staging",
+  "name": "aimmo",
+  "description": {
+    "en": "AI-powered virtual staging platform. Transform empty rooms into design-forward spaces in minutes.",
+    "fr": "Plateforme de mise en scène virtuelle par IA. Transformez des pièces vides en espaces design en quelques minutes."
+  },
+  "url": "https://tools.jeremysoares.com/aimmo",
+  "icon": "staging",
+  "category": "platform"
+}

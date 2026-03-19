@@ -1,132 +1,130 @@
+import type { Metadata } from 'next'
+import { getAllPosts } from '@/lib/content/posts'
+import { Section } from '@/components/ui/Section'
+import { Container } from '@/components/ui/Container'
+import { Label } from '@/components/ui/Label'
+import { TextReveal } from '@/components/animation/TextReveal'
+import { BlogPostRow } from '@/components/content/BlogPostRow'
+import { SubscribeBand } from '@/components/content/SubscribeBand'
+import type { Locale } from '@/lib/content/types'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const isFr = locale === 'fr-ca'
+  return {
+    title: isFr
+      ? 'Blogue Immobilier Montréal | Analyses de Marché & Conseils — Jeremy Soares'
+      : 'Montreal Real Estate Blog | Market Insights & Tips — Jeremy Soares',
+    description: isFr
+      ? "Analyses de marché, conseils d'achat et stratégies d'investissement immobilier à Montréal par Jeremy Soares, courtier expert."
+      : 'Market insights, buying tips, and investment analysis for Montreal real estate by broker Jeremy Soares.',
+    keywords: isFr
+      ? ['blogue immobilier Montréal', 'analyse marché immobilier', 'conseils achat Montréal', 'investissement immobilier Québec', 'Jeremy Soares']
+      : ['Montreal real estate blog', 'property market analysis', 'buying tips Montreal', 'real estate investment Quebec', 'Jeremy Soares'],
+    alternates: {
+      canonical: `https://jeremysoares.com/${locale}/blog`,
+      languages: {
+        'en-CA': 'https://jeremysoares.com/en-ca/blog',
+        'fr-CA': 'https://jeremysoares.com/fr-ca/blog',
+      },
+    },
+    openGraph: {
+      type: 'website',
+      url: `https://jeremysoares.com/${locale}/blog`,
+      title: isFr
+        ? 'Blogue Immobilier Montréal — Jeremy Soares'
+        : 'Montreal Real Estate Blog — Jeremy Soares',
+      description: isFr
+        ? "Analyses de marché, conseils d'achat et stratégies d'investissement à Montréal."
+        : 'Market insights, buying tips, and investment analysis for Montreal real estate.',
+      siteName: 'Jeremy Soares',
+      locale: isFr ? 'fr_CA' : 'en_CA',
+    },
+  }
+}
+
 export default async function BlogPage({
   params,
 }: {
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale: string }>
 }) {
-  const { locale } = await params;
-  const isFr = locale === "fr-ca";
+  const { locale } = await params
+  const isFr = locale === 'fr-ca'
+  const contentLocale: Locale = isFr ? 'fr' : 'en'
+  const posts = getAllPosts(contentLocale)
 
-  const posts = [
-    {
-      date: isFr ? "Mars 2026" : "March 2026",
-      tag: isFr ? "Marché" : "Market",
-      title: isFr
-        ? "L'état du marché immobilier montréalais en 2026"
-        : "The State of Montreal's Real Estate Market in 2026",
-      excerpt: isFr
-        ? "Un aperçu des tendances actuelles, des prix et des opportunités pour les acheteurs et vendeurs sur l'île de Montréal."
-        : "An overview of current trends, pricing, and opportunities for buyers and sellers on the island of Montreal.",
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Blog',
+    name: isFr ? 'Blogue — Jeremy Soares' : 'Blog — Jeremy Soares',
+    description: isFr
+      ? 'Analyses de marché immobilier, conseils et perspectives par Jeremy Soares à Montréal.'
+      : 'Real estate market analysis, tips, and insights by Jeremy Soares in Montreal.',
+    url: `https://jeremysoares.com/${locale}/blog`,
+    author: {
+      '@type': 'Person',
+      name: 'Jeremy Soares',
+      url: 'https://jeremysoares.com',
     },
-    {
-      date: isFr ? "Février 2026" : "February 2026",
-      tag: isFr ? "Conseils" : "Tips",
-      title: isFr
-        ? "5 choses à savoir avant d'acheter votre premier condo"
-        : "5 Things to Know Before Buying Your First Condo",
-      excerpt: isFr
-        ? "De la mise de fonds aux frais de copropriété, voici ce que chaque premier acheteur devrait comprendre avant de signer."
-        : "From down payments to condo fees, here's what every first-time buyer should understand before signing.",
+    publisher: {
+      '@type': 'Person',
+      name: 'Jeremy Soares',
+      url: 'https://jeremysoares.com',
     },
-    {
-      date: isFr ? "Janvier 2026" : "January 2026",
-      tag: isFr ? "Investissement" : "Investment",
-      title: isFr
-        ? "Pourquoi Montréal reste l'une des meilleures villes pour investir en immobilier"
-        : "Why Montreal Remains One of the Best Cities to Invest in Real Estate",
-      excerpt: isFr
-        ? "Montréal offre un équilibre unique entre accessibilité, croissance démographique et rendements locatifs solides."
-        : "Montreal offers a unique balance of affordability, population growth, and strong rental yields.",
-    },
-  ];
+    inLanguage: isFr ? 'fr-CA' : 'en-CA',
+  }
 
   return (
     <>
-      {/* ── PAGE HEADER ──────────────────────────────────────────────────── */}
-      <section
-        style={{ backgroundColor: "#0e1011" }}
-        className="px-6 pt-20 pb-12 md:pt-28 md:pb-16"
-      >
-        <div className="mx-auto max-w-7xl">
-          <p
-            style={{ color: "#eceae5" }}
-            className="text-xs tracking-[0.3em] uppercase opacity-40 mb-4"
-          >
-            {isFr ? "Journal" : "Blog"}
-          </p>
-          <h1
-            style={{ color: "#eceae5" }}
-            className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none"
-          >
-            {isFr ? "Articles" : "Articles"}
-          </h1>
-        </div>
-      </section>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
-      {/* ── POSTS LIST ───────────────────────────────────────────────────── */}
-      <section
-        style={{ backgroundColor: "#eceae5" }}
-        className="px-6 py-0"
-      >
-        <div className="mx-auto max-w-7xl">
-          {posts.map((post, index) => (
-            <article
-              key={index}
-              style={{
-                borderTop: index === 0 ? "none" : "1px solid rgba(14,16,17,0.12)",
-                color: "#0e1011",
-              }}
-              className="py-12 md:py-16 grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-12 cursor-default group"
-            >
-              <div className="md:col-span-2">
-                <p className="text-xs tracking-widest uppercase opacity-40">{post.date}</p>
-              </div>
-              <div className="md:col-span-10">
-                <span
-                  style={{ backgroundColor: "rgba(14,16,17,0.08)" }}
-                  className="inline-block text-xs tracking-widest uppercase px-3 py-1 mb-4"
-                >
-                  {post.tag}
-                </span>
-                <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tight leading-tight mb-4 group-hover:opacity-60 transition-opacity">
-                  {post.title}
-                </h2>
-                <p className="text-base leading-relaxed opacity-60 max-w-2xl">{post.excerpt}</p>
-              </div>
-            </article>
-          ))}
-          <div style={{ borderTop: "1px solid rgba(14,16,17,0.12)" }} className="pb-4" />
-        </div>
-      </section>
+      {/* Hero */}
+      <Section theme="void" className="pt-32 pb-16 md:pt-40 md:pb-20">
+        <Container size="lg">
+          <Label className="mb-6">{isFr ? '(Journal)' : '(Blog)'}</Label>
+          <TextReveal
+            as="h1"
+            split="lines"
+            immediate
+            delay={0.2}
+            className="text-[clamp(4rem,10vw,8rem)] font-black leading-none tracking-tight text-[#eceae5] uppercase"
+            style={{ fontFamily: "var(--font-barlow), 'Barlow', sans-serif" }}
+          >
+            {isFr ? 'Articles' : 'Articles'}
+          </TextReveal>
+        </Container>
+      </Section>
 
-      {/* ── SUBSCRIBE BAND ───────────────────────────────────────────────── */}
-      <section
-        style={{ backgroundColor: "#0e1011" }}
-        className="px-6 py-16 md:py-20"
-      >
-        <div className="mx-auto max-w-7xl">
-          <p
-            style={{ color: "#eceae5" }}
-            className="text-xs tracking-[0.3em] uppercase opacity-40 mb-4"
-          >
-            {isFr ? "Restez informé" : "Stay informed"}
-          </p>
-          <h2
-            style={{ color: "#eceae5" }}
-            className="text-3xl md:text-5xl font-black uppercase tracking-tight mb-8 max-w-xl"
-          >
-            {isFr
-              ? "Des analyses immobilières directement dans votre boîte"
-              : "Real estate insights straight to your inbox"}
-          </h2>
-          <a
-            href="mailto:JeremySoares@icloud.com?subject=Subscribe"
-            style={{ backgroundColor: "#eceae5", color: "#0e1011" }}
-            className="inline-block text-sm tracking-widest uppercase font-bold px-8 py-4 hover:opacity-90 transition-opacity"
-          >
-            {isFr ? "S'abonner" : "Subscribe"}
-          </a>
-        </div>
-      </section>
+      {/* Post list */}
+      <Section theme="void" className="pb-24">
+        <Container size="lg">
+          {posts.length > 0 ? (
+            <div>
+              {posts.map((post) => (
+                <BlogPostRow key={post.slug} post={post} locale={locale} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-[1rem] text-[#eceae5] opacity-40">
+              {isFr ? 'Articles à venir.' : 'Articles coming soon.'}
+            </p>
+          )}
+        </Container>
+      </Section>
+
+      {/* Subscribe */}
+      <Section theme="void">
+        <Container size="lg">
+          <SubscribeBand locale={locale} />
+        </Container>
+      </Section>
     </>
-  );
+  )
 }

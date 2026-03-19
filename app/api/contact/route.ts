@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
+import { createHubSpotContact } from '@/lib/hubspot'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -39,6 +40,16 @@ export async function POST(req: NextRequest) {
       console.error('Resend error:', error)
       return NextResponse.json({ error: 'Failed to send email' }, { status: 500 })
     }
+
+    // Create HubSpot contact (fire-and-forget)
+    const [firstname, ...rest] = name.split(' ')
+    createHubSpotContact({
+      email,
+      firstname,
+      lastname: rest.join(' '),
+      phone,
+      lifecyclestage: 'lead',
+    }).catch(() => {})
 
     return NextResponse.json({ success: true, id: data?.id })
   } catch (err) {

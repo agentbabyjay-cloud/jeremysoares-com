@@ -1,0 +1,11 @@
+{
+  "id": "sold-06",
+  "status": "sold",
+  "address": "2875 Boulevard Rosemont",
+  "neighbourhood": "Rosemont",
+  "city": "Montreal",
+  "type": "residential",
+  "images": ["/images/sold/68bb145e776d050d93a364c8_sold template 2025-02.png"],
+  "featured": false,
+  "soldDate": "2025-04-28"
+}

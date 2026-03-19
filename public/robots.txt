@@ -1,9 +1,48 @@
-# *
+# All crawlers
 User-agent: *
 Allow: /
 
-# Googlebot
+# Google
 User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# Bing
+User-agent: Bingbot
+Allow: /
+
+# Apple
+User-agent: Applebot
+Allow: /
+
+# AI crawlers — explicitly allowed for AI search visibility
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+User-agent: cohere-ai
 Allow: /
 
 # Host
@@ -11,3 +50,4 @@ Host: https://jeremysoares.com
 
 # Sitemaps
 Sitemap: https://jeremysoares.com/sitemap.xml
+Sitemap: https://tools.jeremysoares.com/sitemap.xml

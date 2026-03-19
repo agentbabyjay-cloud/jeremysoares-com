@@ -1,0 +1,11 @@
+{
+  "id": "buyer-guide",
+  "name": "Buyer's Guide",
+  "description": {
+    "en": "Step-by-step guide to purchasing property in Quebec. From pre-approval to closing.",
+    "fr": "Guide étape par étape pour l'achat d'une propriété au Québec. De la pré-approbation à la signature."
+  },
+  "url": "https://tools.jeremysoares.com/buyer-guide",
+  "icon": "guide",
+  "category": "guide"
+}

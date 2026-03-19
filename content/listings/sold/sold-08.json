@@ -1,0 +1,11 @@
+{
+  "id": "sold-08",
+  "status": "sold",
+  "address": "6438 Avenue de Monkland",
+  "neighbourhood": "NDG",
+  "city": "Montreal",
+  "type": "residential",
+  "images": ["/images/sold/68bb145e7f790635cac62e1d_sold template 2025-15.png"],
+  "featured": false,
+  "soldDate": "2025-06-09"
+}

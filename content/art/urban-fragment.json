@@ -1,0 +1,15 @@
+{
+  "id": "urban-fragment",
+  "title": "Urban Fragment",
+  "slug": "urban-fragment",
+  "medium": "Acrylic on panel",
+  "dimensions": "20 × 20 in",
+  "year": 2022,
+  "images": ["/images/ART/urban-fragment.jpg"],
+  "coverImage": "/images/ART/urban-fragment.jpg",
+  "editions": 1,
+  "description": {
+    "en": "Architectural remnants compressed into a single panel.",
+    "fr": "Vestiges architecturaux comprimés en un seul panneau."
+  }
+}

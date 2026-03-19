@@ -1,0 +1,15 @@
+{
+  "id": "abstract-square",
+  "title": "Abstract Square",
+  "slug": "abstract-square",
+  "medium": "Acrylic on canvas",
+  "dimensions": "36 × 36 in",
+  "year": 2023,
+  "images": ["/images/ART/abstract-square.jpg"],
+  "coverImage": "/images/ART/abstract-square.jpg",
+  "editions": 1,
+  "description": {
+    "en": "A geometric exploration of urban form, layered acrylic on square canvas.",
+    "fr": "Une exploration géométrique de la forme urbaine, acrylique superposé sur toile carrée."
+  }
+}

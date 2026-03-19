@@ -4,17 +4,22 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && next-sitemap",
+    "validate": "npx tsx scripts/validate-content.ts",
+    "build": "npx tsx scripts/validate-content.ts && next build && next-sitemap && node scripts/patch-sitemap.js",
     "start": "next start",
     "lint": "eslint"
   },
   "dependencies": {
     "@next/third-parties": "^16.1.6",
+    "gray-matter": "^4.0.3",
     "gsap": "^3.14.2",
+    "lenis": "^1.3.19",
     "next": "16.1.6",
+    "next-mdx-remote": "^6.0.0",
     "next-sitemap": "^4.2.3",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "reading-time": "^1.5.0",
     "resend": "^6.9.3"
   },
   "devDependencies": {

@@ -1,0 +1,11 @@
+{
+  "id": "sold-12",
+  "status": "sold",
+  "address": "1455 Rue de la Montagne",
+  "neighbourhood": "Ville-Marie",
+  "city": "Montreal",
+  "type": "residential",
+  "images": ["/images/sold/68bc7b3aa8714105bb1b64ae_SOLDS TEMPLATE-14.png"],
+  "featured": true,
+  "soldDate": "2025-10-02"
+}

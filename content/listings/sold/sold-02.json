@@ -1,0 +1,11 @@
+{
+  "id": "sold-02",
+  "status": "sold",
+  "address": "1240 Rue des Bassins",
+  "neighbourhood": "Griffintown",
+  "city": "Montreal",
+  "type": "residential",
+  "images": ["/images/sold/68ba2bf381b1995bf8e6a127_SOLDS TEMPLATE-01 copy.png"],
+  "featured": false,
+  "soldDate": "2025-02-07"
+}

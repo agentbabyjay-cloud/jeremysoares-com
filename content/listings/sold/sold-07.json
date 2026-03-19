@@ -1,0 +1,11 @@
+{
+  "id": "sold-07",
+  "status": "sold",
+  "address": "4102 Rue Wellington",
+  "neighbourhood": "Verdun",
+  "city": "Montreal",
+  "type": "residential",
+  "images": ["/images/sold/68bb145e7778d884a103ce78_sold template 2025-12.png"],
+  "featured": true,
+  "soldDate": "2025-05-15"
+}

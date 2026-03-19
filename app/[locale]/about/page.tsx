@@ -1,379 +1,379 @@
-"use client";
+import type { Metadata } from 'next'
+import fs from 'fs'
+import path from 'path'
+import Image from 'next/image'
+import Link from 'next/link'
+import { Section } from '@/components/ui/Section'
+import { Container } from '@/components/ui/Container'
+import { Label } from '@/components/ui/Label'
+import { TextReveal } from '@/components/animation/TextReveal'
+import { SectionReveal } from '@/components/animation/SectionReveal'
+import { TimelineRow } from '@/components/content/TimelineRow'
+import { DomainPill } from '@/components/content/DomainPill'
+import { StatCounter } from '@/components/content/StatCounter'
+import { Button } from '@/components/ui/Button'
+import type { TimelineEntry } from '@/lib/content/types'
 
-import { useEffect, useRef } from "react";
-import Image from "next/image";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { use } from "react";
+// ─── SEO ─────────────────────────────────────────────────────────────────────
 
-gsap.registerPlugin(ScrollTrigger);
-
-export default function AboutPage({
+export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const isFr = locale === 'fr-ca'
+
+  const title = isFr
+    ? 'À propos de Jeremy Soares | Courtier Immobilier Montréal, Architecte & Artiste'
+    : 'About Jeremy Soares | Montreal Real Estate Broker, Architect & Artist'
+
+  const description = isFr
+    ? 'Jeremy Soares — courtier immobilier à Montréal, architecte de formation, artiste. Plus de 10 ans entre Montréal et Vancouver. OACIQ H2731.'
+    : 'Jeremy Soares — Montreal real estate broker, trained architect, and artist. 10+ years across Montreal and Vancouver. Architecture meets real estate expertise.'
+
+  const canonicalLocale = locale
+  const altLocale = isFr ? 'en-ca' : 'fr-ca'
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `https://jeremysoares.com/${canonicalLocale}/about`,
+      languages: {
+        'en-CA': 'https://jeremysoares.com/en-ca/about',
+        'fr-CA': 'https://jeremysoares.com/fr-ca/about',
+      },
+    },
+    openGraph: {
+      title,
+      description,
+      url: `https://jeremysoares.com/${canonicalLocale}/about`,
+      siteName: 'Jeremy Soares',
+      locale: isFr ? 'fr_CA' : 'en_CA',
+      type: 'profile',
+      images: [
+        {
+          url: 'https://jeremysoares.com/images/headshots/Jeremy-Soares-Montreal-Realtor.webp',
+          width: 1200,
+          height: 1600,
+          alt: isFr
+            ? 'Jeremy Soares — Courtier Immobilier Montréal'
+            : 'Jeremy Soares — Montreal Real Estate Broker',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ['https://jeremysoares.com/images/headshots/Jeremy-Soares-Montreal-Realtor.webp'],
+    },
+  }
+}
+
+// ─── JSON-LD ──────────────────────────────────────────────────────────────────
+
+function PersonJsonLd({ isFr }: { isFr: boolean }) {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Jeremy Soares',
+    jobTitle: isFr
+      ? 'Courtier Immobilier Agréé — OACIQ H2731'
+      : 'Licensed Real Estate Broker — OACIQ H2731',
+    description: isFr
+      ? 'Courtier immobilier à Montréal, architecte de formation, artiste. Fondateur de Soares Agency et aimmo.'
+      : 'Montreal real estate broker, trained architect, artist. Founder of Soares Agency and aimmo.',
+    url: 'https://jeremysoares.com',
+    image: 'https://jeremysoares.com/images/headshots/Jeremy-Soares-Montreal-Realtor.webp',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Montréal',
+      addressRegion: 'QC',
+      addressCountry: 'CA',
+    },
+    sameAs: [
+      'https://www.linkedin.com/in/jeremysoares',
+      'https://www.centris.ca/en/brokers~jeremy-soares~H2731',
+      'https://www.realtor.ca/agent/jeremy-soares',
+    ],
+    knowsAbout: [
+      'Real Estate',
+      'Architecture',
+      'Montreal Real Estate Market',
+      'Luxury Residential',
+      'Pre-Sale Condominiums',
+      'AI Real Estate Technology',
+    ],
+    worksFor: {
+      '@type': 'Organization',
+      name: 'Soares Agency',
+      url: 'https://jeremysoares.com',
+    },
+  }
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  )
+}
+
+// ─── Page ─────────────────────────────────────────────────────────────────────
+
+export default async function AboutPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
 }) {
-  const { locale } = use(params);
-  const isFr = locale === "fr-ca";
+  const { locale } = await params
+  const isFr = locale === 'fr-ca'
 
-  const headerRef = useRef<HTMLElement>(null);
-  const timelineRef = useRef<HTMLDivElement>(null);
-  const platformsRef = useRef<HTMLElement>(null);
+  const timelineFile = path.join(process.cwd(), 'content/timeline.json')
+  const timeline: TimelineEntry[] = fs.existsSync(timelineFile)
+    ? JSON.parse(fs.readFileSync(timelineFile, 'utf-8'))
+    : []
 
-  const experience = [
-    {
-      title: isFr ? "Courtier Immobilier Résidentiel" : "Residential Real Estate Broker",
-      years: "2019 — Present",
-      desc: isFr
-        ? "Montréal, QC — Représentation acheteurs, vendeurs et investisseurs."
-        : "Montréal, QC — Representing buyers, sellers, and investors.",
-    },
-    {
-      title: isFr ? "Dév. d'Affaires — Condos Préventes" : "Pre-Sale Condo Business Dev.",
-      years: "2017 — 2020",
-      desc: isFr
-        ? "Vancouver, BC — Spécialisation en préventes de condos neufs."
-        : "Vancouver, BC — Specialization in pre-sale new condo developments.",
-    },
-    {
-      title: "Soares/Saniuk Real Estate Team",
-      years: "2016 — 2021",
-      desc: isFr
-        ? "Équipe boutique couvrant les marchés résidentiel et commercial."
-        : "Boutique team covering residential and commercial markets.",
-    },
-    {
-      title: isFr ? "Courtier Résidentiel de Luxe" : "Luxury Residential Broker",
-      years: "2017 — 2019",
-      desc: isFr
-        ? "Vancouver, BC — Propriétés de prestige sur la côte ouest."
-        : "Vancouver, BC — Prestige properties on the west coast.",
-    },
-    {
-      title: isFr ? "Spécialiste Marketing Immobilier" : "Real Estate Marketing Specialist",
-      years: "2016 — 2018",
-      desc: isFr
-        ? "Stratégie numérique et image de marque pour promoteurs."
-        : "Digital strategy and branding for real estate developers.",
-    },
-    {
-      title: isFr ? "Étudiant en Architecture" : "Student in Architecture",
-      years: "2013 — 2016",
-      desc: isFr
-        ? "Formation en design et composition des espaces."
-        : "Foundation in design and spatial composition.",
-    },
-  ];
-
-  const platforms = [
-    { label: "ALouerMTL.com", href: "https://alouermtl.com" },
-    { label: "MontrealRE.ca", href: "https://montrealre.ca" },
-    { label: "ForSaleMTL.com", href: "https://forsalemtl.com" },
-    { label: "AgentMTL.com", href: "https://agentmtl.com" },
-    { label: "Presalepedia.com", href: "https://presalepedia.com" },
-  ];
-
-  useEffect(() => {
-    // Header slide-in
-    if (headerRef.current) {
-      const h1 = headerRef.current.querySelector("h1");
-      const label = headerRef.current.querySelector(".page-label");
-      gsap.fromTo(
-        label,
-        { opacity: 0, y: 16 },
-        { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", delay: 0.1 }
-      );
-      gsap.fromTo(
-        h1,
-        { opacity: 0, y: 40 },
-        { opacity: 1, y: 0, duration: 0.9, ease: "power4.out", delay: 0.2 }
-      );
-    }
-
-    // Timeline rows stagger
-    if (timelineRef.current) {
-      const rows = timelineRef.current.querySelectorAll(".timeline-row");
-      gsap.fromTo(
-        rows,
-        { opacity: 0, x: -20 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: timelineRef.current,
-            start: "top 78%",
-          },
-        }
-      );
-    }
-
-    // Platforms
-    if (platformsRef.current) {
-      const tags = platformsRef.current.querySelectorAll(".platform-tag");
-      gsap.fromTo(
-        tags,
-        { opacity: 0, y: 16 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.5,
-          stagger: 0.07,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: platformsRef.current,
-            start: "top 82%",
-          },
-        }
-      );
-    }
-
-    return () => {
-      ScrollTrigger.getAll().forEach((t) => t.kill());
-    };
-  }, []);
+  const domainsFile = path.join(process.cwd(), 'content/domains.json')
+  const domains: { domain: string; type: string }[] = fs.existsSync(domainsFile)
+    ? JSON.parse(fs.readFileSync(domainsFile, 'utf-8'))
+    : []
 
   return (
     <>
-      {/* ── PAGE HEADER ──────────────────────────────────────────────────── */}
-      <section
-        ref={headerRef}
-        style={{ backgroundColor: "#0e1011" }}
-        className="px-6 pt-20 pb-0 md:pt-28"
-      >
-        <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 items-end">
-            <div className="pb-16 md:pb-24">
-              <p
-                className="page-label section-label mb-6"
-                style={{ color: "#eceae5", opacity: 0 }}
-              >
-                {isFr ? "À Propos" : "About"}
-              </p>
-              <h1
-                style={{
-                  color: "#eceae5",
-                  fontSize: "clamp(4rem, 10vw, 12rem)",
-                  fontWeight: 900,
-                  textTransform: "uppercase",
-                  letterSpacing: "-0.02em",
-                  lineHeight: 0.88,
-                  opacity: 0,
-                }}
-              >
-                Jeremy<br />Soares
-              </h1>
-            </div>
-            {/* Headshot */}
-            <div
-              style={{
-                position: "relative",
-                aspectRatio: "3/4",
-                overflow: "hidden",
-                alignSelf: "flex-end",
-              }}
-              className="hidden lg:block"
+      <PersonJsonLd isFr={isFr} />
+
+      {/* ── Hero ─────────────────────────────────────────────────────────── */}
+      <Section theme="void" className="pt-32 pb-16 md:pt-40 md:pb-20">
+        <Container size="lg">
+          <Label className="mb-6">{isFr ? '(À propos)' : '(About)'}</Label>
+
+          {/* h1 split across two TextReveal lines — both render the same h1 tag */}
+          <TextReveal
+            as="h1"
+            split="chars"
+            immediate
+            delay={0.2}
+            className="text-[clamp(4rem,10vw,8rem)] leading-none tracking-tight text-[#eceae5] uppercase"
+            style={{ fontFamily: "var(--font-barlow), 'Barlow', sans-serif", fontWeight: 900 }}
+          >
+            JEREMY
+          </TextReveal>
+          <TextReveal
+            as="div"
+            split="chars"
+            immediate
+            delay={0.4}
+            aria-hidden="true"
+            className="text-[clamp(4rem,10vw,8rem)] leading-none tracking-tight text-[#eceae5] uppercase"
+            style={{ fontFamily: "var(--font-barlow), 'Barlow', sans-serif", fontWeight: 900 }}
+          >
+            SOARES
+          </TextReveal>
+
+          <SectionReveal delay={0.65} className="mt-5">
+            <p
+              className="text-[1rem] tracking-[0.22em] uppercase text-[#eceae5] opacity-30"
+              style={{ fontSize: '10px', letterSpacing: '0.22em' }}
             >
+              {isFr ? 'Courtier. Architecte. Artiste.' : 'Broker. Architect. Artist.'}
+            </p>
+          </SectionReveal>
+        </Container>
+      </Section>
+
+      {/* ── Photo + Bio ──────────────────────────────────────────────────── */}
+      <Section theme="cream" className="py-24 md:py-32">
+        <Container size="lg">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
+
+            {/* Headshot */}
+            <div className="relative aspect-[3/4] overflow-hidden rounded-[8px]">
               <Image
-                src="https://cdn.prod.website-files.com/68ba28534a070e692e441089/68ba5e4e80122c482c8397a9_Jeremy-Soares-Montreal-Realtor.webp"
-                alt="Jeremy Soares — Montreal Realtor"
+                src="/images/headshots/Jeremy-Soares-Montreal-Realtor.webp"
+                alt={
+                  isFr
+                    ? 'Jeremy Soares — Courtier Immobilier Montréal'
+                    : 'Jeremy Soares — Montreal Real Estate Broker'
+                }
                 fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover"
                 priority
-                sizes="50vw"
-                style={{ objectFit: "cover", objectPosition: "center top" }}
               />
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Headshot — mobile only */}
-      <div
-        className="lg:hidden"
-        style={{ position: "relative", width: "100%", aspectRatio: "4/3", overflow: "hidden" }}
-      >
-        <Image
-          src="https://cdn.prod.website-files.com/68ba28534a070e692e441089/68ba5e4e80122c482c8397a9_Jeremy-Soares-Montreal-Realtor.webp"
-          alt="Jeremy Soares — Montreal Realtor"
-          fill
-          sizes="100vw"
-          style={{ objectFit: "cover", objectPosition: "center top" }}
-        />
-      </div>
-
-      {/* ── BIO ──────────────────────────────────────────────────────────── */}
-      <section
-        style={{ backgroundColor: "#eceae5" }}
-        className="px-6 py-16 md:py-24"
-      >
-        <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <div style={{ color: "#0e1011" }}>
-              <p className="text-xl md:text-2xl font-semibold leading-relaxed mb-6">
-                {isFr
-                  ? "Courtier immobilier basé à Montréal avec plus d'une décennie d'expérience sur les marchés de Vancouver et de Montréal."
-                  : "A Montreal-based real estate broker with over a decade of experience across the Vancouver and Montreal markets."}
-              </p>
-              <p className="text-base leading-relaxed opacity-65">
-                {isFr
-                  ? "Mon parcours en marketing et en image de marque, combiné à des relations solides avec des promoteurs et des propriétaires d'entreprises, me permet d'offrir un service exceptionnel à chaque client."
-                  : "My background in marketing and branding, combined with strong relationships with developers and business owners, allows me to deliver exceptional service to every client."}
-              </p>
-            </div>
-            <div style={{ color: "#0e1011" }} className="flex flex-col gap-6">
-              <div>
-                <p className="text-xs tracking-[0.3em] uppercase opacity-40 mb-1">
-                  {isFr ? "Téléphone" : "Phone"}
-                </p>
-                <a
-                  href="tel:+15145198177"
-                  className="text-lg font-semibold hover:opacity-70 transition-opacity"
+            {/* Bio copy */}
+            <div>
+              <SectionReveal>
+                {/* Decorative pull quote */}
+                <p
+                  className="text-[clamp(1.25rem,2vw,1.5rem)] text-[#0e1011] opacity-50 leading-relaxed mb-8"
+                  style={{
+                    fontFamily: "var(--font-dm-serif), 'DM Serif Display', serif",
+                    fontStyle: 'italic',
+                  }}
                 >
-                  514 519-8177
-                </a>
-              </div>
-              <div>
-                <p className="text-xs tracking-[0.3em] uppercase opacity-40 mb-1">
-                  {isFr ? "Courriel" : "Email"}
+                  {isFr
+                    ? "J'ai été formé pour concevoir des bâtiments. J'ai fini par les vendre. L'œil n'a jamais changé — seul le médium a changé."
+                    : "I trained to design buildings. I ended up selling them. The eye never changed — only the medium did."}
                 </p>
-                <a
-                  href="mailto:JeremySoares@icloud.com"
-                  className="text-lg font-semibold hover:opacity-70 transition-opacity break-all"
-                >
-                  JeremySoares@icloud.com
-                </a>
-              </div>
-              <div>
-                <p className="text-xs tracking-[0.3em] uppercase opacity-40 mb-1">
-                  {isFr ? "Basé à" : "Based in"}
-                </p>
-                <p className="text-lg font-semibold">Montréal, QC</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* ── TIMELINE ─────────────────────────────────────────────────────── */}
-      <section
-        style={{ backgroundColor: "#0e1011" }}
-        className="px-6 py-16 md:py-24"
-      >
-        <div className="mx-auto max-w-7xl">
-          <p className="section-label mb-12" style={{ color: "#eceae5" }}>
-            {isFr ? "Expérience" : "Experience"}
-          </p>
-
-          <div ref={timelineRef} className="flex flex-col">
-            {experience.map((item, index) => (
-              <div
-                key={index}
-                className="timeline-row"
-                style={{
-                  borderTop: "1px solid #1e2428",
-                  color: "#eceae5",
-                  padding: "2rem 0",
-                }}
-              >
-                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
-                  <div className="flex-1">
-                    <h3 className="text-xl md:text-2xl font-bold uppercase tracking-tight mb-1">
-                      {item.title}
-                    </h3>
-                    <p className="text-sm opacity-50">{item.desc}</p>
-                  </div>
-                  <span className="text-sm tracking-widest uppercase opacity-35 shrink-0 font-mono">
-                    {item.years}
-                  </span>
+                {/* Body paragraphs */}
+                <div className="space-y-6 text-[1rem] text-[#0e1011] opacity-60 leading-relaxed">
+                  <p>
+                    {isFr
+                      ? "J'ai étudié l'architecture à Montréal. Pas parce que je voulais construire des tours, mais parce que j'étais attiré par la façon dont l'espace façonne l'expérience. Cette discipline m'a suivi dans l'immobilier."
+                      : 'I studied architecture in Montreal. Not because I wanted to build towers, but because I was drawn to how space shapes experience. That discipline followed me into real estate.'}
+                  </p>
+                  <p>
+                    {isFr
+                      ? 'Mon premier marché était Vancouver. Résidentiel de luxe. Condos en prévente. Puis je suis rentré à Montréal. Ma ville. Mon marché.'
+                      : 'My first market was Vancouver. Luxury residential. Pre-sale condos with developers who needed someone who could see a building the way a buyer would. Then I came home to Montreal.'}
+                  </p>
+                  <p>
+                    {isFr
+                      ? "En cours de route, j'ai construit l'infrastructure que la plupart des courtiers sous-traitent. Plus de 50 domaines. Un réseau de 14 000 courtiers. Et aimmo — une plateforme de mise en scène par IA créée de zéro."
+                      : "Along the way, I built the infrastructure most brokers outsource. Over 50 real estate domains. A 14,000 broker email network. And aimmo — an AI staging platform developed from scratch."}
+                  </p>
                 </div>
-              </div>
-            ))}
-            <div style={{ borderTop: "1px solid #1e2428" }} />
+
+                {/* Internal nav links */}
+                <nav
+                  aria-label={isFr ? 'Navigation rapide' : 'Quick links'}
+                  className="mt-10 flex flex-wrap gap-4 text-[11px] tracking-[0.2em] uppercase text-[#0e1011] opacity-40"
+                >
+                  <Link href={`/${locale}/services`} className="hover:opacity-80 transition-opacity">
+                    {isFr ? 'Services' : 'Services'}
+                  </Link>
+                  <span aria-hidden="true">/</span>
+                  <Link href={`/${locale}/tools`} className="hover:opacity-80 transition-opacity">
+                    {isFr ? 'Outils' : 'Tools'}
+                  </Link>
+                  <span aria-hidden="true">/</span>
+                  <Link href={`/${locale}/studio`} className="hover:opacity-80 transition-opacity">
+                    Studio
+                  </Link>
+                  <span aria-hidden="true">/</span>
+                  <Link href={`/${locale}/contact`} className="hover:opacity-80 transition-opacity">
+                    {isFr ? 'Contact' : 'Contact'}
+                  </Link>
+                </nav>
+
+                {/* External profile links */}
+                <nav
+                  aria-label={isFr ? 'Profils professionnels' : 'Professional profiles'}
+                  className="mt-4 flex flex-wrap gap-4 text-[11px] tracking-[0.2em] uppercase text-[#0e1011] opacity-30"
+                >
+                  <a
+                    href="https://www.linkedin.com/in/jeremysoares"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:opacity-70 transition-opacity"
+                  >
+                    LinkedIn
+                  </a>
+                  <span aria-hidden="true">/</span>
+                  <a
+                    href="https://www.centris.ca/en/brokers~jeremy-soares~H2731"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:opacity-70 transition-opacity"
+                  >
+                    Centris
+                  </a>
+                  <span aria-hidden="true">/</span>
+                  <a
+                    href="https://www.realtor.ca/agent/jeremy-soares"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:opacity-70 transition-opacity"
+                  >
+                    Realtor.ca
+                  </a>
+                </nav>
+              </SectionReveal>
+            </div>
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
-      {/* ── OLD PORT / CITY IMAGE ─────────────────────────────────────────── */}
-      <div style={{ position: "relative", width: "100%", aspectRatio: "16/7", overflow: "hidden" }}>
-        <Image
-          src="https://cdn.prod.website-files.com/68ba28534a070e692e441089/68ba5ef5db548016dd9a1ed9_old%20port.jpg"
-          alt="Old Port Montreal"
-          fill
-          sizes="100vw"
-          style={{ objectFit: "cover" }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: "linear-gradient(to bottom, transparent 40%, rgba(14,16,17,0.7) 100%)",
-          }}
-        />
-      </div>
-
-      {/* ── PLATFORMS ────────────────────────────────────────────────────── */}
-      <section
-        ref={platformsRef}
-        style={{ backgroundColor: "#132030" }}
-        className="px-6 py-16 md:py-20"
-      >
-        <div className="mx-auto max-w-7xl">
-          <p className="section-label mb-8" style={{ color: "#eceae5" }}>
-            {isFr ? "Plateformes" : "Platforms"}
-          </p>
-          <h2
-            style={{ color: "#eceae5" }}
-            className="text-3xl md:text-4xl font-black uppercase tracking-tight mb-10"
+      {/* ── Timeline ─────────────────────────────────────────────────────── */}
+      <Section theme="void" className="py-24 md:py-32">
+        <Container size="lg">
+          <TextReveal
+            as="h2"
+            split="lines"
+            className="text-[clamp(2rem,5vw,3.75rem)] leading-none tracking-tight text-[#eceae5] uppercase mb-12"
+            style={{ fontFamily: "var(--font-barlow), 'Barlow', sans-serif", fontWeight: 900 }}
           >
-            {isFr ? "50+ Domaines Immobiliers" : "50+ Real Estate Domains"}
-          </h2>
-          <div className="flex flex-wrap gap-3">
-            {platforms.map((p) => (
-              <a
-                key={p.label}
-                href={p.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="platform-tag text-sm tracking-widest uppercase px-5 py-3 hover:opacity-80 transition-all"
-                style={{
-                  color: "#eceae5",
-                  border: "1px solid rgba(236,234,229,0.25)",
-                }}
-              >
-                {p.label}
-              </a>
+            {isFr ? 'Parcours' : 'Experience'}
+          </TextReveal>
+          <div>
+            {timeline.map((entry, i) => (
+              <TimelineRow key={i} entry={entry} locale={locale} />
             ))}
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
+
+      {/* ── Domain Network ───────────────────────────────────────────────── */}
+      <Section theme="void" className="py-20 border-t border-[rgba(236,234,229,0.05)]">
+        <Container size="lg">
+          <Label className="mb-8">{isFr ? '(Réseau de domaines)' : '(Domain Network)'}</Label>
+          <div className="flex flex-wrap gap-2">
+            {domains.slice(0, 30).map((d) => (
+              <DomainPill key={d.domain} domain={d.domain} href={`https://${d.domain}`} />
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      {/* ── Stats ────────────────────────────────────────────────────────── */}
+      <Section theme="void" className="py-20 border-t border-[rgba(236,234,229,0.05)]">
+        <Container size="lg">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
+            <StatCounter
+              value={10}
+              suffix="+"
+              label={isFr ? "Années d'expérience" : 'Years Experience'}
+            />
+            <StatCounter
+              value={50}
+              suffix="+"
+              label={isFr ? 'Domaines' : 'Domains'}
+            />
+            <StatCounter
+              value={14000}
+              label={isFr ? 'Réseau courtiers' : 'Broker Network'}
+            />
+            <StatCounter
+              value={2}
+              label={isFr ? 'Marchés' : 'Markets'}
+            />
+          </div>
+        </Container>
+      </Section>
 
       {/* ── CTA ──────────────────────────────────────────────────────────── */}
-      <section
-        style={{ backgroundColor: "#eceae5" }}
-        className="px-6 py-20 md:py-28"
-      >
-        <div className="mx-auto max-w-7xl flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-          <div style={{ color: "#0e1011" }}>
-            <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tight leading-tight">
-              {isFr ? "Travaillons Ensemble" : "Work Together"}
-            </h2>
-            <p className="text-lg opacity-55 mt-2">
-              514 519-8177 &middot; JeremySoares@icloud.com
-            </p>
-          </div>
-          <a
-            href="https://form.jeremysoares.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ backgroundColor: "#0e1011", color: "#eceae5" }}
-            className="inline-block text-xs tracking-[0.25em] uppercase font-bold px-10 py-5 hover:opacity-80 transition-opacity whitespace-nowrap"
+      <Section theme="void" className="py-24 border-t border-[rgba(236,234,229,0.05)]">
+        <Container size="sm" className="text-center">
+          <Label className="mb-6">{isFr ? '(Commençons)' : "(Let's begin)"}</Label>
+          <TextReveal
+            as="h2"
+            split="words"
+            className="text-[clamp(2rem,5vw,3.75rem)] leading-tight tracking-tight text-[#eceae5] uppercase mb-8"
+            style={{ fontFamily: "var(--font-barlow), 'Barlow', sans-serif", fontWeight: 900 }}
           >
-            {isFr ? "Discutons" : "Let's Talk"}
-          </a>
-        </div>
-      </section>
+            {isFr ? 'Travaillons ensemble.' : 'Work Together.'}
+          </TextReveal>
+          <Button variant="primary" href={`/${locale}/contact`} size="lg">
+            {isFr ? 'Contactez-nous' : 'Get in Touch'}
+          </Button>
+        </Container>
+      </Section>
     </>
-  );
+  )
 }

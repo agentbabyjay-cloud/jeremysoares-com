@@ -1,0 +1,15 @@
+{
+  "id": "alleyway-2",
+  "title": "Alleyway II",
+  "slug": "alleyway-2",
+  "medium": "Acrylic on canvas",
+  "dimensions": "24 × 36 in",
+  "year": 2023,
+  "images": ["/images/ART/alleyway-2.jpg"],
+  "coverImage": "/images/ART/alleyway-2.jpg",
+  "editions": 1,
+  "description": {
+    "en": "Continuation of the Alleyway series. Light and shadow in Montreal's hidden corridors.",
+    "fr": "Suite de la série Ruelle. Lumière et ombre dans les corridors cachés de Montréal."
+  }
+}

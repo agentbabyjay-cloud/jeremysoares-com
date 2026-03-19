@@ -1,0 +1,11 @@
+{
+  "id": "sold-03",
+  "status": "sold",
+  "address": "312 Rue Saint-Paul Ouest",
+  "neighbourhood": "Old Montreal",
+  "city": "Montreal",
+  "type": "commercial",
+  "images": ["/images/sold/68ba2bf39335b05e6d614165_SOLDS-04 2.jpg"],
+  "featured": false,
+  "soldDate": "2025-02-22"
+}

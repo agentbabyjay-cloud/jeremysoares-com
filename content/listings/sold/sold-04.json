@@ -1,0 +1,11 @@
+{
+  "id": "sold-04",
+  "status": "sold",
+  "address": "7891 Rue de Lanaudiere",
+  "neighbourhood": "Villeray",
+  "city": "Montreal",
+  "type": "residential",
+  "images": ["/images/sold/68bb145e2a0cb00a93b87ea4_sold template 2025-13.png"],
+  "featured": true,
+  "soldDate": "2025-03-11"
+}
