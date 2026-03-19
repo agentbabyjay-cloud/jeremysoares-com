@@ -146,7 +146,6 @@ export default async function GuidePage({ params }: { params: Promise<{ locale: 
 
       {/* Content sections */}
       <Section theme="cream" className="py-24 md:py-32 relative overflow-hidden">
-        <div className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10" aria-hidden="true" style={{ transformOrigin: 'top' }} />
         <Container size="lg">
           {sections.map((sec, i) => (
             <SectionReveal key={i} delay={i * 0.08}>
@@ -190,7 +189,6 @@ export default async function GuidePage({ params }: { params: Promise<{ locale: 
 
       {/* CTA + Related */}
       <Section theme="cream" className="py-20 relative overflow-hidden">
-        <div className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10" aria-hidden="true" style={{ transformOrigin: 'top' }} />
         <Container size="lg" className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
           <div>
             <span className="block mb-4 text-[var(--color-void)] opacity-30 uppercase" style={{ fontFamily: FONT_DM_SANS, fontSize: '10px', letterSpacing: '0.22em' }}>{isFr ? 'Pages reli\u00e9es' : 'Related'}</span>

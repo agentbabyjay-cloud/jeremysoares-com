@@ -550,11 +550,6 @@ export default async function DataCenterRealEstateCanadaPage({
 
       {/* ── Market Overview — cream ───────────────────────────────────────────── */}
       <Section theme="cream" className="py-24 md:py-36 relative overflow-hidden">
-        <div
-          className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10"
-          aria-hidden="true"
-          style={{ transformOrigin: 'top' }}
-        />
         <Container size="lg">
           <Label className="mb-10">
             {isFr ? '(Aperçu du marché)' : '(Market Overview)'}
@@ -780,11 +775,6 @@ export default async function DataCenterRealEstateCanadaPage({
 
       {/* ── Services Offered — cream ──────────────────────────────────────────── */}
       <Section theme="cream" className="py-0 relative overflow-hidden">
-        <div
-          className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10"
-          aria-hidden="true"
-          style={{ transformOrigin: 'top' }}
-        />
         <Container size="lg">
           <div className="pt-24 md:pt-32 pb-4">
             <Label className="mb-10">
@@ -986,11 +976,6 @@ export default async function DataCenterRealEstateCanadaPage({
 
       {/* ── Investment Analysis — cream ───────────────────────────────────────── */}
       <Section theme="cream" className="py-24 md:py-36 relative overflow-hidden">
-        <div
-          className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10"
-          aria-hidden="true"
-          style={{ transformOrigin: 'top' }}
-        />
         <Container size="lg">
           <Label className="mb-10">
             {isFr ? "(Analyse d'investissement)" : '(Investment Analysis)'}
@@ -1232,11 +1217,6 @@ export default async function DataCenterRealEstateCanadaPage({
 
       {/* ── FAQ — cream ───────────────────────────────────────────────────────── */}
       <Section theme="cream" className="py-24 md:py-36 relative overflow-hidden">
-        <div
-          className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10"
-          aria-hidden="true"
-          style={{ transformOrigin: 'top' }}
-        />
         <Container size="lg">
           <Label className="mb-10">
             {isFr ? '(Questions fréquentes)' : '(FAQ)'}

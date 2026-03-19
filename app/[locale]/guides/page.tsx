@@ -209,11 +209,6 @@ export default async function GuidesPage({
 
       {/* ── Guide cards — cream section ───────────────────────────────────── */}
       <Section theme="cream" className="py-20 md:py-28 relative overflow-hidden">
-        <div
-          className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10"
-          aria-hidden="true"
-          style={{ transformOrigin: 'top' }}
-        />
         <Container size="lg">
           <div
             className="border-t"
@@ -365,11 +360,6 @@ export default async function GuidesPage({
 
       {/* ── CTA — cream ──────────────────────────────────────────────────── */}
       <Section theme="cream" className="py-20 md:py-28 relative overflow-hidden">
-        <div
-          className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10"
-          aria-hidden="true"
-          style={{ transformOrigin: 'top' }}
-        />
         <Container size="lg">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-10">
             <div className="flex-1 max-w-2xl">

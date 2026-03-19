@@ -484,11 +484,6 @@ export default async function PenthousesMontrealPage({
 
       {/* ── What defines a penthouse — cream ─────────────────────────────── */}
       <Section theme="cream" className="py-24 md:py-36 relative overflow-hidden">
-        <div
-          className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10"
-          aria-hidden="true"
-          style={{ transformOrigin: 'top' }}
-        />
         <Container size="lg">
           <SectionReveal>
             <Label className="mb-10 text-[var(--color-void)]">
@@ -653,11 +648,6 @@ export default async function PenthousesMontrealPage({
 
       {/* ── Investment value — cream ──────────────────────────────────────── */}
       <Section theme="cream" className="py-24 md:py-36 relative overflow-hidden">
-        <div
-          className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10"
-          aria-hidden="true"
-          style={{ transformOrigin: 'top' }}
-        />
         <Container size="lg">
           <SectionReveal>
             <Label className="mb-10 text-[var(--color-void)]">
@@ -792,11 +782,6 @@ export default async function PenthousesMontrealPage({
 
       {/* ── FAQ — cream ───────────────────────────────────────────────────── */}
       <Section theme="cream" className="py-24 md:py-36 relative overflow-hidden">
-        <div
-          className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10"
-          aria-hidden="true"
-          style={{ transformOrigin: 'top' }}
-        />
         <Container size="lg">
           <SectionReveal>
             <Label className="mb-10 text-[var(--color-void)]">

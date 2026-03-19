@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import { gsap } from "gsap";
 
 interface NavbarProps {
@@ -22,24 +23,40 @@ export default function Navbar({ locale }: NavbarProps) {
     { label: isFr ? "Studio" : "Art", href: `/${locale}/studio` },
   ];
 
-  const altLocale = locale === "en-ca" ? "fr-ca" : "en-ca";
+  const pathname = usePathname();
+  // Preserve current path when switching locale
+  const enPath = pathname.replace(`/${locale}`, "/en-ca");
+  const frPath = pathname.replace(`/${locale}`, "/fr-ca");
 
-  // Hide/show nav on scroll direction
+  // GSAP entrance + scroll-based hide/show
   useEffect(() => {
-    let lastY = 0;
     const nav = navRef.current;
     if (!nav) return;
 
+    // Slide in after preloader (~2.4s)
+    gsap.to(nav, {
+      y: 0,
+      duration: 0.8,
+      delay: 2.4,
+      ease: "power3.out",
+    });
+
+    let lastY = 0;
+    let ticking = false;
+
     const handleScroll = () => {
-      const y = window.scrollY;
-      if (y > 200 && y > lastY) {
-        nav.classList.add("nav-hidden");
-        nav.classList.remove("nav-visible");
-      } else {
-        nav.classList.remove("nav-hidden");
-        nav.classList.add("nav-visible");
-      }
-      lastY = y;
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        if (y > 200 && y > lastY) {
+          gsap.to(nav, { y: "-100%", duration: 0.4, ease: "power2.in", overwrite: true });
+        } else {
+          gsap.to(nav, { y: 0, duration: 0.5, ease: "power3.out", overwrite: true });
+        }
+        lastY = y;
+        ticking = false;
+      });
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -135,7 +152,7 @@ export default function Navbar({ locale }: NavbarProps) {
             {/* Lang toggle */}
             <div className="text-[10px] tracking-[0.22em] flex items-center gap-1.5">
               <Link
-                href={locale === "en-ca" ? `/${locale}` : "/en-ca"}
+                href={enPath}
                 className={`no-underline transition-opacity duration-200 ${locale === "en-ca" ? "opacity-100" : "opacity-25 hover:opacity-60"}`}
                 style={{ color: "var(--color-cream)" }}
               >
@@ -143,7 +160,7 @@ export default function Navbar({ locale }: NavbarProps) {
               </Link>
               <span className="opacity-20" style={{ color: "var(--color-cream)" }}>/</span>
               <Link
-                href={locale === "fr-ca" ? `/${locale}` : "/fr-ca"}
+                href={frPath}
                 className={`no-underline transition-opacity duration-200 ${locale === "fr-ca" ? "opacity-100" : "opacity-25 hover:opacity-60"}`}
                 style={{ color: "var(--color-cream)" }}
               >

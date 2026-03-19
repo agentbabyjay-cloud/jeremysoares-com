@@ -176,7 +176,6 @@ export default async function OfficeSpacePage({
 
       {/* ── Market Overview — cream ────────────────────────────────────────── */}
       <Section theme="cream" className="py-24 md:py-32 relative overflow-hidden">
-        <div className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10" aria-hidden="true" style={{ transformOrigin: 'top' }} />
         <Container size="lg">
           <Label className="mb-8">{isFr ? '(March\u00e9)' : '(Market)'}</Label>
           <div style={{ fontFamily: FONT_BARLOW, fontWeight: 900, fontSize: 'clamp(2rem,5vw,4rem)', letterSpacing: '-0.02em' }}>
@@ -270,7 +269,6 @@ export default async function OfficeSpacePage({
 
       {/* ── Key Districts — cream ──────────────────────────────────────────── */}
       <Section theme="cream" className="py-24 md:py-32 relative overflow-hidden">
-        <div className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10" aria-hidden="true" style={{ transformOrigin: 'top' }} />
         <Container size="lg">
           <Label className="mb-8">{isFr ? '(Districts)' : '(Districts)'}</Label>
           <div style={{ fontFamily: FONT_BARLOW, fontWeight: 900, fontSize: 'clamp(2rem,5vw,4rem)', letterSpacing: '-0.02em' }}>
@@ -357,7 +355,6 @@ export default async function OfficeSpacePage({
 
       {/* ── Services — cream ───────────────────────────────────────────────── */}
       <Section theme="cream" className="py-24 md:py-32 relative overflow-hidden">
-        <div className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10" aria-hidden="true" style={{ transformOrigin: 'top' }} />
         <Container size="lg">
           <div style={{ fontFamily: FONT_BARLOW, fontWeight: 900, fontSize: 'clamp(2rem,5vw,3.5rem)', letterSpacing: '-0.02em' }}>
             <TextReveal as="h2" split="words" className="leading-none uppercase text-[var(--color-void)]">
@@ -421,7 +418,6 @@ export default async function OfficeSpacePage({
 
       {/* ── FAQ — cream ────────────────────────────────────────────────────── */}
       <Section theme="cream" className="py-24 md:py-32 relative overflow-hidden">
-        <div className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10" aria-hidden="true" style={{ transformOrigin: 'top' }} />
         <Container size="lg">
           <div style={{ fontFamily: FONT_BARLOW, fontWeight: 900, fontSize: 'clamp(2rem,5vw,3.5rem)', letterSpacing: '-0.02em' }}>
             <TextReveal as="h2" split="words" className="leading-none uppercase text-[var(--color-void)]">

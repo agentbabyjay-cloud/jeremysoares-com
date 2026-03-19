@@ -64,7 +64,6 @@ export default async function MarketReportsPage({ params }: { params: Promise<{ 
       </Section>
 
       <Section theme="cream" className="py-24 md:py-32 relative overflow-hidden">
-        <div className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10" aria-hidden="true" style={{ transformOrigin: 'top' }} />
         <Container size="lg">
           <div className="border-t" style={{ borderColor: 'rgba(14,16,17,0.1)' }}>
             {reports.map((r, i) => (

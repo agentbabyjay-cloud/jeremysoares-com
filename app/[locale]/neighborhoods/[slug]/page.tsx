@@ -189,7 +189,6 @@ export default async function NeighborhoodPage({ params }: { params: Promise<{ l
 
       {/* Overview — cream */}
       <Section theme="cream" className="py-24 md:py-32 relative overflow-hidden">
-        <div className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10" aria-hidden="true" style={{ transformOrigin: 'top' }} />
         <Container size="lg">
           <div style={{ fontFamily: FONT_BARLOW, fontWeight: 900, fontSize: 'clamp(2rem,5vw,3.5rem)', letterSpacing: '-0.02em' }}>
             <TextReveal as="h2" split="words" className="leading-none uppercase text-[var(--color-void)]">
@@ -260,7 +259,6 @@ export default async function NeighborhoodPage({ params }: { params: Promise<{ l
 
       {/* Transit + Investment — cream */}
       <Section theme="cream" className="py-24 md:py-32 relative overflow-hidden">
-        <div className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10" aria-hidden="true" style={{ transformOrigin: 'top' }} />
         <Container size="lg">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
             <div>
@@ -316,7 +314,6 @@ export default async function NeighborhoodPage({ params }: { params: Promise<{ l
 
       {/* CTA */}
       <Section theme="cream" className="py-20 md:py-28 relative overflow-hidden">
-        <div className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10" aria-hidden="true" style={{ transformOrigin: 'top' }} />
         <Container size="lg" className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
           <div>
             <h2 style={{ fontFamily: FONT_BARLOW, fontWeight: 900, fontSize: 'clamp(1.5rem,3vw,2.5rem)', lineHeight: 1, letterSpacing: '0.04em', textTransform: 'uppercase', color: '#0e1011' }}>

@@ -336,7 +336,6 @@ export default function HomePage({
 
       {/* ═══ BUY / SELL / RENT (cream) ═══ */}
       <section className="section-bsr" style={{ background: 'var(--color-cream)', color: 'var(--color-void)', padding: 'clamp(6rem,10vw,8rem) 0', position: 'relative' }}>
-        <div className="wipe" style={{ position: 'absolute', inset: 0, background: 'var(--color-void)', transformOrigin: 'top', zIndex: 1 }} />
         <div style={{ position: 'relative', zIndex: 2, maxWidth: '1440px', margin: '0 auto', padding: '0 clamp(2rem,5vw,6rem)' }}>
           <div className="reveal" style={{ fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase', opacity: 0.3, marginBottom: '1.5rem' }}>(01)</div>
           <h2 className="reveal" style={{ fontFamily: "var(--font-barlow), 'Barlow', sans-serif", fontWeight: 900, fontSize: 'clamp(3rem,6vw,5.5rem)', lineHeight: 1, letterSpacing: 0, textTransform: 'uppercase', marginBottom: '4rem' }}>
@@ -414,7 +413,6 @@ export default function HomePage({
 
       {/* ═══ SERVICES (cream) ═══ */}
       <section style={{ background: 'var(--color-cream)', color: 'var(--color-void)', padding: 'clamp(6rem,10vw,8rem) 0', position: 'relative' }}>
-        <div className="wipe" style={{ position: 'absolute', inset: 0, background: 'var(--color-void)', transformOrigin: 'top', zIndex: 1 }} />
         <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '0 clamp(2rem,5vw,6rem)', position: 'relative', zIndex: 2 }}>
           <div className="reveal" style={{ fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase', opacity: 0.3, marginBottom: '1.5rem' }}>(03) &mdash; Services</div>
           <h2 className="reveal" style={{ fontFamily: "var(--font-barlow), 'Barlow', sans-serif", fontWeight: 900, fontSize: 'clamp(3rem,5vw,4.5rem)', lineHeight: 1, letterSpacing: 0, textTransform: 'uppercase', marginBottom: '3rem' }}>
@@ -528,7 +526,6 @@ export default function HomePage({
 
       {/* ═══ TOOLS (cream) ═══ */}
       <section style={{ background: 'var(--color-cream)', color: 'var(--color-void)', padding: 'clamp(6rem,10vw,8rem) 0', position: 'relative' }}>
-        <div className="wipe" style={{ position: 'absolute', inset: 0, background: 'var(--color-void)', transformOrigin: 'top', zIndex: 1 }} />
         <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '0 clamp(2rem,5vw,6rem)', position: 'relative', zIndex: 2, display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: 'clamp(3rem,6vw,6rem)', alignItems: 'center' }} className="tools-grid-responsive">
           <div>
             <div className="reveal" style={{ fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase', opacity: 0.3, marginBottom: '2rem' }}>(06) &mdash; {isFr ? 'Outils' : 'Tools'}</div>

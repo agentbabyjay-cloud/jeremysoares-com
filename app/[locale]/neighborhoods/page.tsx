@@ -388,11 +388,6 @@ export default async function NeighborhoodsPage({
 
       {/* ── Grid — cream ────────────────────────────────────────────────── */}
       <Section theme="cream" className="py-20 md:py-28 relative overflow-hidden">
-        <div
-          className="wipe pointer-events-none absolute inset-0 bg-[#eceae5] z-10"
-          aria-hidden="true"
-          style={{ transformOrigin: 'top' }}
-        />
         <Container size="lg">
           <SectionReveal className="mb-12">
             <div className="flex items-end justify-between gap-6">
@@ -493,11 +488,6 @@ export default async function NeighborhoodsPage({
 
       {/* ── Internal links — cream ───────────────────────────────────────── */}
       <Section theme="cream" className="py-16 md:py-20 relative overflow-hidden">
-        <div
-          className="wipe pointer-events-none absolute inset-0 bg-[#eceae5] z-10"
-          aria-hidden="true"
-          style={{ transformOrigin: 'top' }}
-        />
         <Container size="lg">
           <SectionReveal>
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">

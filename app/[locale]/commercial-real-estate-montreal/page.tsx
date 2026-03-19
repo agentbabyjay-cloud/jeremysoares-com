@@ -636,11 +636,6 @@ export default async function CommercialRealEstateMontreal({
 
       {/* ── Market Overview — cream ────────────────────────────────────────────── */}
       <Section theme="cream" className="py-24 md:py-36 relative overflow-hidden">
-        <div
-          className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10"
-          aria-hidden="true"
-          style={{ transformOrigin: 'top' }}
-        />
         <Container size="lg">
           <Label theme="light" className="mb-10">
             {isFr ? '(Vue d\'ensemble du marché)' : '(Market Overview)'}
@@ -875,11 +870,6 @@ export default async function CommercialRealEstateMontreal({
 
       {/* ── Investment Analysis — cream ────────────────────────────────────────── */}
       <Section theme="cream" className="py-24 md:py-36 relative overflow-hidden">
-        <div
-          className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10"
-          aria-hidden="true"
-          style={{ transformOrigin: 'top' }}
-        />
         <Container size="lg">
           <Label theme="light" className="mb-10">
             {isFr ? '(Analyse d\'investissement)' : '(Investment Analysis)'}
@@ -1073,11 +1063,6 @@ export default async function CommercialRealEstateMontreal({
 
       {/* ── Services — cream ──────────────────────────────────────────────────── */}
       <Section theme="cream" className="py-24 md:py-36 relative overflow-hidden">
-        <div
-          className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10"
-          aria-hidden="true"
-          style={{ transformOrigin: 'top' }}
-        />
         <Container size="lg">
           <Label theme="light" className="mb-10">
             {isFr ? '(Ce que j\'offre)' : '(What I Offer)'}
@@ -1334,11 +1319,6 @@ export default async function CommercialRealEstateMontreal({
 
       {/* ── Internal nav band — cream ─────────────────────────────────────────── */}
       <Section theme="cream" className="py-16 md:py-20 relative overflow-hidden">
-        <div
-          className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10"
-          aria-hidden="true"
-          style={{ transformOrigin: 'top' }}
-        />
         <Container size="lg">
           <SectionReveal>
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">

@@ -387,11 +387,6 @@ export default async function ServicesPage({
       {/* ── Service list — cream section ────────────────────────────────── */}
       <Section theme="cream" className="py-0 relative overflow-hidden">
         {/* GSAP wipe overlay target */}
-        <div
-          className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10"
-          aria-hidden="true"
-          style={{ transformOrigin: 'top' }}
-        />
 
         <Container size="lg">
           <div
@@ -489,11 +484,6 @@ export default async function ServicesPage({
 
       {/* ── Internal nav band — cream ────────────────────────────────────── */}
       <Section theme="cream" className="py-16 md:py-20 relative overflow-hidden">
-        <div
-          className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10"
-          aria-hidden="true"
-          style={{ transformOrigin: 'top' }}
-        />
         <Container size="lg">
           <SectionReveal>
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">

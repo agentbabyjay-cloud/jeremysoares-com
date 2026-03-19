@@ -519,10 +519,6 @@ export default async function RetailSpaceMontrealPage({
 
       {/* ── Montreal Retail Market — cream ───────────────────────────────── */}
       <Section theme="cream" className="py-24 md:py-36 relative overflow-hidden">
-        <div
-          className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10"
-          aria-hidden="true"
-        />
         <Container size="lg">
           <Label theme="light" className="mb-8">
             {isFr ? '(Le march\u00e9)' : '(The Market)'}
@@ -739,10 +735,6 @@ export default async function RetailSpaceMontrealPage({
 
       {/* ── Retail Corridors — cream ──────────────────────────────────────── */}
       <Section theme="cream" className="py-0 relative overflow-hidden">
-        <div
-          className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10"
-          aria-hidden="true"
-        />
         <Container size="lg">
           <div className="pt-24 md:pt-36 pb-12">
             <Label theme="light" className="mb-10">
@@ -941,10 +933,6 @@ export default async function RetailSpaceMontrealPage({
 
       {/* ── Services — cream ─────────────────────────────────────────────── */}
       <Section theme="cream" className="py-24 md:py-36 relative overflow-hidden">
-        <div
-          className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10"
-          aria-hidden="true"
-        />
         <Container size="lg">
           <Label theme="light" className="mb-10">
             {isFr ? '(Services)' : '(Services)'}
@@ -1101,10 +1089,6 @@ export default async function RetailSpaceMontrealPage({
 
       {/* ── Internal nav band — cream ────────────────────────────────────── */}
       <Section theme="cream" className="py-16 md:py-20 relative overflow-hidden">
-        <div
-          className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10"
-          aria-hidden="true"
-        />
         <Container size="lg">
           <SectionReveal>
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">

@@ -6,10 +6,16 @@ interface FooterProps {
 }
 
 const domains = [
-  "ALouerMTL.com", "ForSaleMTL.com", "AgentMTL.ca", "Presalepedia.com",
-  "MontrealRE.ca", "LePetitMatane.com", "CondosMTL.com", "LoftsMontreal.com",
-  "PlateauImmo.com", "GriffintownImmo.com", "VerdunImmo.com", "RentMTL.com",
-  "BuyMTL.com", "SellMTL.com", "aimmo.ca",
+  "buydatacenters.ca", "datacenterbroker.ca", "datacenterproperty.ca", "datacentersforsale.ca", "mtldatacenter.com",
+  "commercialrealestatemtl.ca", "mtlcommercialrealestate.com", "commercialmtl.com", "officemontreal.ca",
+  "retailmontreal.ca", "retailmontreal.com", "retailpropertymontreal.ca", "retailpropertymtl.ca", "retailspacemontreal.com",
+  "immobilierindustriel.ca", "immobilierindustriel.com", "immobilierindustrielmontreal.com", "immeubleindustriel.com",
+  "industrialrealestatemontreal.ca", "mtlindustrial.ca", "mtlindustrial.com",
+  "forsalemtl.ca", "forsalemtl.com", "buyrealestatemtl.com", "montrealre.ca",
+  "landforsalemontreal.ca", "landforsalemontreal.com", "residentialmtl.com", "quebecre.com",
+  "loftforrent.ca", "loftplateau.ca", "loftplateau.com", "condoplateau.ca",
+  "penthouseavendre.ca", "penthousemontreal.com", "penthousemtl.ca",
+  "mtlpresales.ca", "presalere.ca", "presalesmontreal.ca", "presalemontreal.com", "presalemtl.com", "mtlpreconstruction.com",
 ];
 
 export default function Footer({ locale }: FooterProps) {
@@ -55,7 +61,7 @@ export default function Footer({ locale }: FooterProps) {
         {/* Top: Logo + CTA */}
         <div className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-8">
           <div>
-            <span style={{ fontFamily: "var(--font-barlow), 'Barlow', sans-serif", fontWeight: 900, fontSize: '22px', letterSpacing: '0.14em', color: 'var(--color-cream)', textTransform: 'uppercase', display: 'block', marginBottom: '1.25rem' }}>SOARES</span>
+            <span style={{ fontFamily: "var(--font-barlow), 'Barlow', sans-serif", fontWeight: 900, fontSize: 'clamp(3.5rem, 9vw, 8rem)', letterSpacing: '-0.01em', lineHeight: 1, color: 'var(--color-cream)', textTransform: 'uppercase', display: 'block', marginBottom: '1rem' }}>SOARES</span>
             <p
               style={{ color: "#eceae5" }}
               className="text-sm tracking-widest uppercase opacity-40 max-w-xs"

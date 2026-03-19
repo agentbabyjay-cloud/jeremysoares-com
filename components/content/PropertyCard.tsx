@@ -43,7 +43,7 @@ export function PropertyCard({ listing, locale }: PropertyCardProps) {
           {listing.neighbourhood}
         </p>
         <p className="text-[0.625rem] tracking-[0.15em] uppercase text-[#eceae5] opacity-40 mt-1">
-          {listing.address}
+          {listing.type}
         </p>
       </div>
     </Link>

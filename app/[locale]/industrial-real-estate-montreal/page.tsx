@@ -546,11 +546,6 @@ export default async function IndustrialRealEstatePage({
 
       {/* ── Market overview — cream ───────────────────────────────────────── */}
       <Section theme="cream" className="py-24 md:py-36 relative overflow-hidden">
-        <div
-          className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10"
-          aria-hidden="true"
-          style={{ transformOrigin: 'top' }}
-        />
         <Container size="lg">
           <Label theme="light" className="mb-10">
             {isFr ? '(Aperçu du marché)' : '(Market Overview)'}
@@ -754,11 +749,6 @@ export default async function IndustrialRealEstatePage({
 
       {/* ── Key areas — cream ─────────────────────────────────────────────── */}
       <Section theme="cream" className="py-24 md:py-36 relative overflow-hidden">
-        <div
-          className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10"
-          aria-hidden="true"
-          style={{ transformOrigin: 'top' }}
-        />
         <Container size="lg">
           <Label theme="light" className="mb-10">
             {isFr ? '(Secteurs clés)' : '(Key Areas)'}
@@ -879,11 +869,6 @@ export default async function IndustrialRealEstatePage({
 
       {/* ── Services — cream ──────────────────────────────────────────────── */}
       <Section theme="cream" className="py-24 md:py-36 relative overflow-hidden">
-        <div
-          className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10"
-          aria-hidden="true"
-          style={{ transformOrigin: 'top' }}
-        />
         <Container size="lg">
           <Label theme="light" className="mb-10">
             {isFr ? '(Services)' : '(Services)'}
@@ -1029,11 +1014,6 @@ export default async function IndustrialRealEstatePage({
 
       {/* ── Internal links band — cream ───────────────────────────────────── */}
       <Section theme="cream" className="py-16 md:py-20 relative overflow-hidden">
-        <div
-          className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10"
-          aria-hidden="true"
-          style={{ transformOrigin: 'top' }}
-        />
         <Container size="lg">
           <SectionReveal>
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">

@@ -163,7 +163,6 @@ export default async function MarketReportPage({ params }: { params: Promise<{ l
 
       {/* Stats band */}
       <Section theme="cream" className="py-16 relative overflow-hidden">
-        <div className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10" aria-hidden="true" style={{ transformOrigin: 'top' }} />
         <Container size="lg">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((s, i) => (
@@ -202,7 +201,6 @@ export default async function MarketReportPage({ params }: { params: Promise<{ l
 
       {/* Related + CTA */}
       <Section theme="cream" className="py-20 relative overflow-hidden">
-        <div className="wipe pointer-events-none absolute inset-0 bg-[var(--color-cream)] z-10" aria-hidden="true" style={{ transformOrigin: 'top' }} />
         <Container size="lg" className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
           <div>
             <span className="block mb-4 text-[var(--color-void)] opacity-30 uppercase" style={{ fontFamily: FONT_DM_SANS, fontSize: '10px', letterSpacing: '0.22em' }}>
