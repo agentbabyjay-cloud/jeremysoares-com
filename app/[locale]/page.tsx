@@ -690,8 +690,15 @@ export default function HomePage({
           </form>
         </div>
 
+        {/* Big SOARES wordmark */}
+        <div style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: '1440px', overflow: 'hidden', lineHeight: 1, marginTop: '4rem' }}>
+          <p style={{ fontFamily: "var(--font-barlow), 'Barlow', sans-serif", fontWeight: 900, fontSize: 'clamp(5rem, 16vw, 16rem)', letterSpacing: '-0.03em', textTransform: 'uppercase', color: 'var(--color-cream)', opacity: 0.06, margin: 0, userSelect: 'none' }}>
+            SOARES
+          </p>
+        </div>
+
         {/* Footer links */}
-        <div className="reveal footer-links-responsive" style={{ position: 'relative', zIndex: 1, maxWidth: '1440px', width: '100%', marginTop: '5rem', paddingTop: '2.5rem', borderTop: '1px solid rgba(236,234,229,0.04)', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '2rem' }}>
+        <div className="reveal footer-links-responsive" style={{ position: 'relative', zIndex: 1, maxWidth: '1440px', width: '100%', marginTop: '0', paddingTop: '2rem', borderTop: '1px solid rgba(236,234,229,0.04)', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '2rem' }}>
           <div>
             <h4 style={{ fontWeight: 700, fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', opacity: 0.2, marginBottom: '1.5rem' }}>{isFr ? 'Immobilier' : 'Real Estate'}</h4>
             <Link href={`/${locale}/real-estate`} style={{ display: 'block', color: 'var(--color-cream)', textDecoration: 'none', fontSize: '13px', opacity: 0.28, marginBottom: '0.7rem' }}>{isFr ? 'Acheter' : 'Buy'}</Link>

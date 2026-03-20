@@ -150,6 +150,7 @@ interface ServiceItem {
   title: string
   tag: string
   description: string
+  detailHref?: string
   links?: { label: string; href: string; external?: boolean }[]
 }
 
@@ -174,6 +175,7 @@ export default async function ServicesPage({
           number: '01',
           title: 'Conseil Préconstruction',
           tag: 'Préconstruction',
+          detailHref: `/${locale}/services/pre-construction`,
           description:
             "Accès prioritaire aux nouvelles phases avant l'ouverture publique. Analyse des plans d'étage, prix par pied carré, positionnement du promoteur et potentiel de revente. Les acheteurs qui s'engagent tôt gagnent sur le prix — et sur le choix.",
           links: [
@@ -185,6 +187,7 @@ export default async function ServicesPage({
           number: '02',
           title: 'Marketing Immobilier',
           tag: 'Marketing',
+          detailHref: `/${locale}/services/property-marketing`,
           description:
             "Chaque propriété est positionnée comme une marque — visuels, texte, stratégie de diffusion. Photos professionnelles, mise en scène virtuelle par IA via aimmo, pages d'inscription dédiées et campagnes courriel rejoignant 14 000 courtiers québécois.",
           links: [
@@ -195,6 +198,7 @@ export default async function ServicesPage({
           number: '03',
           title: "Stratégie d'Investissement",
           tag: 'Investissement',
+          detailHref: `/${locale}/services/investment-strategy`,
           description:
             "Analyse de rendement locatif, taux de capitalisation, flux de trésorerie prévisionnel et positionnement de sortie. Que vous constituiez un premier portefeuille ou que vous ajoutiez à un portefeuille existant, chaque acquisition est modélisée avant signature.",
           links: [
@@ -206,6 +210,7 @@ export default async function ServicesPage({
           number: '04',
           title: 'Location Commerciale',
           tag: 'Commercial',
+          detailHref: `/${locale}/services/commercial-leasing`,
           description:
             "Espaces de bureau, locaux commerciaux, entrepôts. Analyse du zonage, profils de locataires, structure des baux et négociation des conditions. Relations établies à travers le paysage commercial de Montréal.",
           links: [
@@ -216,6 +221,7 @@ export default async function ServicesPage({
           number: '05',
           title: 'Services de Relocalisation',
           tag: 'Relocalisation',
+          detailHref: `/${locale}/services/relocation`,
           description:
             "Déménagement à Montréal ou départ vers une autre ville. Accompagnement complet de la première visite à la remise des clés : quartier, budget, style de vie, logistique. Bilingue anglais-français.",
           links: [
@@ -228,6 +234,7 @@ export default async function ServicesPage({
           number: '01',
           title: 'Pre-Construction Advisory',
           tag: 'Pre-Construction',
+          detailHref: `/${locale}/services/pre-construction`,
           description:
             "Priority access to new phases before public launch. Floor plan analysis, price-per-square-foot benchmarking, developer track records, and resale projections. Buyers who commit early win on price — and on selection.",
           links: [
@@ -239,6 +246,7 @@ export default async function ServicesPage({
           number: '02',
           title: 'Property Marketing',
           tag: 'Marketing',
+          detailHref: `/${locale}/services/property-marketing`,
           description:
             "Every listing treated as a brand launch — visuals, copy, distribution strategy. Professional photography, AI virtual staging via aimmo, dedicated listing pages, and targeted email campaigns reaching 14,000 Quebec brokers.",
           links: [
@@ -249,6 +257,7 @@ export default async function ServicesPage({
           number: '03',
           title: 'Investment Strategy',
           tag: 'Investment',
+          detailHref: `/${locale}/services/investment-strategy`,
           description:
             "Rental yield analysis, cap rates, projected cash flow, and exit positioning. Whether building a first portfolio or adding to an existing one, every acquisition is modelled before a signature is drawn.",
           links: [
@@ -260,6 +269,7 @@ export default async function ServicesPage({
           number: '04',
           title: 'Commercial Leasing',
           tag: 'Commercial',
+          detailHref: `/${locale}/services/commercial-leasing`,
           description:
             "Office space, retail, industrial. Zoning analysis, tenant profiling, lease structuring, and term negotiation. Established relationships across Montreal's commercial landscape from Old Port to Laval.",
           links: [
@@ -271,6 +281,7 @@ export default async function ServicesPage({
           number: '05',
           title: 'Relocation Services',
           tag: 'Relocation',
+          detailHref: `/${locale}/services/relocation`,
           description:
             "Moving to Montreal or leaving for another city. Full accompaniment from first visit to key handover: neighbourhood fit, budget mapping, lifestyle matching, logistics coordination. Bilingual English-French throughout.",
           links: [
@@ -592,11 +603,16 @@ const FONT_BARLOW_ROW = `var(--font-barlow), 'Barlow', sans-serif`
 const FONT_DM_SANS_ROW = `var(--font-dm-sans), 'DM Sans', sans-serif`
 
 function ServiceListRow({ item }: { item: ServiceItem }) {
+  const WrapperTag = item.detailHref ? 'a' : 'div'
+  const wrapperProps = item.detailHref
+    ? { href: item.detailHref, 'aria-label': item.title }
+    : { 'aria-label': item.title }
+
   return (
-    <div
-      className="group py-14 md:py-20 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 border-b transition-all duration-300 hover:pl-1 md:hover:pl-2"
-      style={{ borderColor: 'rgba(14,16,17,0.1)' }}
-      aria-label={item.title}
+    <WrapperTag
+      {...wrapperProps}
+      className="group block py-14 md:py-20 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 border-b transition-all duration-300 hover:pl-1 md:hover:pl-2"
+      style={{ borderColor: 'rgba(14,16,17,0.1)', textDecoration: 'none' }}
     >
       {/* Number */}
       <div className="md:col-span-1 flex items-start pt-1">
@@ -672,16 +688,16 @@ function ServiceListRow({ item }: { item: ServiceItem }) {
         )}
       </div>
 
-      {/* Arrow indicator — desktop only */}
-      <div className="hidden md:flex md:col-span-12 justify-end -mt-4 opacity-0 group-hover:opacity-20 transition-opacity duration-300">
+      {/* Detail page arrow — desktop only */}
+      <div className="hidden md:flex md:col-span-12 justify-end -mt-4 items-center opacity-0 group-hover:opacity-40 transition-opacity duration-300">
         <span
           className="text-[var(--color-void)]"
           aria-hidden="true"
-          style={{ fontSize: '1.25rem' }}
+          style={{ fontSize: '1.1rem' }}
         >
-          ↓
+          →
         </span>
       </div>
-    </div>
+    </WrapperTag>
   )
 }
