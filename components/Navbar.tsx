@@ -127,7 +127,7 @@ export default function Navbar({ locale }: NavbarProps) {
         clipPath: "inset(0 0 100% 0)",
         duration: 0.4,
         ease: "power3.in",
-        onComplete: () => gsap.set(panel, { display: "none" }),
+        onComplete: () => { gsap.set(panel, { display: "none" }); },
       });
       gsap.to(overlay, { opacity: 0, duration: 0.3 });
     }
