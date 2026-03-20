@@ -42,11 +42,15 @@ export function PreSaleCard({ project, locale }: PreSaleCardProps) {
           {project.projectName}
         </h3>
         <p className="text-[0.75rem] text-[#eceae5] opacity-50 mt-1">
-          {project.developer} &middot; {project.neighbourhood}
+          {project.neighbourhood}
         </p>
-        <p className="text-[0.625rem] tracking-[0.1em] uppercase text-[#eceae5] opacity-30 mt-2">
-          {project.units} {lang === 'fr' ? 'unités' : 'units'} &middot; {project.priceRange}
-        </p>
+        {(project.units > 0 || project.priceRange) && (
+          <p className="text-[0.625rem] tracking-[0.1em] uppercase text-[#eceae5] opacity-30 mt-2">
+            {project.units > 0 && <>{project.units} {lang === 'fr' ? 'unités' : 'units'}</>}
+            {project.units > 0 && project.priceRange && <> &middot; </>}
+            {project.priceRange}
+          </p>
+        )}
       </div>
     </Link>
   )
