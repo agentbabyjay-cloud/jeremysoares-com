@@ -58,12 +58,22 @@ export default function Navbar({ locale }: NavbarProps) {
       ],
     },
     {
+      label: isFr ? "Studio" : "Studio",
+      href: `/${locale}/studio`,
+      sub: [
+        { label: isFr ? "Œuvres" : "Artworks", href: `/${locale}/studio` },
+        { label: "Alleyway Series", href: `/${locale}/studio/alleyway-1` },
+        { label: "Nameless Faces", href: `/${locale}/studio/nameless-face-1` },
+        { label: isFr ? "Demander une Œuvre" : "Inquire About a Piece", href: `/${locale}/contact` },
+      ],
+    },
+    {
       label: isFr ? "À Propos" : "About",
       href: `/${locale}/about`,
       sub: [
         { label: isFr ? "Notre Histoire" : "Our Story", href: `/${locale}/about` },
-        { label: isFr ? "Studio / Art" : "Studio / Art", href: `/${locale}/studio` },
         { label: isFr ? "Actualités" : "News", href: `/${locale}/blog` },
+        { label: isFr ? "Agence" : "Agency", href: `/${locale}/agency` },
         { label: "Contact", href: `/${locale}/contact` },
       ],
     },
@@ -171,7 +181,7 @@ export default function Navbar({ locale }: NavbarProps) {
           left: 0,
           right: 0,
           zIndex: 999,
-          background: "#e8762a",
+          background: "#f55f00",
           clipPath: "inset(0 0 100% 0)",
           paddingTop: "clamp(5rem, 10vh, 7rem)",
           paddingBottom: "clamp(2.5rem, 5vh, 4rem)",
@@ -184,7 +194,7 @@ export default function Navbar({ locale }: NavbarProps) {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
+              gridTemplateColumns: "repeat(6, 1fr)",
               gap: "clamp(1.5rem, 3vw, 3rem)",
             }}
           >
