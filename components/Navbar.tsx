@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { usePathname } from "next/navigation";
 import { gsap } from "gsap";
 
@@ -31,9 +31,9 @@ export default function Navbar({ locale }: NavbarProps) {
         {
           heading: isFr ? "Résidentiel" : "Residential",
           links: [
-            { label: isFr ? "Acheter" : "Buy a Home", href: `/${locale}/real-estate` },
-            { label: isFr ? "Vendre" : "Sell a Property", href: `/${locale}/real-estate` },
-            { label: isFr ? "Louer" : "Rent", href: `/${locale}/real-estate` },
+            { label: isFr ? "Acheter" : "Buy a Home", href: `/${locale}/buy` },
+            { label: isFr ? "Vendre" : "Sell a Property", href: `/${locale}/sell` },
+            { label: isFr ? "Louer" : "Rent", href: `/${locale}/rent` },
             { label: isFr ? "Préconstruction" : "Pre-Construction", href: `/${locale}/presale` },
             { label: isFr ? "Condos & Lofts" : "Condos & Lofts", href: `/${locale}/lofts-montreal` },
             { label: isFr ? "Penthouses" : "Penthouses", href: `/${locale}/penthouses-montreal` },
@@ -191,6 +191,15 @@ export default function Navbar({ locale }: NavbarProps) {
 
   const sectionOrder = ["realestate", "services", "tools", "studio", "about"];
   const isOpen = activeSection !== null;
+  const [isMobile, setIsMobile] = useState(false);
+  const [mobileSectionOpen, setMobileSectionOpen] = useState<string | null>(null);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 1024);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   // GSAP entrance
   useEffect(() => {
@@ -253,7 +262,10 @@ export default function Navbar({ locale }: NavbarProps) {
   }, [isOpen, activeSection]);
 
   // Close on route change
-  useEffect(() => { setActiveSection(null); }, [pathname]);
+  useEffect(() => {
+    setActiveSection(null);
+    setMobileSectionOpen(null);
+  }, [pathname]);
 
   // Escape key
   useEffect(() => {
@@ -263,11 +275,11 @@ export default function Navbar({ locale }: NavbarProps) {
     return () => window.removeEventListener("keydown", h);
   }, [isOpen]);
 
-  const toggleSection = (key: string) => {
+  const toggleSection = useCallback((key: string) => {
     setActiveSection((prev) => (prev === key ? null : key));
-  };
+  }, []);
 
-  const currentSection = activeSection ? sections[activeSection] : null;
+  const currentSection = (activeSection && activeSection !== "mobile") ? sections[activeSection] : null;
 
   return (
     <>
@@ -300,16 +312,68 @@ export default function Navbar({ locale }: NavbarProps) {
           paddingRight: "clamp(2rem, 4vw, 4rem)",
         }}
       >
-        <div style={{ maxWidth: "1440px", margin: "0 auto" }}>
-          {currentSection && (
+        <div style={{ maxWidth: "1440px", margin: "0 auto" }} className="nav-panel-scroll">
+          {/* Mobile: all sections stacked */}
+          {activeSection === "mobile" && (
+            <div className="nav-mobile-sections">
+              {sectionOrder.map((key) => {
+                const sec = sections[key];
+                const isExpanded = mobileSectionOpen === key;
+                return (
+                  <div key={key} style={{ borderBottom: "1px solid rgba(14,16,17,0.15)" }}>
+                    <button
+                      onClick={() => setMobileSectionOpen((prev) => (prev === key ? null : key))}
+                      style={{
+                        width: "100%", background: "none", border: "none", cursor: "pointer",
+                        display: "flex", alignItems: "center", justifyContent: "space-between",
+                        padding: "1rem 0",
+                        fontFamily: FONT_BARLOW, fontWeight: 900, fontSize: "1.4rem",
+                        textTransform: "uppercase", letterSpacing: "0.01em", color: "#0e1011",
+                      }}
+                    >
+                      {sec.label}
+                      <span style={{ fontSize: "1.2rem", fontWeight: 400, transition: "transform 0.25s", display: "inline-block", transform: isExpanded ? "rotate(45deg)" : "none" }}>+</span>
+                    </button>
+                    {isExpanded && (
+                      <div style={{ paddingBottom: "1rem" }}>
+                        {sec.cols.map((col) => (
+                          <div key={col.heading} style={{ marginBottom: "1rem" }}>
+                            <p style={{ fontFamily: FONT_DM_SANS, fontSize: "9px", fontWeight: 700, letterSpacing: "0.28em", textTransform: "uppercase", color: "rgba(14,16,17,0.4)", marginBottom: "0.5rem", marginTop: 0 }}>
+                              {col.heading}
+                            </p>
+                            {col.links.map((link) =>
+                              link.external ? (
+                                <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer"
+                                  style={{ display: "block", fontFamily: FONT_DM_SANS, fontSize: "0.875rem", color: "#0e1011", textDecoration: "none", padding: "0.3rem 0", opacity: 0.75 }}>
+                                  {link.label}
+                                </a>
+                              ) : (
+                                <Link key={link.label} href={link.href}
+                                  style={{ display: "block", fontFamily: FONT_DM_SANS, fontSize: "0.875rem", color: "#0e1011", textDecoration: "none", padding: "0.3rem 0", opacity: 0.75 }}>
+                                  {link.label}
+                                </Link>
+                              )
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {/* Desktop: per-section columns */}
+          {currentSection && activeSection !== "mobile" && (
             <>
               {/* Section label */}
               <p style={{ fontFamily: FONT_DM_SANS, fontSize: "9px", fontWeight: 700, letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(14,16,17,0.4)", marginBottom: "1.5rem" }}>
                 {currentSection.label}
               </p>
 
-              {/* Columns */}
-              <div style={{ display: "grid", gridTemplateColumns: `repeat(${currentSection.cols.length}, 1fr)`, gap: "clamp(1.5rem, 3vw, 3rem)" }}>
+              {/* Responsive columns */}
+              <div className="nav-panel-grid" style={{ gap: "clamp(1.5rem, 3vw, 3rem)" }}>
                 {currentSection.cols.map((col) => (
                   <div key={col.heading}>
                     <p className="nav-panel-link" style={{ fontFamily: FONT_DM_SANS, fontSize: "9px", fontWeight: 700, letterSpacing: "0.28em", textTransform: "uppercase", color: "rgba(14,16,17,0.4)", marginBottom: "1rem" }}>
@@ -384,7 +448,7 @@ export default function Navbar({ locale }: NavbarProps) {
           </Link>
 
           {/* Desktop nav buttons */}
-          <ul style={{ display: "flex", alignItems: "center", gap: "clamp(1rem, 2.5vw, 2rem)", listStyle: "none", margin: 0, padding: 0 }} className="hidden md:flex">
+          <ul style={{ display: "flex", alignItems: "center", gap: "clamp(1rem, 2.5vw, 2rem)", listStyle: "none", margin: 0, padding: 0 }} className="hidden lg:flex">
             {sectionOrder.map((key) => (
               <li key={key}>
                 <button
@@ -410,7 +474,7 @@ export default function Navbar({ locale }: NavbarProps) {
           {/* Right side */}
           <div style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}>
             {/* Lang */}
-            <div style={{ display: "flex", gap: "0.4rem", alignItems: "center" }} className="hidden md:flex">
+            <div style={{ display: "flex", gap: "0.4rem", alignItems: "center" }} className="hidden lg:flex">
               {[["EN", enPath, "en-ca"], ["FR", frPath, "fr-ca"]].map(([label, href, loc]) => (
                 <Link key={label} href={href} style={{ fontFamily: FONT_DM_SANS, fontSize: "10px", letterSpacing: "0.22em", textTransform: "uppercase", color: isOpen ? "#0e1011" : "var(--color-cream)", opacity: locale === loc ? 1 : 0.3, textDecoration: "none", transition: "color 0.3s, opacity 0.2s" }}>
                   {label}
@@ -419,7 +483,7 @@ export default function Navbar({ locale }: NavbarProps) {
             </div>
 
             {/* LinkedIn */}
-            <a href="https://www.linkedin.com/in/jeremysoaresrealestate/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" style={{ opacity: 0.4, transition: "opacity 0.25s" }} onMouseEnter={(e) => { e.currentTarget.style.opacity = "1"; }} onMouseLeave={(e) => { e.currentTarget.style.opacity = "0.4"; }} className="hidden md:block">
+            <a href="https://www.linkedin.com/in/jeremysoaresrealestate/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" style={{ opacity: 0.4, transition: "opacity 0.25s" }} onMouseEnter={(e) => { e.currentTarget.style.opacity = "1"; }} onMouseLeave={(e) => { e.currentTarget.style.opacity = "0.4"; }} className="hidden lg:block">
               <svg width="15" height="15" viewBox="0 0 24 24" fill={isOpen ? "#0e1011" : "var(--color-cream)"}>
                 <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
               </svg>
@@ -427,7 +491,14 @@ export default function Navbar({ locale }: NavbarProps) {
 
             {/* Menu toggle */}
             <button
-              onClick={() => setActiveSection((prev) => (prev ? null : "realestate"))}
+              onClick={() => {
+                if (isOpen) {
+                  setActiveSection(null);
+                  setMobileSectionOpen(null);
+                } else {
+                  setActiveSection(isMobile ? "mobile" : "realestate");
+                }
+              }}
               aria-label={isOpen ? "Close menu" : "Open menu"}
               style={{ background: "none", border: "none", cursor: "pointer", padding: "4px", display: "flex", flexDirection: "column", gap: "5px", position: "relative", zIndex: 1001 }}
             >

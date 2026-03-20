@@ -517,6 +517,76 @@ export default async function RetailSpaceMontrealPage({
         </Container>
       </Section>
 
+      {/* ── Featured Listing ─────────────────────────────────────────────── */}
+      <Section theme="cream" className="py-16 md:py-24 relative overflow-hidden">
+        <Container size="lg">
+          <Label theme="light" className="mb-6">
+            {isFr ? '(Espace disponible)' : '(Featured Space)'}
+          </Label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <SectionReveal>
+              <img
+                src="/images/retail/retail-space-lease.jpg"
+                alt={isFr
+                  ? 'Espace commercial à louer Montréal — local commercial disponible'
+                  : 'Retail space for lease Montreal — commercial unit available'}
+                style={{ width: '100%', height: '420px', objectFit: 'cover' }}
+              />
+            </SectionReveal>
+            <SectionReveal delay={0.15}>
+              <div
+                style={{
+                  fontFamily: FONT_BARLOW,
+                  fontWeight: 900,
+                  fontSize: 'clamp(1.5rem, 3vw, 2.5rem)',
+                  letterSpacing: '-0.01em',
+                }}
+                className="leading-tight uppercase text-[var(--color-void)] mb-4"
+              >
+                {isFr ? 'Espace commercial disponible' : 'Commercial Space Available'}
+              </div>
+              <p
+                className="text-[var(--color-void)] opacity-60 leading-relaxed mb-6"
+                style={{ fontFamily: FONT_DM_SANS, fontSize: '0.9375rem' }}
+              >
+                {isFr
+                  ? "Espace commercial clé en main disponible à la location sur un corridor commercial de premier plan à Montréal. Idéal pour un détaillant, un restaurant ou un professionnel cherchant une vitrine à fort achalandage."
+                  : 'Turnkey commercial space available for lease on a prime Montreal retail corridor. Ideal for a retailer, restaurant, or professional seeking a high-visibility storefront.'}
+              </p>
+              <div
+                className="grid grid-cols-2 gap-4 mb-8"
+                style={{ fontFamily: FONT_DM_SANS }}
+              >
+                {[
+                  { label: isFr ? 'Superficie' : 'Size', value: isFr ? 'Sur demande' : 'On request' },
+                  { label: isFr ? 'Type de bail' : 'Lease Type', value: isFr ? 'Triple net' : 'Triple net' },
+                  { label: isFr ? 'Disponibilité' : 'Availability', value: isFr ? 'Immédiate' : 'Immediate' },
+                  { label: isFr ? 'Accès' : 'Access', value: isFr ? 'Rez-de-chaussée' : 'Street level' },
+                ].map((item) => (
+                  <div key={item.label}>
+                    <p
+                      className="text-[0.625rem] tracking-[0.16em] uppercase text-[var(--color-void)] opacity-35 mb-1"
+                      style={{ fontFamily: FONT_DM_SANS }}
+                    >
+                      {item.label}
+                    </p>
+                    <p
+                      className="text-[0.9375rem] text-[var(--color-void)] font-medium"
+                      style={{ fontFamily: FONT_DM_SANS }}
+                    >
+                      {item.value}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              <Button variant="primary" theme="light" href={`/${locale}/contact`} size="md">
+                {isFr ? 'Demander les détails' : 'Request Details'}
+              </Button>
+            </SectionReveal>
+          </div>
+        </Container>
+      </Section>
+
       {/* ── Montreal Retail Market — cream ───────────────────────────────── */}
       <Section theme="cream" className="py-24 md:py-36 relative overflow-hidden">
         <Container size="lg">

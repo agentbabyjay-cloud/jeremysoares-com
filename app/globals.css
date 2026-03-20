@@ -126,6 +126,39 @@ body {
   transition: opacity 0.3s ease;
 }
 
+/* ── NAVBAR DROPDOWN GRID ────────────────────────────────── */
+.nav-panel-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 640px) {
+  .nav-panel-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .nav-panel-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Nav panel scrollable on mobile */
+.nav-panel-scroll {
+  max-height: calc(100dvh - 5rem);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile: all-sections list */
+.nav-mobile-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
 /* Nav hover underline grow */
 .navbar-menu-item .navbar-item-line {
   width: 0;

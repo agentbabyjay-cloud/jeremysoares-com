@@ -28,20 +28,20 @@ const HERO_SETS = [
 
 /* ── Sold images (with city metadata for filtering) ── */
 const SOLD_TILES = [
-  { src: '/images/sold/68bb145e2a0cb00a93b87ea4_sold template 2025-13.png', city: 'mtl' },
-  { src: '/images/sold/68bb145e55f3e2770f820520_sold template 2025-08.png', city: 'mtl' },
-  { src: '/images/sold/68bb145e776d050d93a364c8_sold template 2025-02.png', city: 'van' },
-  { src: '/images/sold/68bb145e7778d884a103ce78_sold template 2025-12.png', city: 'mtl' },
-  { src: '/images/sold/68bb145e7f790635cac62e1d_sold template 2025-15.png', city: 'van' },
-  { src: '/images/sold/68bb145eb12f941c4fda1c25_sold template 2025-04.png', city: 'mtl' },
-  { src: '/images/sold/68bb145ec0d42c717de5d522_sold template 2025-06.png', city: 'mtl' },
-  { src: '/images/sold/68bb145ecffbc57c718a99bc_sold template 2025-10.png', city: 'van' },
-  { src: '/images/sold/68bc7b3aa8714105bb1b64ae_SOLDS TEMPLATE-14.png', city: 'mtl' },
-  { src: '/images/sold/68ba2bf227d34e40571de5e2_SOLDS-13 2.jpg', city: 'mtl' },
-  { src: '/images/sold/68ba2bf39335b05e6d614165_SOLDS-04 2.jpg', city: 'van' },
-  { src: '/images/sold/68fae94629b92afc8b3f85b6_454 de la gauchetiere 808-01.png', city: 'mtl' },
-  { src: '/images/sold/68ba2bf381b1995bf8e6a127_SOLDS TEMPLATE-01 copy.png', city: 'mtl' },
-  { src: '/images/sold/68bb145ec0d42c717de5d522_sold template 2025-06-1.png', city: 'mtl' },
+  { src: '/images/sold/68bb145e2a0cb00a93b87ea4_sold template 2025-13.png', city: 'mtl', label: 'Sold condo — Plateau-Mont-Royal, Montréal' },
+  { src: '/images/sold/68bb145e55f3e2770f820520_sold template 2025-08.png', city: 'mtl', label: 'Sold property — Downtown Montréal' },
+  { src: '/images/sold/68bb145e776d050d93a364c8_sold template 2025-02.png', city: 'van', label: 'Sold property — Vancouver, BC' },
+  { src: '/images/sold/68bb145e7778d884a103ce78_sold template 2025-12.png', city: 'mtl', label: 'Sold condo — Mile-End, Montréal' },
+  { src: '/images/sold/68bb145e7f790635cac62e1d_sold template 2025-15.png', city: 'van', label: 'Sold property — West Vancouver, BC' },
+  { src: '/images/sold/68bb145eb12f941c4fda1c25_sold template 2025-04.png', city: 'mtl', label: 'Sold property — Griffintown, Montréal' },
+  { src: '/images/sold/68bb145ec0d42c717de5d522_sold template 2025-06.png', city: 'mtl', label: 'Sold loft — Old Port, Montréal' },
+  { src: '/images/sold/68bb145ecffbc57c718a99bc_sold template 2025-10.png', city: 'van', label: 'Sold condo — Yaletown, Vancouver' },
+  { src: '/images/sold/68bc7b3aa8714105bb1b64ae_SOLDS TEMPLATE-14.png', city: 'mtl', label: 'Sold property — Outremont, Montréal' },
+  { src: '/images/sold/68ba2bf227d34e40571de5e2_SOLDS-13 2.jpg', city: 'mtl', label: 'Sold luxury condo — Westmount, Montréal' },
+  { src: '/images/sold/68ba2bf39335b05e6d614165_SOLDS-04 2.jpg', city: 'van', label: 'Sold property — Downtown Vancouver' },
+  { src: '/images/sold/68fae94629b92afc8b3f85b6_454 de la gauchetiere 808-01.png', city: 'mtl', label: 'Sold penthouse — 454 De la Gauchetière, Montréal' },
+  { src: '/images/sold/68ba2bf381b1995bf8e6a127_SOLDS TEMPLATE-01 copy.png', city: 'mtl', label: 'Sold property — Le Sud-Ouest, Montréal' },
+  { src: '/images/sold/68bb145ec0d42c717de5d522_sold template 2025-06-1.png', city: 'mtl', label: 'Sold condo — Rosemont, Montréal' },
 ]
 
 /* ── Project cards ── */
@@ -287,7 +287,7 @@ export default function HomePage({
       <section className="hero" ref={heroRef} style={{ height: '100svh', position: 'relative', display: 'flex', overflow: 'hidden' }}>
         {/* Fragment 1 — large left */}
         <div id="hf1" className="hero-fragment hero-f1" style={{ position: 'absolute', overflow: 'hidden', left: 0, top: 0, width: '42%', height: '100%', clipPath: 'inset(100% 0 0 0)' }}>
-          <Image src={HERO_SETS[0][0]} alt="" fill sizes="42vw" style={{ objectFit: 'cover', transform: 'scale(1.15)', filter: 'brightness(0.6) contrast(1.05)' }} priority />
+          <Image src={HERO_SETS[0][0]} alt="Luxury property sold by Jeremy Soares — Montréal real estate" fill sizes="42vw" style={{ objectFit: 'cover', transform: 'scale(1.15)', filter: 'brightness(0.6) contrast(1.05)' }} priority />
           <div style={{ content: '', position: 'absolute', top: 0, right: 0, width: '45%', height: '100%', background: 'linear-gradient(to left,var(--color-void),transparent)' }} />
         </div>
 

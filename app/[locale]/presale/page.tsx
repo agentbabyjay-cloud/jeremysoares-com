@@ -10,6 +10,8 @@ import { StatCounter } from '@/components/content/StatCounter'
 import { Button } from '@/components/ui/Button'
 import type { Locale } from '@/lib/content/types'
 
+const FONT_BARLOW = `var(--font-barlow), 'Barlow', sans-serif`
+
 export async function generateMetadata({
   params,
 }: {
@@ -188,6 +190,102 @@ export default async function PreSalePage({
           </Container>
         </Section>
       )}
+
+      {/* L'Émeraude Gallery */}
+      <Section theme="cream" className="py-24 md:py-32">
+        <Container size="lg">
+          <SectionReveal>
+            <Label className="mb-4">{isFr ? "(L'Émeraude — Plateau-Mont-Royal)" : "(L'Émeraude — Plateau-Mont-Royal)"}</Label>
+          </SectionReveal>
+          <TextReveal
+            as="h2"
+            split="words"
+            className="text-[clamp(2rem,5vw,3.75rem)] font-black leading-none tracking-tight text-[#0e1011] uppercase mb-12"
+            style={{ fontFamily: FONT_BARLOW }}
+          >
+            {isFr ? "L'Émeraude" : "L'Émeraude"}
+          </TextReveal>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+            <div className="col-span-2 row-span-2">
+              <img
+                src="/images/presale/emeraude-exterior.png"
+                alt="L'Émeraude — exterior render, Plateau-Mont-Royal Montreal"
+                style={{ width: '100%', height: '420px', objectFit: 'cover' }}
+              />
+            </div>
+            <img
+              src="/images/presale/emeraude-aerial.png"
+              alt="L'Émeraude — aerial render"
+              style={{ width: '100%', height: '200px', objectFit: 'cover' }}
+            />
+            <img
+              src="/images/presale/emeraude-side.png"
+              alt="L'Émeraude — side elevation render"
+              style={{ width: '100%', height: '200px', objectFit: 'cover' }}
+            />
+            <img
+              src="/images/presale/emeraude-detail.png"
+              alt="L'Émeraude — architectural detail render"
+              style={{ width: '100%', height: '200px', objectFit: 'cover' }}
+            />
+          </div>
+          <SectionReveal>
+            <p className="text-[0.875rem] text-[#0e1011] opacity-60 leading-relaxed max-w-2xl mt-6">
+              {isFr
+                ? "42 résidences boutique au cœur du Plateau-Mont-Royal. Fenêtres du plancher au plafond, finitions haut de gamme, terrasses privées. À partir de 485 000 $."
+                : "42 boutique residences in the heart of Plateau-Mont-Royal. Floor-to-ceiling windows, premium finishes, private terraces. From $485,000."}
+            </p>
+          </SectionReveal>
+        </Container>
+      </Section>
+
+      {/* L'Héritage Gallery */}
+      <Section theme="void" className="py-24 md:py-32">
+        <Container size="lg">
+          <SectionReveal>
+            <Label className="mb-4">{isFr ? "(L'Héritage — Outremont)" : "(L'Héritage — Outremont)"}</Label>
+          </SectionReveal>
+          <TextReveal
+            as="h2"
+            split="words"
+            className="text-[clamp(2rem,5vw,3.75rem)] font-black leading-none tracking-tight text-[#eceae5] uppercase mb-12"
+            style={{ fontFamily: FONT_BARLOW }}
+          >
+            {isFr ? "L'Héritage" : "L'Héritage"}
+          </TextReveal>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+            <div className="col-span-2 row-span-2">
+              <img
+                src="/images/presale/heritage-facade.png"
+                alt="L'Héritage — facade render, Outremont Montreal"
+                style={{ width: '100%', height: '420px', objectFit: 'cover' }}
+              />
+            </div>
+            <img
+              src="/images/presale/heritage-pool.png"
+              alt="L'Héritage — rooftop pool render"
+              style={{ width: '100%', height: '200px', objectFit: 'cover' }}
+            />
+            <img
+              src="/images/presale/heritage-wide.png"
+              alt="L'Héritage — wide exterior render"
+              style={{ width: '100%', height: '200px', objectFit: 'cover' }}
+            />
+            <img
+              src="/images/presale/heritage-sauna.png"
+              alt="L'Héritage — spa and sauna amenity render"
+              style={{ width: '100%', height: '200px', objectFit: 'cover' }}
+            />
+          </div>
+          <SectionReveal>
+            <p className="text-[0.875rem] text-[#eceae5] opacity-50 leading-relaxed max-w-2xl mt-6">
+              {isFr
+                ? "28 résidences d'exception à Outremont. Piscine sur le toit, spa privé, service de conciergerie 24h/7j. À partir de 695 000 $. Prévente — inscrivez-vous maintenant."
+                : "28 exceptional residences in Outremont. Rooftop pool, private spa, 24/7 concierge. From $695,000. Pre-sale — register now for priority access."}
+            </p>
+          </SectionReveal>
+        </Container>
+      </Section>
 
       {/* CTA */}
       <Section theme="void" className="py-20 border-t border-[rgba(236,234,229,0.06)]">
