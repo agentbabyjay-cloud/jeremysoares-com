@@ -1,15 +1,18 @@
 {
   "id": "alleyway-2",
-  "title": "Alleyway II",
+  "title": "Alleyway No.2",
   "slug": "alleyway-2",
-  "medium": "Acrylic on canvas",
+  "medium": "Photography, archival print",
   "dimensions": "24 × 36 in",
-  "year": 2023,
-  "images": ["/images/ART/alleyway-2.jpg"],
-  "coverImage": "/images/ART/alleyway-2.jpg",
-  "editions": 1,
+  "year": 2022,
+  "images": [
+    "https://studio.jeremysoares.com/cdn/shop/files/Alleyway_numero_2.jpg?v=1725908251",
+    "https://studio.jeremysoares.com/cdn/shop/files/Alleyway_2_Jeremy_Soares.jpg?v=1725907932"
+  ],
+  "coverImage": "https://studio.jeremysoares.com/cdn/shop/files/Alleyway_numero_2.jpg?v=1725908251",
+  "editions": 3,
   "description": {
-    "en": "Continuation of the Alleyway series. Light and shadow in Montreal's hidden corridors.",
-    "fr": "Suite de la série Ruelle. Lumière et ombre dans les corridors cachés de Montréal."
+    "en": "Second in the alleyway series — the same lane, a different light.",
+    "fr": "Deuxième de la série ruelles — la même ruelle, une autre lumière."
   }
 }

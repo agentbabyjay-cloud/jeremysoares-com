@@ -5,11 +5,14 @@
   "medium": "Mixed media on canvas",
   "dimensions": "30 × 40 in",
   "year": 2024,
-  "images": ["/images/ART/nameless-face-4.jpg"],
-  "coverImage": "/images/ART/nameless-face-4.jpg",
+  "images": [
+    "https://studio.jeremysoares.com/cdn/shop/files/Screen_Shot_2024-09-05_at_12.44.20_AM.png?v=1725647655",
+    "https://studio.jeremysoares.com/cdn/shop/files/Screen_Shot_2024-09-05_at_12.47.39_AM_86c584e8-b297-42ec-8d59-9988f8761a35.png?v=1725648015"
+  ],
+  "coverImage": "https://studio.jeremysoares.com/cdn/shop/files/Screen_Shot_2024-09-05_at_12.44.20_AM.png?v=1725647655",
   "editions": 1,
   "description": {
-    "en": "Final piece. Abstraction complete — the face is now pure surface.",
-    "fr": "Pièce finale. Abstraction achevée — le visage n'est plus que surface."
+    "en": "Closing piece of the Nameless series — the face that refuses definition.",
+    "fr": "Pièce finale de la série Nameless — le visage qui refuse toute définition."
   }
 }

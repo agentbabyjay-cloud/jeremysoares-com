@@ -5,8 +5,11 @@
   "medium": "Acrylic on canvas",
   "dimensions": "36 × 36 in",
   "year": 2023,
-  "images": ["/images/ART/abstract-square.jpg"],
-  "coverImage": "/images/ART/abstract-square.jpg",
+  "images": [
+    "https://studio.jeremysoares.com/cdn/shop/files/SQUARE_ABSTRACT_1.jpg?v=1725900183",
+    "https://studio.jeremysoares.com/cdn/shop/files/Screen_Shot_2024-09-05_at_12.51.53_AM_4b0029e7-295f-4022-b37e-b963cff72188.png?v=1725900175"
+  ],
+  "coverImage": "https://studio.jeremysoares.com/cdn/shop/files/SQUARE_ABSTRACT_1.jpg?v=1725900183",
   "editions": 1,
   "description": {
     "en": "A geometric exploration of urban form, layered acrylic on square canvas.",

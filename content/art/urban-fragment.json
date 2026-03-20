@@ -2,14 +2,18 @@
   "id": "urban-fragment",
   "title": "Urban Fragment",
   "slug": "urban-fragment",
-  "medium": "Acrylic on panel",
-  "dimensions": "20 × 20 in",
-  "year": 2022,
-  "images": ["/images/ART/urban-fragment.jpg"],
-  "coverImage": "/images/ART/urban-fragment.jpg",
-  "editions": 1,
+  "medium": "Photography, archival print",
+  "dimensions": "20 × 30 in",
+  "year": 2023,
+  "images": [
+    "https://studio.jeremysoares.com/cdn/shop/files/Rain_Painting.jpg?v=1725907909",
+    "https://studio.jeremysoares.com/cdn/shop/files/7-DSCF6144.jpg?v=1725647626",
+    "https://studio.jeremysoares.com/cdn/shop/files/1-DSCF6175.jpg?v=1725647626"
+  ],
+  "coverImage": "https://studio.jeremysoares.com/cdn/shop/files/Rain_Painting.jpg?v=1725907909",
+  "editions": 5,
   "description": {
-    "en": "Architectural remnants compressed into a single panel.",
-    "fr": "Vestiges architecturaux comprimés en un seul panneau."
+    "en": "Rain-streaked windows and city light — Montreal after dark.",
+    "fr": "Fenêtres sous la pluie et lumières de la ville — Montréal après minuit."
   }
 }

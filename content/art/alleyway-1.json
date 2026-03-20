@@ -1,15 +1,18 @@
 {
   "id": "alleyway-1",
-  "title": "Alleyway I",
+  "title": "Alleyway No.1",
   "slug": "alleyway-1",
-  "medium": "Acrylic on canvas",
+  "medium": "Photography, archival print",
   "dimensions": "24 × 36 in",
-  "year": 2023,
-  "images": ["/images/ART/alleyway-1.jpg"],
-  "coverImage": "/images/ART/alleyway-1.jpg",
-  "editions": 1,
+  "year": 2022,
+  "images": [
+    "https://studio.jeremysoares.com/cdn/shop/files/Alleyway_1_Art.jpg?v=1725907837",
+    "https://studio.jeremysoares.com/cdn/shop/files/DSCF6163.jpg?v=1725899102"
+  ],
+  "coverImage": "https://studio.jeremysoares.com/cdn/shop/files/Alleyway_1_Art.jpg?v=1725907837",
+  "editions": 3,
   "description": {
-    "en": "Montreal back alley captured in muted tones. Part of the Alleyway series.",
-    "fr": "Ruelle montréalaise capturée en tons atténués. Partie de la série Ruelle."
+    "en": "Montreal alleyway at dusk — a study in geometry and shadow.",
+    "fr": "Ruelle montréalaise au crépuscule — étude en géométrie et ombre."
   }
 }

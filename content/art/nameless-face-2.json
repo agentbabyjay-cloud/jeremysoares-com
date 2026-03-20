@@ -5,11 +5,14 @@
   "medium": "Mixed media on canvas",
   "dimensions": "30 × 40 in",
   "year": 2024,
-  "images": ["/images/ART/nameless-face-2.jpg"],
-  "coverImage": "/images/ART/nameless-face-2.jpg",
+  "images": [
+    "https://studio.jeremysoares.com/cdn/shop/files/NAMESLESS_FACE_B_W.png?v=1725909190",
+    "https://studio.jeremysoares.com/cdn/shop/files/NAMELESS_FACES_B_W.jpg?v=1725908193"
+  ],
+  "coverImage": "https://studio.jeremysoares.com/cdn/shop/files/NAMESLESS_FACE_B_W.png?v=1725909190",
   "editions": 1,
   "description": {
-    "en": "Second in the series. Deeper layering, fragmented recognition.",
-    "fr": "Deuxième de la série. Superposition plus profonde, reconnaissance fragmentée."
+    "en": "B&W continuation of the Nameless series — stripped to form alone.",
+    "fr": "Suite N&B de la série Nameless — réduit à la forme pure."
   }
 }

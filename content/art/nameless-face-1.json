@@ -5,11 +5,14 @@
   "medium": "Mixed media on canvas",
   "dimensions": "30 × 40 in",
   "year": 2024,
-  "images": ["/images/ART/nameless-face-1.jpg"],
-  "coverImage": "/images/ART/nameless-face-1.jpg",
+  "images": [
+    "https://studio.jeremysoares.com/cdn/shop/files/NAMELESS_FACE.jpg?v=1725908986",
+    "https://studio.jeremysoares.com/cdn/shop/files/NAMELESS_Black_WHite.jpg?v=1725908169"
+  ],
+  "coverImage": "https://studio.jeremysoares.com/cdn/shop/files/NAMELESS_FACE.jpg?v=1725908986",
   "editions": 1,
   "description": {
-    "en": "First in the Nameless Face series. Identity dissolved into texture and form.",
-    "fr": "Premier de la série Visage sans nom. L'identité dissoute en texture et forme."
+    "en": "Anonymous figure study — identity obscured, presence undeniable.",
+    "fr": "Étude de figure anonyme — identité voilée, présence indéniable."
   }
 }
