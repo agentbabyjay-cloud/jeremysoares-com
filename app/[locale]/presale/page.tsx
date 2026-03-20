@@ -195,7 +195,7 @@ export default async function PreSalePage({
       <Section theme="cream" className="py-24 md:py-32">
         <Container size="lg">
           <SectionReveal>
-            <Label className="mb-4">{isFr ? "(L'Émeraude — Plateau-Mont-Royal)" : "(L'Émeraude — Plateau-Mont-Royal)"}</Label>
+            <Label className="mb-4">{isFr ? '(Vitrine — Résidentiel boutique)' : '(Showcase — Boutique Residential)'}</Label>
           </SectionReveal>
           <TextReveal
             as="h2"
@@ -232,8 +232,8 @@ export default async function PreSalePage({
           <SectionReveal>
             <p className="text-[0.875rem] text-[#0e1011] opacity-60 leading-relaxed max-w-2xl mt-6">
               {isFr
-                ? "42 résidences boutique au cœur du Plateau-Mont-Royal. Fenêtres du plancher au plafond, finitions haut de gamme, terrasses privées. À partir de 485 000 $."
-                : "42 boutique residences in the heart of Plateau-Mont-Royal. Floor-to-ceiling windows, premium finishes, private terraces. From $485,000."}
+                ? "Exemple de campagne prévente : identité visuelle, rendus architecturaux, site web dédié et distribution à notre réseau de 14 000 courtiers. Ceci est une vitrine de ce que votre projet pourrait ressembler."
+                : "Sample pre-sale campaign: visual identity, architectural renders, dedicated website, and distribution to our 14,000-broker network. This is a showcase of what your project could look like."}
             </p>
           </SectionReveal>
         </Container>
@@ -243,7 +243,7 @@ export default async function PreSalePage({
       <Section theme="void" className="py-24 md:py-32">
         <Container size="lg">
           <SectionReveal>
-            <Label className="mb-4">{isFr ? "(L'Héritage — Outremont)" : "(L'Héritage — Outremont)"}</Label>
+            <Label className="mb-4">{isFr ? '(Vitrine — Résidentiel luxe)' : '(Showcase — Luxury Residential)'}</Label>
           </SectionReveal>
           <TextReveal
             as="h2"
@@ -280,8 +280,8 @@ export default async function PreSalePage({
           <SectionReveal>
             <p className="text-[0.875rem] text-[#eceae5] opacity-50 leading-relaxed max-w-2xl mt-6">
               {isFr
-                ? "28 résidences d'exception à Outremont. Piscine sur le toit, spa privé, service de conciergerie 24h/7j. À partir de 695 000 $. Prévente — inscrivez-vous maintenant."
-                : "28 exceptional residences in Outremont. Rooftop pool, private spa, 24/7 concierge. From $695,000. Pre-sale — register now for priority access."}
+                ? "Exemple de campagne prévente luxe : image de marque, rendus architecturaux haut de gamme et stratégie de mise en marché. Ceci est une vitrine de ce que votre projet pourrait ressembler."
+                : "Sample luxury pre-sale campaign: branding, high-end architectural renders, and go-to-market strategy. This is a showcase of what your project could look like."}
             </p>
           </SectionReveal>
         </Container>
