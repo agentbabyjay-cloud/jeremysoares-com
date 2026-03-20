@@ -1,0 +1,15 @@
+{
+  "slug": "vendome",
+  "name": "Vendôme",
+  "nameFr": "Vendôme",
+  "line": "Orange",
+  "colour": "#F08028",
+  "neighbourhood": "Westmount / Côte-Saint-Paul",
+  "neighbourhoodSlug": "westmount",
+  "blurbEn": "Vendôme station is flanked by two very different real estate markets: Westmount to the north (luxury homes, $1M–$5M+) and Côte-Saint-Paul to the south (affordable plexes, emerging investment zone). The station also connects to the Réseau express métropolitain (REM), making it a gateway to the West Island and airport. This dual positioning creates unique investment opportunities at every price point.",
+  "blurbFr": "La station Vendôme est flanquée de deux marchés immobiliers très différents : Westmount au nord (maisons de luxe, 1 M–5 M $+) et Côte-Saint-Paul au sud (plex abordables, zone d'investissement émergente). La station se connecte également au REM, en faisant une porte d'entrée vers la Rive-Ouest et l'aéroport.",
+  "avgPriceEn": "$500K–$700K (condos near station), $1M–$5M+ (Westmount houses)",
+  "avgPriceFr": "500 K–700 K $ (condos près de la station), 1 M–5 M $+ (maisons Westmount)",
+  "keywordsEn": ["condo near Vendome metro", "Westmount real estate", "REM Vendome property investment"],
+  "keywordsFr": ["condo station Vendôme", "immobilier Westmount", "investissement immobilier REM Vendôme"]
+}

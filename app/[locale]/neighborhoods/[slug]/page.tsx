@@ -6,6 +6,8 @@ import { Label } from '@/components/ui/Label'
 import { TextReveal } from '@/components/animation/TextReveal'
 import { SectionReveal } from '@/components/animation/SectionReveal'
 import { Button } from '@/components/ui/Button'
+import { getAllPosts } from '@/lib/content/posts'
+import type { Locale } from '@/lib/content/types'
 
 const FONT_BARLOW = `var(--font-barlow), 'Barlow', sans-serif`
 const FONT_DM_SERIF = `var(--font-dm-serif), 'DM Serif Display', serif`
@@ -143,6 +145,22 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   }
 }
 
+// Metro station connections per neighbourhood slug
+const METRO_CONNECTIONS: Record<string, string[]> = {
+  'plateau-mont-royal': ['mont-royal', 'laurier', 'fabre'],
+  'mile-end': ['laurier', 'outremont'],
+  'griffintown': ['square-victoria', 'lionel-groulx'],
+  'old-montreal': ['square-victoria', 'berri-uqam'],
+  'downtown': ['berri-uqam', 'atwater', 'square-victoria'],
+  'westmount': ['vendome', 'atwater'],
+  'outremont': ['outremont', 'laurier'],
+  'rosemont': ['rosemont', 'fabre'],
+  'verdun': ['vendome'],
+  'ndg': ['villa-maria', 'snowdon', 'cote-des-neiges'],
+  'villeray': ['jean-talon'],
+  'saint-laurent': ['lionel-groulx'],
+}
+
 export default async function NeighborhoodPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { locale, slug } = await params
   const isFr = locale === 'fr-ca'
@@ -150,6 +168,16 @@ export default async function NeighborhoodPage({ params }: { params: Promise<{ l
   if (!n) notFound()
 
   const faqs = isFr ? n.faqFr : n.faqEn
+  const contentLocale: Locale = isFr ? 'fr' : 'en'
+  const allPosts = getAllPosts(contentLocale)
+  const relatedPosts = allPosts
+    .filter((p) =>
+      p.slug.toLowerCase().includes(slug.split('-')[0]) ||
+      p.slug.toLowerCase().includes((isFr ? n.nameFr : n.name).toLowerCase().split(' ')[0].toLowerCase()) ||
+      p.tag === 'Neighborhoods' || p.tag === 'Quartiers'
+    )
+    .slice(0, 3)
+  const metroStations = METRO_CONNECTIONS[slug] || []
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -311,6 +339,61 @@ export default async function NeighborhoodPage({ params }: { params: Promise<{ l
           </div>
         </Container>
       </Section>
+
+      {/* Market Insights — blog cross-links */}
+      {relatedPosts.length > 0 && (
+        <Section theme="void" className="py-24 md:py-32">
+          <Container size="lg">
+            <div style={{ fontFamily: FONT_BARLOW, fontWeight: 900, fontSize: 'clamp(2rem,5vw,3.5rem)', letterSpacing: '-0.02em' }}>
+              <TextReveal as="h2" split="words" className="leading-none uppercase text-[var(--color-cream)]">
+                {isFr ? 'Articles de Marché' : 'Market Insights'}
+              </TextReveal>
+            </div>
+            <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+              {relatedPosts.map((post) => (
+                <SectionReveal key={post.slug}>
+                  <a href={`/${locale}/blog/${post.slug}`} className="group block border border-[rgba(236,234,229,0.08)] p-6 hover:border-[rgba(236,234,229,0.2)] transition-colors">
+                    <span className="block text-[var(--color-cream)] opacity-35 uppercase mb-2" style={{ fontFamily: FONT_DM_SANS, fontSize: '10px', letterSpacing: '0.22em' }}>
+                      {post.tag}
+                    </span>
+                    <h3 className="text-[var(--color-cream)] font-bold leading-snug group-hover:opacity-70 transition-opacity" style={{ fontFamily: FONT_BARLOW, fontSize: '1rem', textTransform: 'uppercase' }}>
+                      {post.title}
+                    </h3>
+                    <span className="block mt-4 text-[var(--color-cream)] opacity-35 text-sm" style={{ fontFamily: FONT_DM_SANS }}>
+                      {isFr ? 'Lire \u2192' : 'Read \u2192'}
+                    </span>
+                  </a>
+                </SectionReveal>
+              ))}
+            </div>
+          </Container>
+        </Section>
+      )}
+
+      {/* Nearby metro stations */}
+      {metroStations.length > 0 && (
+        <Section theme="cream" className="py-16">
+          <Container size="lg">
+            <SectionReveal>
+              <p className="text-[var(--color-void)] opacity-40 uppercase mb-4" style={{ fontFamily: FONT_DM_SANS, fontSize: '10px', letterSpacing: '0.22em' }}>
+                {isFr ? 'Stations de métro à proximité' : 'Nearby metro stations'}
+              </p>
+              <div className="flex flex-wrap gap-3">
+                {metroStations.map((stationSlug) => (
+                  <a
+                    key={stationSlug}
+                    href={`/${locale}/metro/${stationSlug}`}
+                    className="inline-block border border-[rgba(14,16,17,0.15)] px-4 py-2 text-[var(--color-void)] opacity-60 hover:opacity-100 transition-opacity text-sm uppercase"
+                    style={{ fontFamily: FONT_DM_SANS, letterSpacing: '0.08em' }}
+                  >
+                    {stationSlug.replace(/-/g, ' ')} \u2192
+                  </a>
+                ))}
+              </div>
+            </SectionReveal>
+          </Container>
+        </Section>
+      )}
 
       {/* CTA */}
       <Section theme="cream" className="py-20 md:py-28 relative overflow-hidden">

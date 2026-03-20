@@ -35,6 +35,10 @@ module.exports = {
       { path: '/land-for-sale-montreal', priority: 0.8, changefreq: 'monthly' },
       { path: '/retail-space-montreal', priority: 0.8, changefreq: 'monthly' },
       { path: '/office-space-montreal', priority: 0.8, changefreq: 'monthly' },
+      { path: '/plex-montreal', priority: 0.8, changefreq: 'monthly' },
+      { path: '/luxury-real-estate-montreal', priority: 0.8, changefreq: 'monthly' },
+      { path: '/new-construction-montreal', priority: 0.8, changefreq: 'weekly' },
+      { path: '/metro', priority: 0.7, changefreq: 'monthly' },
       // Hubs
       { path: '/neighborhoods', priority: 0.8, changefreq: 'monthly' },
       { path: '/guides', priority: 0.7, changefreq: 'monthly' },
@@ -50,6 +54,26 @@ module.exports = {
           priority: page.priority,
           alternateRefs: locales.map((l) => ({
             href: `https://jeremysoares.com/${l}${page.path}`,
+            hreflang: l === 'en-ca' ? 'en-CA' : 'fr-CA',
+          })),
+        })
+      }
+    }
+
+    // ── Metro stations ──────────────────────────────────────────────────────
+    const metroSlugs = [
+      'mont-royal', 'berri-uqam', 'square-victoria', 'jean-talon', 'snowdon',
+      'cote-des-neiges', 'vendome', 'villa-maria', 'lionel-groulx', 'atwater',
+      'laurier', 'rosemont', 'fabre', 'papineau', 'outremont',
+    ]
+    for (const slug of metroSlugs) {
+      for (const locale of locales) {
+        paths.push({
+          loc: `/${locale}/metro/${slug}`,
+          changefreq: 'monthly',
+          priority: 0.7,
+          alternateRefs: locales.map((l) => ({
+            href: `https://jeremysoares.com/${l}/metro/${slug}`,
             hreflang: l === 'en-ca' ? 'en-CA' : 'fr-CA',
           })),
         })

@@ -50,4 +50,5 @@ Host: https://jeremysoares.com
 
 # Sitemaps
 Sitemap: https://jeremysoares.com/sitemap.xml
+Sitemap: https://jeremysoares.com/news-sitemap.xml
 Sitemap: https://tools.jeremysoares.com/sitemap.xml

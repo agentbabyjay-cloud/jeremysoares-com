@@ -17,8 +17,8 @@ xml = xml.replace(/<url>([\s\S]*?)<\/url>/g, (match, inner) => {
   const loc = locMatch[1]
   const urlPath = loc.replace(base, '')
 
-  // Remove any existing xhtml:link alternates
-  const cleanInner = inner.replace(/<xhtml:link[^/]*\/>/g, '')
+  // Remove any existing xhtml:link alternates (use [^>]* to match across slashes in URLs)
+  const cleanInner = inner.replace(/<xhtml:link[^>]*\/>/g, '')
 
   // Derive alternates
   let enUrl = loc

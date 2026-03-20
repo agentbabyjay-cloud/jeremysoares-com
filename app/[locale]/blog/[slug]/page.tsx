@@ -24,11 +24,35 @@ export async function generateMetadata({
   const contentLocale: Locale = locale === 'fr-ca' ? 'fr' : 'en'
   const post = getPostBySlug(slug, contentLocale)
   if (!post) return {}
+  const canonical = `https://jeremysoares.com/${locale}/blog/${slug}`
+  const ogImage = post.coverImage || '/images/og/blog-default.jpg'
   return {
     title: `${post.title} — Soares`,
     description: post.excerpt,
+    keywords: post.tag ? [post.tag, 'Montreal real estate', 'Jeremy Soares', 'immobilier Montréal'] : undefined,
+    authors: [{ name: 'Jeremy Soares', url: 'https://jeremysoares.com' }],
+    robots: { index: true, follow: true },
     alternates: {
-      canonical: `https://jeremysoares.com/${locale}/blog/${slug}`,
+      canonical,
+      languages: {
+        'en-CA': `https://jeremysoares.com/en-ca/blog/${slug}`,
+        'fr-CA': `https://jeremysoares.com/fr-ca/blog/${slug}`,
+      },
+    },
+    openGraph: {
+      type: 'article',
+      url: canonical,
+      title: post.title,
+      description: post.excerpt,
+      publishedTime: post.date,
+      authors: ['Jeremy Soares'],
+      images: [{ url: ogImage, width: 1200, height: 630, alt: post.title }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt,
+      images: [ogImage],
     },
   }
 }
@@ -43,8 +67,27 @@ export default async function BlogPostPage({
   const post = getPostBySlug(slug, contentLocale)
   if (!post) notFound()
 
+  const canonical = `https://jeremysoares.com/${locale}/blog/${slug}`
+  const ogImage = post.coverImage || '/images/og/blog-default.jpg'
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    datePublished: post.date,
+    dateModified: post.date,
+    author: { '@type': 'Person', name: 'Jeremy Soares', url: 'https://jeremysoares.com' },
+    publisher: { '@type': 'Organization', name: 'Jeremy Soares', url: 'https://jeremysoares.com' },
+    image: ogImage.startsWith('http') ? ogImage : `https://jeremysoares.com${ogImage}`,
+    description: post.excerpt,
+    keywords: post.tag,
+    inLanguage: locale === 'fr-ca' ? 'fr-CA' : 'en-CA',
+    url: canonical,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+  }
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Section theme="void" className="pt-32 pb-12 md:pt-40 md:pb-16">
         <Container size="sm">
           <div className="flex items-center gap-4 mb-6">
