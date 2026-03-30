@@ -32,6 +32,13 @@ export interface PropertyListing {
   bathrooms?: number
   area?: string
   description?: LocaleString
+  amenities?: Amenity[]
+}
+
+export interface Amenity {
+  icon: string
+  en: string
+  fr: string
 }
 
 export interface ArtPiece {

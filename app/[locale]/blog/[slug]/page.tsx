@@ -7,6 +7,7 @@ import { Container } from '@/components/ui/Container'
 import { Label } from '@/components/ui/Label'
 import { TextReveal } from '@/components/animation/TextReveal'
 import { SubscribeBand } from '@/components/content/SubscribeBand'
+import { ArticleScrollLight } from '@/components/animation/ArticleScrollLight'
 import type { Locale } from '@/lib/content/types'
 
 export function generateStaticParams() {
@@ -109,7 +110,8 @@ export default async function BlogPostPage({
 
       <Section theme="void" className="pb-24">
         <Container size="sm">
-          <article className="prose prose-invert prose-lg max-w-none [&_h2]:text-[#eceae5] [&_h2]:font-bold [&_h2]:tracking-tight [&_h2]:font-[var(--font-barlow),'Barlow',sans-serif] [&_h2]:uppercase [&_h2]:text-2xl [&_h2]:mt-12 [&_h2]:mb-4 [&_h3]:text-[#eceae5] [&_h3]:text-xl [&_h3]:mt-8 [&_h3]:mb-3 [&_p]:text-[#eceae5] [&_p]:opacity-70 [&_p]:leading-relaxed [&_p]:mb-6 [&_ul]:text-[#eceae5] [&_ul]:opacity-70 [&_li]:mb-2 [&_strong]:text-[#eceae5] [&_strong]:opacity-90 [&_a]:text-[#eceae5] [&_a]:underline [&_a]:opacity-80 [&_a:hover]:opacity-100">
+          <ArticleScrollLight />
+          <article data-article-body className="prose prose-invert prose-lg max-w-none [&_h2]:text-[#eceae5] [&_h2]:font-bold [&_h2]:tracking-tight [&_h2]:font-[var(--font-barlow),'Barlow',sans-serif] [&_h2]:uppercase [&_h2]:text-2xl [&_h2]:mt-12 [&_h2]:mb-4 [&_h3]:text-[#eceae5] [&_h3]:text-xl [&_h3]:mt-8 [&_h3]:mb-3 [&_p]:text-[#eceae5] [&_p]:leading-relaxed [&_p]:mb-6 [&_ul]:text-[#eceae5] [&_li]:mb-2 [&_strong]:text-[#eceae5] [&_strong]:opacity-90 [&_a]:text-[#eceae5] [&_a]:underline [&_a]:opacity-80 [&_a:hover]:opacity-100">
             <MDXRemote source={post.content} />
           </article>
         </Container>

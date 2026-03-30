@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { usePathname } from "next/navigation";
 import { gsap } from "gsap";
+import { ScrambleText } from "@/components/animation/ScrambleText";
 
 interface NavbarProps {
   locale: string;
@@ -24,7 +25,7 @@ export default function Navbar({ locale }: NavbarProps) {
   const frPath = pathname.replace(`/${locale}`, "/fr-ca");
 
   // Per-section dropdown content
-  const sections: Record<string, { label: string; cols: { heading: string; links: { label: string; href: string; external?: boolean }[] }[] }> = {
+  const sections: Record<string, { label: string; cols: { heading: string; links: { label: string; href: string; external?: boolean; scramble?: boolean }[] }[] }> = {
     realestate: {
       label: isFr ? "Immobilier" : "Real Estate",
       cols: [
@@ -47,7 +48,7 @@ export default function Navbar({ locale }: NavbarProps) {
             { label: isFr ? "Espaces de Bureau" : "Office Space", href: `/${locale}/office-space-montreal` },
             { label: isFr ? "Espaces Commerciaux" : "Retail Space", href: `/${locale}/retail-space-montreal` },
             { label: isFr ? "Terrain à Vendre" : "Land for Sale", href: `/${locale}/land-for-sale-montreal` },
-            { label: isFr ? "Centres de Données" : "Data Centers", href: `/${locale}/data-center-real-estate-canada` },
+            { label: isFr ? "Centres de Données" : "Data Centers", href: `/${locale}/data-center-real-estate-canada`, scramble: true },
           ],
         },
         {
@@ -86,9 +87,9 @@ export default function Navbar({ locale }: NavbarProps) {
           heading: isFr ? "Agence" : "Agency",
           links: [
             { label: isFr ? "Branding & Identité" : "Branding & Identity", href: `/${locale}/agency` },
-            { label: isFr ? "Sites Web IA" : "AI Website Building", href: `/${locale}/agency` },
-            { label: isFr ? "Automatisation Marketing" : "Marketing Automation", href: `/${locale}/agency` },
-            { label: isFr ? "Solutions OpenClaw" : "OpenClaw AI Agents", href: `/${locale}/agency` },
+            { label: isFr ? "Sites Web IA" : "AI Website Building", href: `/${locale}/studio/web`, scramble: true },
+            { label: isFr ? "Automatisation Marketing" : "Marketing Automation", href: `/${locale}/agency`, scramble: true },
+            { label: isFr ? "Solutions OpenClaw" : "OpenClaw AI Agents", href: `/${locale}/studio/web#openclaw`, scramble: true },
             { label: isFr ? "Tous les services" : "All Services", href: `/${locale}/services` },
           ],
         },
@@ -119,7 +120,7 @@ export default function Navbar({ locale }: NavbarProps) {
         {
           heading: isFr ? "Plateformes" : "Platforms",
           links: [
-            { label: "aimmo — AI Staging", href: "https://aimmo.ca", external: true },
+            { label: "aimmo — AI Staging", href: "https://aimmo.ca", external: true, scramble: true },
             { label: isFr ? "Guides Immobiliers" : "Real Estate Guides", href: `/${locale}/guides` },
             { label: isFr ? "Rapports de Marché" : "Market Reports", href: `/${locale}/market-reports` },
           ],
@@ -132,7 +133,7 @@ export default function Navbar({ locale }: NavbarProps) {
         {
           heading: isFr ? "Mise en Scène IA" : "AI Staging",
           links: [
-            { label: isFr ? "aimmo — Mise en Scène Virtuelle" : "aimmo — Virtual Staging", href: "https://aimmo.ca", external: true },
+            { label: isFr ? "aimmo — Mise en Scène Virtuelle" : "aimmo — Virtual Staging", href: "https://aimmo.ca", external: true, scramble: true },
             { label: isFr ? "Avant / Après" : "Before / After", href: "https://aimmo.ca", external: true },
             { label: isFr ? "Pour les Agents" : "For Agents", href: `/${locale}/services/property-marketing` },
             { label: isFr ? "Pour les Promoteurs" : "For Developers", href: `/${locale}/presale` },
@@ -149,10 +150,12 @@ export default function Navbar({ locale }: NavbarProps) {
           ],
         },
         {
-          heading: isFr ? "Boutique" : "Shop",
+          heading: isFr ? "Web & Technologie" : "Web & Technology",
           links: [
-            { label: isFr ? "Boutique Shopify" : "Shopify Store", href: "https://studio.jeremysoares.com", external: true },
-            { label: isFr ? "Éditions Limitées" : "Limited Editions", href: "https://studio.jeremysoares.com/collections/all", external: true },
+            { label: isFr ? "Systèmes & Sites Web" : "Systems & Websites", href: `/${locale}/studio/web` },
+            { label: isFr ? "Sites Web pour PME" : "Websites for Small Business", href: `/${locale}/services/website-building`, scramble: true },
+            { label: isFr ? "OpenClaw — IA" : "OpenClaw — AI", href: `/${locale}/studio/web#openclaw`, scramble: true },
+            { label: isFr ? "Démarrer un Projet" : "Start a Project", href: `/${locale}/contact` },
           ],
         },
       ],
@@ -308,8 +311,10 @@ export default function Navbar({ locale }: NavbarProps) {
           clipPath: "inset(0 0 100% 0)",
           paddingTop: "clamp(4.5rem, 9vh, 6.5rem)",
           paddingBottom: "clamp(2rem, 4vh, 3.5rem)",
-          paddingLeft: "clamp(2rem, 4vw, 4rem)",
-          paddingRight: "clamp(2rem, 4vw, 4rem)",
+          paddingLeft: "clamp(1.25rem, 4vw, 4rem)",
+          paddingRight: "clamp(1.25rem, 4vw, 4rem)",
+          overflowY: "auto",
+          maxHeight: "100dvh",
         }}
       >
         <div style={{ maxWidth: "1440px", margin: "0 auto" }} className="nav-panel-scroll">
@@ -326,7 +331,7 @@ export default function Navbar({ locale }: NavbarProps) {
                       style={{
                         width: "100%", background: "none", border: "none", cursor: "pointer",
                         display: "flex", alignItems: "center", justifyContent: "space-between",
-                        padding: "1rem 0",
+                        padding: "1.1rem 0", minHeight: "52px",
                         fontFamily: FONT_BARLOW, fontWeight: 900, fontSize: "1.4rem",
                         textTransform: "uppercase", letterSpacing: "0.01em", color: "#0e1011",
                       }}
@@ -344,13 +349,14 @@ export default function Navbar({ locale }: NavbarProps) {
                             {col.links.map((link) =>
                               link.external ? (
                                 <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer"
-                                  style={{ display: "block", fontFamily: FONT_DM_SANS, fontSize: "0.875rem", color: "#0e1011", textDecoration: "none", padding: "0.3rem 0", opacity: 0.75 }}>
-                                  {link.label}
+                                  style={{ display: "flex", alignItems: "center", gap: "6px", fontFamily: FONT_DM_SANS, fontSize: "0.875rem", color: "#0e1011", textDecoration: "none", padding: "0.5rem 0", opacity: 0.75 }}>
+                                  {link.scramble ? <ScrambleText text={link.label} trigger="hover" duration={500} style={{ color: "#0e1011" }} /> : link.label}
+                                  <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="#0e1011" strokeWidth="1.5" strokeLinecap="round" style={{ opacity: 0.45, flexShrink: 0 }}><path d="M1 9L9 1M9 1H3M9 1V7"/></svg>
                                 </a>
                               ) : (
                                 <Link key={link.label} href={link.href}
-                                  style={{ display: "block", fontFamily: FONT_DM_SANS, fontSize: "0.875rem", color: "#0e1011", textDecoration: "none", padding: "0.3rem 0", opacity: 0.75 }}>
-                                  {link.label}
+                                  style={{ display: "block", fontFamily: FONT_DM_SANS, fontSize: "0.875rem", color: "#0e1011", textDecoration: "none", padding: "0.5rem 0", opacity: 0.75 }}>
+                                  {link.scramble ? <ScrambleText text={link.label} trigger="hover" duration={500} style={{ color: "#0e1011" }} /> : link.label}
                                 </Link>
                               )
                             )}
@@ -367,13 +373,7 @@ export default function Navbar({ locale }: NavbarProps) {
           {/* Desktop: per-section columns */}
           {currentSection && activeSection !== "mobile" && (
             <>
-              {/* Section label */}
-              <p style={{ fontFamily: FONT_DM_SANS, fontSize: "9px", fontWeight: 700, letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(14,16,17,0.4)", marginBottom: "1.5rem" }}>
-                {currentSection.label}
-              </p>
-
-              {/* Responsive columns */}
-              <div className="nav-panel-grid" style={{ gap: "clamp(1.5rem, 3vw, 3rem)" }}>
+              <div className="nav-panel-grid" style={{ gap: "clamp(1.5rem, 3vw, 3rem)", display: "grid", gridTemplateColumns: "repeat(3, 1fr)" }}>
                 {currentSection.cols.map((col) => (
                   <div key={col.heading}>
                     <p className="nav-panel-link" style={{ fontFamily: FONT_DM_SANS, fontSize: "9px", fontWeight: 700, letterSpacing: "0.28em", textTransform: "uppercase", color: "rgba(14,16,17,0.4)", marginBottom: "1rem" }}>
@@ -387,10 +387,13 @@ export default function Navbar({ locale }: NavbarProps) {
                           target="_blank"
                           rel="noopener noreferrer"
                           className="nav-panel-link"
-                          style={{ display: "block", fontFamily: FONT_BARLOW, fontWeight: 900, fontSize: "clamp(1rem, 1.6vw, 1.35rem)", textTransform: "uppercase", letterSpacing: "0.01em", color: "#0e1011", textDecoration: "none", marginBottom: "0.5rem", opacity: 0.82, transition: "opacity 0.2s" }}
+                          style={{ display: "flex", alignItems: "center", gap: "8px", fontFamily: FONT_BARLOW, fontWeight: 900, fontSize: "clamp(1rem, 1.6vw, 1.35rem)", textTransform: "uppercase", letterSpacing: "0.01em", color: "#0e1011", textDecoration: "none", marginBottom: "0.5rem", opacity: 0.82, transition: "opacity 0.2s" }}
                           onMouseEnter={(e) => { e.currentTarget.style.opacity = "1"; }}
                           onMouseLeave={(e) => { e.currentTarget.style.opacity = "0.82"; }}
-                        >{link.label}</a>
+                        >
+                          {link.scramble ? <ScrambleText text={link.label} trigger="hover" duration={500} style={{ color: "#0e1011" }} /> : link.label}
+                          <svg width="11" height="11" viewBox="0 0 10 10" fill="none" stroke="#0e1011" strokeWidth="1.8" strokeLinecap="round" style={{ opacity: 0.35, flexShrink: 0 }}><path d="M1 9L9 1M9 1H3M9 1V7"/></svg>
+                        </a>
                       ) : (
                         <Link
                           key={link.label}
@@ -399,7 +402,9 @@ export default function Navbar({ locale }: NavbarProps) {
                           style={{ display: "block", fontFamily: FONT_BARLOW, fontWeight: 900, fontSize: "clamp(1rem, 1.6vw, 1.35rem)", textTransform: "uppercase", letterSpacing: "0.01em", color: "#0e1011", textDecoration: "none", marginBottom: "0.5rem", opacity: 0.82, transition: "opacity 0.2s" }}
                           onMouseEnter={(e) => { e.currentTarget.style.opacity = "1"; }}
                           onMouseLeave={(e) => { e.currentTarget.style.opacity = "0.82"; }}
-                        >{link.label}</Link>
+                        >
+                          {link.scramble ? <ScrambleText text={link.label} trigger="hover" duration={500} style={{ color: "#0e1011" }} /> : link.label}
+                        </Link>
                       )
                     )}
                   </div>
@@ -442,13 +447,13 @@ export default function Navbar({ locale }: NavbarProps) {
           {/* Logo */}
           <Link
             href={`/${locale}`}
-            style={{ fontFamily: FONT_BARLOW, fontWeight: 900, fontSize: "22px", letterSpacing: "0.14em", textTransform: "uppercase", color: isOpen ? "#0e1011" : "var(--color-cream)", textDecoration: "none", transition: "color 0.3s ease", position: "relative", zIndex: 1001 }}
+            style={{ fontFamily: FONT_BARLOW, fontWeight: 900, fontSize: "clamp(18px, 4vw, 22px)", letterSpacing: "0.14em", textTransform: "uppercase", color: isOpen ? "#0e1011" : "var(--color-cream)", textDecoration: "none", transition: "color 0.3s ease", position: "relative", zIndex: 1001, whiteSpace: "nowrap" }}
           >
             SOARES
           </Link>
 
           {/* Desktop nav buttons */}
-          <ul style={{ display: "flex", alignItems: "center", gap: "clamp(1rem, 2.5vw, 2rem)", listStyle: "none", margin: 0, padding: 0 }} className="hidden lg:flex">
+          <ul style={{ alignItems: "center", gap: "clamp(1rem, 2.5vw, 2rem)", listStyle: "none", margin: 0, padding: 0 }} className="hidden lg:flex">
             {sectionOrder.map((key) => (
               <li key={key}>
                 <button
@@ -474,7 +479,7 @@ export default function Navbar({ locale }: NavbarProps) {
           {/* Right side */}
           <div style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}>
             {/* Lang */}
-            <div style={{ display: "flex", gap: "0.4rem", alignItems: "center" }} className="hidden lg:flex">
+            <div style={{ gap: "0.4rem", alignItems: "center" }} className="hidden lg:flex">
               {[["EN", enPath, "en-ca"], ["FR", frPath, "fr-ca"]].map(([label, href, loc]) => (
                 <Link key={label} href={href} style={{ fontFamily: FONT_DM_SANS, fontSize: "10px", letterSpacing: "0.22em", textTransform: "uppercase", color: isOpen ? "#0e1011" : "var(--color-cream)", opacity: locale === loc ? 1 : 0.3, textDecoration: "none", transition: "color 0.3s, opacity 0.2s" }}>
                   {label}

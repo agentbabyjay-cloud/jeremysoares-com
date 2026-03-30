@@ -1,15 +1,21 @@
 'use client'
 
 import { use, useState } from 'react'
+import { ScrambleText } from '@/components/animation/ScrambleText'
 import { Section } from '@/components/ui/Section'
 import { Container } from '@/components/ui/Container'
 import { Label } from '@/components/ui/Label'
 import { TextReveal } from '@/components/animation/TextReveal'
 import { SectionReveal } from '@/components/animation/SectionReveal'
 import { Button } from '@/components/ui/Button'
+import { AsciiScramble } from '@/components/animation/AsciiScramble'
 
 const INTEREST_TAGS_EN = ['Buy', 'Sell', 'Rent', 'Commercial', 'Investment', 'Pre-Sale', 'Urgent']
 const INTEREST_TAGS_FR = ['Achat', 'Vente', 'Location', 'Commercial', 'Investissement', 'Prévente', 'Urgent']
+
+const FONT_BARLOW = "var(--font-barlow),'Barlow',sans-serif"
+const ORANGE = '#f55f00'
+const CREAM = '#eceae5'
 
 export default function ContactClient({
   params,
@@ -43,43 +49,150 @@ export default function ContactClient({
     }
   }
 
+  const openVoiceWidget = () => {
+    window.dispatchEvent(new CustomEvent('soares:open-voice'))
+  }
+
   const inputClasses =
     'w-full bg-transparent border-b border-[rgba(236,234,229,0.15)] text-[#eceae5] text-[0.875rem] py-3 outline-none focus:border-[rgba(236,234,229,0.5)] transition-colors placeholder:text-[rgba(236,234,229,0.2)]'
 
   return (
     <>
-      {/* Hero */}
-      <Section theme="void" className="pt-32 pb-12 md:pt-40 md:pb-16">
-        <Container size="lg">
+      {/* Hero with ASCII art background */}
+      <div style={{ position: 'relative', overflow: 'hidden', minHeight: '80svh', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', paddingBottom: 'clamp(10rem,20vh,14rem)', background: '#0e1011' }}>
+        {/* ASCII background — fills the full section */}
+        <div style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'auto' }}>
+          <AsciiScramble
+            src="/images/key-handoff.png"
+            cols={200}
+            rows={80}
+            color="#eceae5"
+            highlightColor="#f55f00"
+            baseOpacity={0.18}
+            radius={200}
+            invertBrightness
+            cropTop={0.2}
+            cropBottom={0}
+            style={{ width: '100%', height: '100%' }}
+          />
+        </div>
+        {/* Text */}
+        <div style={{ position: 'relative', zIndex: 1, maxWidth: '1440px', margin: '0 auto', padding: '0 clamp(2rem,5vw,6rem)', paddingTop: 'clamp(8rem,16vh,12rem)' }}>
           <TextReveal
             as="h1"
             split="lines"
             immediate
             delay={0.2}
             className="text-[clamp(4rem,10vw,8rem)] font-black leading-none tracking-tight text-[#eceae5] uppercase"
-            style={{ fontFamily: "var(--font-barlow), 'Barlow', sans-serif" }}
+            style={{ fontFamily: FONT_BARLOW }}
           >
             {isFr ? 'Discutons.' : "Let's Talk."}
           </TextReveal>
-          <SectionReveal delay={0.4} className="mt-6">
-            <p className="text-[1rem] text-[#eceae5] opacity-50 leading-relaxed max-w-md">
+
+          <SectionReveal delay={0.45} className="mt-8 max-w-2xl">
+            <p
+              className="text-[clamp(1.1rem,2vw,1.4rem)] leading-relaxed"
+              style={{ color: CREAM, opacity: 0.65, fontWeight: 400 }}
+            >
               {isFr
-                ? 'Partagez quelques détails et je vous répondrai rapidement.'
-                : "Share a few details and I'll get back to you promptly."}
+                ? "Que vous cherchiez à louer votre premier appartement ou à développer un projet de 300 logements — chaque projet commence par une conversation. Je serais heureux d'entendre parler du vôtre."
+                : "Whether you're renting your first apartment or developing a 300-unit building — every project starts with a conversation. I'd be genuinely happy to hear about yours."}
             </p>
           </SectionReveal>
+        </div>
+      </div>
+
+      {/* Quick contact */}
+      <Section theme="void" className="py-8 border-t border-b border-[rgba(236,234,229,0.05)] mt-0">
+        <Container size="lg" className="flex flex-wrap gap-4">
+          <Button variant="ghost" href="tel:+15145198177" size="sm">
+            {isFr ? 'Appeler' : 'Call'} · 514 519-8177
+          </Button>
+          <Button variant="ghost" href="mailto:JeremySoares@icloud.com" size="sm">
+            Email · JeremySoares@icloud.com
+          </Button>
+          <Button
+            variant="ghost"
+            href="https://www.linkedin.com/in/jeremysoaresrealestate/"
+            size="sm"
+            // @ts-expect-error Button passes extra props through
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            LinkedIn
+          </Button>
         </Container>
       </Section>
 
-      {/* Quick contact */}
-      <Section theme="void" className="py-8 border-t border-b border-[rgba(236,234,229,0.05)]">
-        <Container size="lg" className="flex flex-wrap gap-4">
-          <Button variant="ghost" href="tel:+15145198177" size="sm">
-            {isFr ? 'Appeler' : 'Call'} &middot; 514 519-8177
-          </Button>
-          <Button variant="ghost" href="mailto:JeremySoares@icloud.com" size="sm">
-            {isFr ? 'Courriel' : 'Email'} &middot; JeremySoares@icloud.com
-          </Button>
+      {/* AI Voice CTA */}
+      <Section theme="void" className="py-14 border-b border-[rgba(236,234,229,0.05)]">
+        <Container size="lg">
+          <div
+            className="flex flex-col sm:flex-row sm:items-center gap-8 p-8 md:p-10"
+            style={{
+              background: 'rgba(245,95,0,0.04)',
+              border: '1px solid rgba(245,95,0,0.12)',
+            }}
+          >
+            <div className="flex-1">
+              <div
+                className="text-[0.6rem] tracking-[0.22em] uppercase mb-3"
+                style={{ color: ORANGE, fontFamily: FONT_BARLOW, fontWeight: 900 }}
+              >
+                <ScrambleText text={isFr ? '(IA Disponible 24/7)' : '(AI Available 24/7)'} trigger="inview" duration={800} />
+              </div>
+              <p
+                className="text-[1.1rem] font-black uppercase tracking-tight leading-snug"
+                style={{ fontFamily: FONT_BARLOW, color: CREAM }}
+              >
+                {isFr
+                  ? "Préférez parler directement ?"
+                  : "Prefer to talk right now?"}
+              </p>
+              <p
+                className="mt-2 text-[0.875rem] leading-relaxed"
+                style={{ color: CREAM, opacity: 0.45 }}
+              >
+                {isFr
+                  ? "Mon assistante IA peut répondre à vos questions, collecter vos infos et me les transmettre — je vous recontacte personnellement."
+                  : "My AI assistant can answer your questions, take down your details, and pass them along — I'll follow up personally."}
+              </p>
+            </div>
+
+            <button
+              onClick={openVoiceWidget}
+              className="flex items-center gap-3 group shrink-0"
+              style={{
+                background: `linear-gradient(135deg, #ff7a00, ${ORANGE})`,
+                border: 'none',
+                cursor: 'pointer',
+                padding: '14px 28px',
+                color: '#fff',
+                fontFamily: FONT_BARLOW,
+                fontWeight: 900,
+                fontSize: '0.7rem',
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                transition: 'opacity 0.2s, transform 0.2s',
+                boxShadow: `0 0 28px rgba(245,95,0,0.35)`,
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.opacity = '0.85' }}
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.opacity = '1' }}
+            >
+              <span
+                style={{
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: '50%',
+                  background: '#fff',
+                  boxShadow: '0 0 8px rgba(255,255,255,0.9)',
+                  animation: 'contact-pulse 2s ease-in-out infinite',
+                  flexShrink: 0,
+                }}
+              />
+              <ScrambleText text={isFr ? "Parler à l'IA" : 'Talk to AI'} trigger="hover" duration={500} />
+            </button>
+          </div>
         </Container>
       </Section>
 
@@ -97,7 +210,7 @@ export default function ContactClient({
                   <a
                     href="tel:+15145198177"
                     className="text-[clamp(1.5rem,3vw,2rem)] font-black tracking-tight text-[#eceae5] hover:opacity-70 transition-opacity"
-                    style={{ fontFamily: "var(--font-barlow), 'Barlow', sans-serif" }}
+                    style={{ fontFamily: FONT_BARLOW }}
                   >
                     514 519-8177
                   </a>
@@ -123,7 +236,7 @@ export default function ContactClient({
 
                 <div>
                   <Label className="mb-3 block">(Socials)</Label>
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-3">
                     {[
                       { label: 'LinkedIn', href: 'https://www.linkedin.com/in/jeremysoaresrealestate/' },
                       { label: 'Centris', href: 'https://www.centris.ca/fr/courtier-immobilier~jeremy-soares~jeremy-soares/h2731' },
@@ -134,9 +247,23 @@ export default function ContactClient({
                         href={link.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[0.625rem] tracking-[0.22em] uppercase text-[#eceae5] opacity-50 hover:opacity-100 transition-opacity"
+                        className="flex items-center gap-3 group w-fit"
                       >
-                        {link.label}
+                        <span
+                          className="text-[0.625rem] tracking-[0.22em] uppercase font-black transition-opacity"
+                          style={{
+                            color: link.label === 'LinkedIn' ? ORANGE : CREAM,
+                            opacity: link.label === 'LinkedIn' ? 0.85 : 0.5,
+                            fontFamily: FONT_BARLOW,
+                          }}
+                        >
+                          {link.label}
+                        </span>
+                        {link.label === 'LinkedIn' && (
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={ORANGE} strokeWidth="2" strokeLinecap="round" style={{ opacity: 0.7 }}>
+                            <path d="M7 17L17 7M17 7H7M17 7v10"/>
+                          </svg>
+                        )}
                       </a>
                     ))}
                   </div>
@@ -161,7 +288,7 @@ export default function ContactClient({
                 <div>
                   <h2
                     className="text-[clamp(1.5rem,3vw,2.5rem)] font-black tracking-tight text-[#eceae5] uppercase mb-4"
-                    style={{ fontFamily: "var(--font-barlow), 'Barlow', sans-serif" }}
+                    style={{ fontFamily: FONT_BARLOW }}
                   >
                     {isFr ? 'Message envoyé.' : 'Message sent.'}
                   </h2>
@@ -190,7 +317,7 @@ export default function ContactClient({
                               ? 'bg-[#eceae5] text-[#0e1011]'
                               : 'border border-[rgba(236,234,229,0.15)] text-[#eceae5] opacity-50 hover:opacity-100',
                           ].join(' ')}
-                          style={{ fontFamily: "var(--font-barlow), 'Barlow', sans-serif" }}
+                          style={{ fontFamily: FONT_BARLOW }}
                         >
                           {tag}
                         </button>
@@ -266,7 +393,7 @@ export default function ContactClient({
                     type="submit"
                     disabled={status === 'loading'}
                     className="bg-[#eceae5] text-[#0e1011] text-[0.625rem] tracking-[0.22em] uppercase font-black px-10 py-4 hover:bg-[#d8d4cb] transition-all duration-300 disabled:opacity-50 cursor-pointer"
-                    style={{ fontFamily: "var(--font-barlow), 'Barlow', sans-serif" }}
+                    style={{ fontFamily: FONT_BARLOW }}
                   >
                     {status === 'loading'
                       ? (isFr ? 'Envoi...' : 'Sending...')
@@ -278,6 +405,13 @@ export default function ContactClient({
           </div>
         </Container>
       </Section>
+
+      <style>{`
+        @keyframes contact-pulse {
+          0%, 100% { box-shadow: 0 0 4px rgba(255,255,255,0.8); }
+          50% { box-shadow: 0 0 12px rgba(255,255,255,1), 0 0 20px rgba(255,255,255,0.4); }
+        }
+      `}</style>
     </>
   )
 }

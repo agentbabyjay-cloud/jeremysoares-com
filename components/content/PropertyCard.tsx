@@ -42,9 +42,18 @@ export function PropertyCard({ listing, locale }: PropertyCardProps) {
         <p className="text-[0.75rem] tracking-[0.1em] uppercase text-[#eceae5] opacity-70">
           {listing.neighbourhood}
         </p>
-        <p className="text-[0.625rem] tracking-[0.15em] uppercase text-[#eceae5] opacity-40 mt-1">
-          {listing.type}
-        </p>
+        <div className="flex items-center justify-between mt-1 gap-2">
+          <p className="text-[0.625rem] tracking-[0.15em] uppercase text-[#eceae5] opacity-40">
+            {listing.bedrooms != null ? `${listing.bedrooms} bd` : listing.type}
+            {listing.bathrooms != null ? ` · ${listing.bathrooms} ba` : ''}
+            {listing.area ? ` · ${listing.area}` : ''}
+          </p>
+          {listing.price && (
+            <p className="text-[0.625rem] tracking-[0.1em] font-bold text-[#eceae5] opacity-60 whitespace-nowrap">
+              {listing.price}
+            </p>
+          )}
+        </div>
       </div>
     </Link>
   )

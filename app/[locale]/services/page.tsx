@@ -125,6 +125,7 @@ function ServicesJsonLd({ locale }: { locale: string }) {
             { '@type': 'Offer', itemOffered: { '@type': 'Service', name: "Stratégie d'Investissement" } },
             { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Location Commerciale' } },
             { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Services de Relocalisation' } },
+            { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Création de Sites Web pour PME' } },
           ]
         : [
             { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Pre-Construction Advisory' } },
@@ -132,6 +133,7 @@ function ServicesJsonLd({ locale }: { locale: string }) {
             { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Investment Strategy' } },
             { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Commercial Leasing' } },
             { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Relocation Services' } },
+            { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Website Building for Small Business' } },
           ],
     },
   }
@@ -228,6 +230,18 @@ export default async function ServicesPage({
             { label: 'Nous contacter', href: `/${locale}/contact` },
           ],
         },
+        {
+          number: '06',
+          title: 'Création de Sites Web pour PME',
+          tag: 'Sites Web',
+          detailHref: `/${locale}/services/website-building`,
+          description:
+            "Sites web performants pour petites entreprises : SEO avancé, intégration IA, CRM, automatisation marketing et architecture moderne. Votre site génère des leads, qualifie des prospects et convertit — automatiquement, 24/7.",
+          links: [
+            { label: 'Studio Web', href: `/${locale}/studio/web` },
+            { label: 'Voir nos projets', href: `/${locale}/studio` },
+          ],
+        },
       ]
     : [
         {
@@ -286,6 +300,18 @@ export default async function ServicesPage({
             "Moving to Montreal or leaving for another city. Full accompaniment from first visit to key handover: neighbourhood fit, budget mapping, lifestyle matching, logistics coordination. Bilingual English-French throughout.",
           links: [
             { label: 'Get in touch', href: `/${locale}/contact` },
+          ],
+        },
+        {
+          number: '06',
+          title: 'Website Building for Small Business',
+          tag: 'Websites',
+          detailHref: `/${locale}/services/website-building`,
+          description:
+            "High-performance websites for small businesses: advanced SEO, AI integration, CRM, marketing automation, and modern architecture. Your site generates leads, qualifies prospects, and converts — automatically, 24/7.",
+          links: [
+            { label: 'Web Studio', href: `/${locale}/studio/web` },
+            { label: 'View our projects', href: `/${locale}/studio` },
           ],
         },
       ]

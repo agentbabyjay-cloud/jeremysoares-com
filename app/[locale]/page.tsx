@@ -1,10 +1,13 @@
 'use client'
 
-import { use, useEffect, useRef, useState, useCallback } from 'react'
+import { use, useEffect, useLayoutEffect, useRef, useState, useCallback } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { ScrambleText } from '@/components/animation/ScrambleText'
+import { SplitReveal } from '@/components/animation/SplitReveal'
+import { AsciiArt } from '@/components/animation/AsciiArt'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
@@ -15,16 +18,31 @@ const HERO_SETS = [
   [
     'https://cdn.prod.website-files.com/68ba28534a070e692e441089/68baf35dc28553a17f2d6d78_8-IMG_6610.jpg',
     'https://cdn.prod.website-files.com/68ba28534a070e692e441089/68bb1433116d7d6929d3342a_1-48912126-F1AA-4FAE-8511-3BF6A11A8D99-3483-00000108D3E4BAC8.jpg',
-    'https://cdn.prod.website-files.com/68ba28534a070e692e441089/68ba5ef5db548016dd9a1ed9_old port.jpg',
     'https://cdn.prod.website-files.com/68ba28534a070e692e441089/68ba5ef402a2ead761e430cb_espace a loeur centre ville.jpg',
+    'https://cdn.prod.website-files.com/68ba28534a070e692e441089/68ba5ef5db548016dd9a1ed9_old port.jpg',
   ],
   [
+    '/images/buy-sell-rent/nice-indoor.jpg',
+    '/images/properties/IMG_2607.JPG',
+    '/images/presale/emeraude-exterior.png',
+    '/images/buy-sell-rent/montreal-view.jpg',
+  ],
+  [
+    '/images/properties/11B9F025-42C4-4BCB-99FC-BD93F1F8308F-6332-00000108A14FE3E2.JPG',
     'https://cdn.prod.website-files.com/68ba28534a070e692e441089/68ba5ef471476cae93101dd4_Mockup.jpg',
-    'https://cdn.prod.website-files.com/68ba28534a070e692e441089/68baf4f3abc4421a49d880e1_Screenshot 2025-09-05 at 8.44.57 AM.png',
     '/images/headshots/68ba5e4e80122c482c8397a9_Jeremy-Soares-Montreal-Realtor.webp',
+    '/images/presale/heritage-facade.png',
+  ],
+  [
+    '/images/buy-sell-rent/condo.jpg',
+    '/images/properties/F8D0F27D-C370-414C-B777-0BAD168ADA8A-6332-00000108A6B7E965.JPG',
     'https://cdn.prod.website-files.com/68ba28534a070e692e441089/68ba65353f6375253f22cf04_a9469e95-6544-4610-acf4-f1f58a1605ec.png',
+    '/images/buy-sell-rent/interior-1.jpg',
   ],
 ]
+
+// Shuffle order (exclude first set which is used for initial render)
+const HERO_ORDER = [0, ...([1, 2, 3].sort(() => Math.random() - 0.5))]
 
 /* ── Sold images (with city metadata for filtering) ── */
 const SOLD_TILES = [
@@ -47,8 +65,8 @@ const SOLD_TILES = [
 /* ── Project cards ── */
 const PROJECTS = [
   { name: 'ALouerMTL.com', type: 'Rental Platform \u2014 Montreal', url: 'https://alouermtl.com', img: '/images/Project alouermtl/68eeccc553553fc8809febaf_ALOUERMTL.jpg' },
-  { name: 'LePetitMatane.com', type: 'Development \u2014 Gasp\u00e9sie', url: 'https://lepetitmatane.com', img: '/images/Project alouermtl/68eeccc57fe5eef0deb8fab3_A LOUER MONTREAL.jpg' },
-  { name: 'aimmo', type: 'AI Staging Platform', url: 'https://aimmo.ca', img: '/images/Project alouermtl/68eeccc5145dc9b2b7e043c1_ALOUERMTL.COM.jpg' },
+  { name: 'LePetitMatane.com', type: 'Development \u2014 Gasp\u00e9sie', url: 'https://lepetitmatane.com', img: '/images/brand/68bb1433116d7d6929d3342a_1-48912126-F1AA-4FAE-8511-3BF6A11A8D99-3483-00000108D3E4BAC8.jpg' },
+  { name: 'aimmo', type: 'AI Staging Platform', url: 'https://aimmo.ca', img: '/images/Project alouermtl/68eeccc57fe5eef0deb8fab3_A LOUER MONTREAL.jpg' },
   { name: 'AgentMTL.ca', type: 'Broker Directory \u2014 Montreal', url: 'https://agentmtl.ca', img: '/images/Project alouermtl/68eeccc58563b4ce7e867a40_PSD_4.jpg' },
   { name: 'ForSaleMTL.com', type: 'Listings Platform \u2014 Montreal', url: 'https://forsalemtl.com', img: '/images/brand/68eecd92a89fcbc80184bdc2_MAGAZINE.jpg' },
 ]
@@ -129,6 +147,7 @@ export default function HomePage({
       })
 
       /* Sold mosaic stagger */
+      gsap.set('.sold-tile', { opacity: 0, scale: 0.85 })
       ScrollTrigger.create({
         trigger: '.sold-mosaic',
         start: 'top 80%',
@@ -138,13 +157,15 @@ export default function HomePage({
         },
       })
 
-      /* Sold tile parallax */
-      document.querySelectorAll<HTMLElement>('.sold-tile').forEach((t, i) => {
-        gsap.to(t, {
-          y: -(10 + (i % 5) * 8),
-          scrollTrigger: { trigger: '.sold-mosaic', start: 'top bottom', end: 'bottom top', scrub: 1 },
+      /* Sold tile parallax (desktop only to avoid uneven gaps on mobile) */
+      if (window.innerWidth >= 768) {
+        document.querySelectorAll<HTMLElement>('.sold-tile').forEach((t, i) => {
+          gsap.to(t, {
+            y: -(10 + (i % 5) * 8),
+            scrollTrigger: { trigger: '.sold-mosaic', start: 'top bottom', end: 'bottom top', scrub: 1 },
+          })
         })
-      })
+      }
 
       /* General reveals */
       document.querySelectorAll<HTMLElement>('.reveal').forEach(el => {
@@ -160,11 +181,13 @@ export default function HomePage({
         })
       })
 
-      /* Carousel parallax */
-      gsap.to('.carousel-track', {
-        x: -200,
-        scrollTrigger: { trigger: '.section-projects', start: 'top bottom', end: 'bottom top', scrub: 1 },
-      })
+      /* Carousel parallax (desktop only) */
+      if (window.innerWidth >= 1024) {
+        gsap.to('.carousel-track', {
+          x: -200,
+          scrollTrigger: { trigger: '.section-projects', start: 'top bottom', end: 'bottom top', scrub: 1 },
+        })
+      }
 
       /* Stats counter */
       ScrollTrigger.create({
@@ -204,6 +227,42 @@ export default function HomePage({
           gsap.to('.section-contact .reveal', { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power3.out' })
         },
       })
+
+      /* ── Service rows: stagger slide-in then highlight on scroll ── */
+      // Initial state (rows are outside the generic .reveal batch)
+      gsap.set('[data-service-row]', { opacity: 0, y: 18 })
+
+      // Stagger all rows in when the section enters view
+      ScrollTrigger.create({
+        trigger: '[data-service-section]',
+        start: 'top 65%',
+        once: true,
+        onEnter: () => {
+          gsap.to('[data-service-row]', {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            stagger: 0.11,
+            ease: 'power3.out',
+          })
+        },
+      })
+
+      // Per-row: highlight title orange as it enters center viewport
+      document.querySelectorAll<HTMLElement>('[data-service-row]').forEach(row => {
+        const title = row.querySelector<HTMLElement>('[data-service-title]')
+        const num   = row.querySelector<HTMLElement>('[data-service-num]')
+        if (!title) return
+        ScrollTrigger.create({
+          trigger: row,
+          start: 'top 58%',
+          end: 'bottom 42%',
+          onEnter:     () => { gsap.to(title, { color: '#f55f00', duration: 0.25 }); if (num) gsap.to(num, { opacity: 0.7, duration: 0.25 }) },
+          onLeave:     () => { gsap.to(title, { color: 'var(--color-void)', duration: 0.35 }); if (num) gsap.to(num, { opacity: 0.2, duration: 0.35 }) },
+          onEnterBack: () => { gsap.to(title, { color: '#f55f00', duration: 0.25 }); if (num) gsap.to(num, { opacity: 0.7, duration: 0.25 }) },
+          onLeaveBack: () => { gsap.to(title, { color: 'var(--color-void)', duration: 0.35 }); if (num) gsap.to(num, { opacity: 0.2, duration: 0.35 }) },
+        })
+      })
     })
 
     return () => ctx.revert()
@@ -212,30 +271,38 @@ export default function HomePage({
   /* ── Hero image cycling ── */
   useEffect(() => {
     const interval = setInterval(() => {
-      heroSetRef.current = (heroSetRef.current + 1) % HERO_SETS.length
-      const set = HERO_SETS[heroSetRef.current]
+      heroSetRef.current = (heroSetRef.current + 1) % HERO_ORDER.length
+      const set = HERO_SETS[HERO_ORDER[heroSetRef.current]]
       const ids = ['hf1', 'hf2', 'hf3', 'hf4']
       ids.forEach((id, i) => {
         const el = document.getElementById(id)
         if (!el) return
         const img = el.querySelector('img') as HTMLImageElement | null
         if (!img) return
+        // Stagger each fragment's fade-out, then swap src and fade back in
         gsap.to(img, {
           opacity: 0,
-          duration: 0.6,
-          delay: i * 0.08,
+          duration: 0.7,
+          delay: i * 0.2,   // 0.2s stagger so they go out one by one
           ease: 'power2.out',
           onComplete: () => {
+            // Clear srcset so browser doesn't use the old optimised srcset
+            img.srcset = ''
             img.src = set[i]
-            gsap.to(img, { opacity: 1, duration: 1.1, ease: 'power2.inOut' })
+            gsap.to(img, {
+              opacity: 1,
+              duration: 1.2,
+              delay: 0.1,
+              ease: 'power2.inOut',
+            })
           },
         })
       })
-    }, 8000)
+    }, 9000)
     return () => clearInterval(interval)
   }, [])
 
-  /* ── Drag carousel ── */
+  /* ── Drag carousel (mouse + touch) ── */
   useEffect(() => {
     const track = carouselRef.current
     if (!track) return
@@ -259,12 +326,25 @@ export default function HomePage({
       wrap.scrollLeft = scrollLeft - walk
     }
 
+    const onTouchStart = (e: TouchEvent) => {
+      startX = e.touches[0].pageX
+      scrollLeft = wrap.scrollLeft
+    }
+    const onTouchMove = (e: TouchEvent) => {
+      const x = e.touches[0].pageX
+      wrap.scrollLeft = scrollLeft - (x - startX)
+    }
+
     track.addEventListener('mousedown', onMouseDown)
+    track.addEventListener('touchstart', onTouchStart, { passive: true })
+    track.addEventListener('touchmove', onTouchMove, { passive: true })
     document.addEventListener('mouseup', onMouseUp)
     document.addEventListener('mousemove', onMouseMove)
 
     return () => {
       track.removeEventListener('mousedown', onMouseDown)
+      track.removeEventListener('touchstart', onTouchStart)
+      track.removeEventListener('touchmove', onTouchMove)
       document.removeEventListener('mouseup', onMouseUp)
       document.removeEventListener('mousemove', onMouseMove)
     }
@@ -272,13 +352,22 @@ export default function HomePage({
 
   /* ── Sold filter ── */
   const filteredSold = soldFilter === 'all' ? SOLD_TILES : SOLD_TILES.filter(t => t.city === soldFilter)
+  const soldFilterIsFirst = useRef(true)
+
+  // Re-animate tiles whenever the filter changes (skip the very first render —
+  // the ScrollTrigger in the GSAP context handles the initial reveal).
+  // useLayoutEffect runs after DOM update but BEFORE browser paint, so we
+  // can set opacity:0 without a visible flash of the new tiles.
+  useLayoutEffect(() => {
+    if (soldFilterIsFirst.current) { soldFilterIsFirst.current = false; return }
+    gsap.set('.sold-tile', { opacity: 0, scale: 0.85 })
+    requestAnimationFrame(() => {
+      gsap.to('.sold-tile', { opacity: 1, scale: 1, duration: 0.5, stagger: { amount: 0.8, from: 'random' }, ease: 'power3.out' })
+    })
+  }, [soldFilter])
 
   const handleFilterSold = useCallback((filter: 'all' | 'mtl' | 'van') => {
     setSoldFilter(filter)
-    // Re-animate tiles
-    requestAnimationFrame(() => {
-      gsap.fromTo('.sold-tile', { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.5, stagger: { amount: 0.8, from: 'random' }, ease: 'power3.out' })
-    })
   }, [])
 
   return (
@@ -317,7 +406,7 @@ export default function HomePage({
           <div className="hero-label" style={{ fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase', opacity: 0, marginBottom: '0.8rem' }}>
             ({isFr ? 'Montréal, QC' : 'Montreal, QC'})
           </div>
-          <h1 className="hero-name" style={{ fontFamily: "var(--font-barlow), 'Barlow', sans-serif", fontWeight: 900, fontSize: 'clamp(4.5rem,9vw,10rem)', lineHeight: 0.88, letterSpacing: '0.06em', textTransform: 'uppercase', paddingLeft: '2ch', marginBottom: '1.5rem', overflow: 'hidden' }}>
+          <h1 className="hero-name" style={{ fontFamily: "var(--font-barlow), 'Barlow', sans-serif", fontWeight: 900, fontSize: 'clamp(4.5rem,9vw,10rem)', lineHeight: 0.88, letterSpacing: '0.06em', textTransform: 'uppercase', paddingLeft: '2ch', marginBottom: '1.5rem', overflow: 'hidden', whiteSpace: 'nowrap' }}>
             {'SOARES'.split('').map((c, i) => (
               <span key={i} style={{ display: 'inline-block', transform: 'translateY(110%)' }}>{c}</span>
             ))}
@@ -393,7 +482,7 @@ export default function HomePage({
             {isFr ? 'Bâti par nous' : 'Built by us'}
           </h2>
         </div>
-        <div style={{ overflow: 'hidden', padding: '0 clamp(2rem,5vw,6rem)' }}>
+        <div className="carousel-wrapper" style={{ overflow: 'hidden', padding: '0 clamp(2rem,5vw,6rem)' }}>
           <div ref={carouselRef} className="carousel-track" style={{ display: 'flex', gap: '2rem', cursor: 'grab', userSelect: 'none' }}>
             {PROJECTS.map((p, i) => (
               <a key={i} href={p.url} target="_blank" rel="noopener noreferrer" className="reveal" style={{ flex: '0 0 380px', cursor: 'pointer', textDecoration: 'none', color: 'inherit' }}>
@@ -401,7 +490,11 @@ export default function HomePage({
                   <Image src={p.img} alt={p.name} width={380} height={238} style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.75)', transition: 'transform 0.8s cubic-bezier(0.16,1,0.3,1)' }} />
                 </div>
                 <h3 style={{ fontWeight: 800, fontSize: '13px', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '0.4rem', color: 'var(--color-cream)' }}>{p.name}</h3>
-                <div style={{ fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', opacity: 0.25, marginBottom: '0.6rem', color: 'var(--color-cream)' }}>{p.type}</div>
+                <div style={{ fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', opacity: 0.25, marginBottom: '0.6rem', color: 'var(--color-cream)' }}>
+                  {p.url === 'https://aimmo.ca'
+                    ? <ScrambleText text={p.type} trigger="hover" duration={700} />
+                    : p.type}
+                </div>
               </a>
             ))}
           </div>
@@ -412,9 +505,11 @@ export default function HomePage({
       </section>
 
       {/* ═══ SERVICES (cream) ═══ */}
-      <section style={{ background: 'var(--color-cream)', color: 'var(--color-void)', padding: 'clamp(6rem,10vw,8rem) 0', position: 'relative' }}>
+      <section data-service-section style={{ background: 'var(--color-cream)', color: 'var(--color-void)', padding: 'clamp(6rem,10vw,8rem) 0', position: 'relative' }}>
         <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '0 clamp(2rem,5vw,6rem)', position: 'relative', zIndex: 2 }}>
-          <div className="reveal" style={{ fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase', opacity: 0.3, marginBottom: '1.5rem' }}>(03) &mdash; Services</div>
+          <div style={{ fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase', opacity: 0.3, marginBottom: '1.5rem' }}>
+            <SplitReveal stagger={32}>{isFr ? '(03) — Services' : '(03) — Services'}</SplitReveal>
+          </div>
           <h2 className="reveal" style={{ fontFamily: "var(--font-barlow), 'Barlow', sans-serif", fontWeight: 900, fontSize: 'clamp(3rem,5vw,4.5rem)', lineHeight: 1, letterSpacing: 0, textTransform: 'uppercase', marginBottom: '3rem' }}>
             {isFr ? 'Service complet' : 'Full service'}
           </h2>
@@ -426,12 +521,19 @@ export default function HomePage({
               { num: '04', title: isFr ? 'Location Commerciale' : 'Commercial Leasing', desc: isFr ? "Commerce de détail, bureaux, usage mixte. Conseil locataire et propriétaire." : 'Retail, office, mixed-use. Tenant and landlord advisory.' },
               { num: '05', title: isFr ? 'Services de Relocalisation' : 'Relocation Services', desc: isFr ? "Vancouver à Montréal. Support intermarché de bout en bout." : 'Vancouver to Montreal. End-to-end cross-market support.' },
             ].map((s, i) => (
-              <div key={i} className="reveal" style={{ display: 'grid', gridTemplateColumns: '50px 1fr 1.2fr 30px', gap: '2rem', alignItems: 'center', padding: '2rem 0', borderBottom: '1px solid rgba(14,16,17,0.08)', cursor: 'pointer', transition: 'background 0.3s, padding-left 0.3s' }}
+              <div
+                key={i}
+                data-service-row
+                style={{ display: 'grid', gridTemplateColumns: '50px 1fr 1.2fr 30px', gap: '2rem', alignItems: 'center', padding: '2rem 0', borderBottom: '1px solid rgba(14,16,17,0.08)', cursor: 'pointer', transition: 'background 0.3s, padding-left 0.3s' }}
                 onMouseEnter={e => { e.currentTarget.style.background = 'rgba(14,16,17,0.02)'; e.currentTarget.style.paddingLeft = '12px' }}
                 onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.paddingLeft = '0' }}
               >
-                <span style={{ fontSize: '10px', letterSpacing: '0.18em', opacity: 0.2 }}>({s.num})</span>
-                <h3 style={{ fontWeight: 800, fontSize: 'clamp(0.9rem,1.8vw,1.25rem)', letterSpacing: '0.04em', textTransform: 'uppercase' }}>{s.title}</h3>
+                <span data-service-num style={{ fontSize: '10px', letterSpacing: '0.18em', opacity: 0.2, transition: 'opacity 0.3s' }}>({s.num})</span>
+                <h3 data-service-title style={{ fontWeight: 800, fontSize: 'clamp(0.9rem,1.8vw,1.25rem)', letterSpacing: '0.04em', textTransform: 'uppercase', transition: 'color 0.3s' }}>
+                  {i === 1
+                    ? <ScrambleText text={s.title} trigger="hover" duration={700} />
+                    : s.title}
+                </h3>
                 <p style={{ fontSize: '0.85rem', opacity: 0.35, lineHeight: 1.6 }} className="service-desc-responsive">{s.desc}</p>
                 <span style={{ fontSize: '14px', opacity: 0.1 }}>&rarr;</span>
               </div>
@@ -444,7 +546,9 @@ export default function HomePage({
       <section style={{ background: 'var(--color-void)', padding: 'clamp(8rem,14vw,12rem) 0' }}>
         <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '0 clamp(2rem,5vw,6rem)', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(3rem,6vw,8rem)', alignItems: 'center' }} className="about-grid-responsive">
           <div>
-            <div className="reveal" style={{ fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase', opacity: 0.3, marginBottom: '2rem' }}>(04) &mdash; {isFr ? 'À Propos' : 'About'}</div>
+            <div style={{ fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase', opacity: 0.3, marginBottom: '2rem' }}>
+            <SplitReveal stagger={32}>{isFr ? '(04) — À Propos' : '(04) — About'}</SplitReveal>
+          </div>
             <h2 className="reveal" style={{ fontFamily: "var(--font-barlow), 'Barlow', sans-serif", fontWeight: 900, fontSize: 'clamp(2.5rem,5vw,4.5rem)', lineHeight: 1, letterSpacing: '0.02em', textTransform: 'uppercase', marginBottom: '2rem' }}>
               {isFr ? (
                 <>Architecture<br />par formation.<br />Immobilier<br />par <em style={{ fontFamily: "var(--font-dm-serif), 'DM Serif Display', serif", fontStyle: 'italic', fontWeight: 400, fontSize: '0.9em', textTransform: 'none', letterSpacing: 0 }}>conviction.</em></>
@@ -461,16 +565,71 @@ export default function HomePage({
               {isFr ? 'Parcours complet et historique' : 'Full story & timeline'} <span>&rarr;</span>
             </Link>
           </div>
-          <div className="about-image" style={{ overflow: 'hidden', clipPath: 'inset(0 0 100% 0)' }}>
-            <Image
+          <div style={{ position: 'relative' }}>
+            {/* ASCII art Easter egg — Jeremy's face rendered in characters */}
+            <AsciiArt
               src="/images/headshots/68ba5e4e80122c482c8397a9_Jeremy-Soares-Montreal-Realtor.webp"
-              alt="Jeremy Soares"
-              width={600}
-              height={800}
-              sizes="(max-width: 768px) 100vw, 50vw"
-              style={{ width: '100%', aspectRatio: '3/4', objectFit: 'cover', filter: 'brightness(0.8) contrast(1.05)' }}
+              cols={100}
+              rows={60}
+              color="#eceae5"
+              opacity={0.07}
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 1 }}
             />
+            <div className="about-image" style={{ overflow: 'hidden', clipPath: 'inset(0 0 100% 0)', position: 'relative', zIndex: 2 }}>
+              <Image
+                src="/images/headshots/68ba5e4e80122c482c8397a9_Jeremy-Soares-Montreal-Realtor.webp"
+                alt="Jeremy Soares"
+                width={600}
+                height={800}
+                sizes="(max-width: 768px) 100vw, 50vw"
+                style={{ width: '100%', aspectRatio: '3/4', objectFit: 'cover', filter: 'brightness(0.8) contrast(1.05)' }}
+              />
+            </div>
           </div>
+        </div>
+      </section>
+
+      {/* ═══ ACTIVE LISTING BANNER ═══ */}
+      <section style={{ background: 'var(--color-cream)', color: 'var(--color-void)', borderTop: '1px solid rgba(14,16,17,0.06)' }}>
+        <div style={{ maxWidth: '1440px', margin: '0 auto', padding: 'clamp(3rem,5vw,4.5rem) clamp(2rem,5vw,6rem)', display: 'grid', gridTemplateColumns: '1fr auto', alignItems: 'center', gap: '2rem', flexWrap: 'wrap' }} className="listing-banner-responsive">
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(1.5rem,4vw,4rem)', flexWrap: 'wrap' }}>
+            {/* Badge */}
+            <span style={{ flexShrink: 0, fontSize: '8px', letterSpacing: '0.28em', textTransform: 'uppercase', fontWeight: 700, background: 'var(--color-void)', color: 'var(--color-cream)', padding: '6px 14px', whiteSpace: 'nowrap' }}>
+              {isFr ? '● Actif' : '● Active'}
+            </span>
+            {/* Address */}
+            <div>
+              <p style={{ fontSize: '9px', letterSpacing: '0.22em', textTransform: 'uppercase', opacity: 0.35, marginBottom: '4px' }}>
+                Centre-Ville &mdash; Montréal
+              </p>
+              <p style={{ fontFamily: "var(--font-barlow), 'Barlow', sans-serif", fontWeight: 900, fontSize: 'clamp(1.2rem,2.5vw,2rem)', letterSpacing: '0.03em', textTransform: 'uppercase', lineHeight: 1, margin: 0 }}>
+                2060 Rue Peel, #1412
+              </p>
+            </div>
+            {/* Divider */}
+            <div style={{ width: '1px', height: '40px', background: 'rgba(14,16,17,0.15)', flexShrink: 0 }} className="hidden md:block" />
+            {/* Specs */}
+            <div style={{ display: 'flex', gap: 'clamp(1.5rem,3vw,3rem)', flexWrap: 'wrap' }}>
+              {[
+                { label: isFr ? 'Prix' : 'Price', value: '$659,000' },
+                { label: isFr ? 'Ch.' : 'Bed', value: '1' },
+                { label: isFr ? 'Sdb' : 'Bath', value: '1' },
+                { label: isFr ? 'Sup.' : 'Area', value: '649 sq.ft' },
+              ].map((s) => (
+                <div key={s.label}>
+                  <p style={{ fontSize: '8px', letterSpacing: '0.22em', textTransform: 'uppercase', opacity: 0.3, marginBottom: '3px' }}>{s.label}</p>
+                  <p style={{ fontFamily: "var(--font-barlow), 'Barlow', sans-serif", fontWeight: 900, fontSize: '1rem', margin: 0 }}>{s.value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* CTA */}
+          <Link href={`/${locale}/real-estate/active-2060-peel-1412`} style={{ flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: '12px', fontWeight: 700, fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--color-void)', border: '1px solid rgba(14,16,17,0.25)', padding: '14px 24px', textDecoration: 'none', whiteSpace: 'nowrap', transition: 'background 0.25s, color 0.25s' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'var(--color-void)'; (e.currentTarget as HTMLAnchorElement).style.color = 'var(--color-cream)' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'transparent'; (e.currentTarget as HTMLAnchorElement).style.color = 'var(--color-void)' }}
+          >
+            {isFr ? 'Voir la fiche' : 'View listing'} →
+          </Link>
         </div>
       </section>
 
@@ -511,10 +670,10 @@ export default function HomePage({
         </div>
         <div ref={soldGridRef} className="sold-mosaic" style={{ maxWidth: '1440px', margin: '0 auto', padding: '0 clamp(2rem,5vw,6rem)', display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '6px' }}>
           {filteredSold.map((tile, i) => (
-            <div key={`${soldFilter}-${i}`} className="sold-tile" style={{ aspectRatio: '1', overflow: 'hidden', position: 'relative', opacity: 0, transform: 'scale(0.85)' }}>
+            <div key={tile.src} className="sold-tile" style={{ aspectRatio: '1', overflow: 'hidden', position: 'relative' }}>
               <Image
                 src={tile.src}
-                alt={`Sold property ${i + 1}`}
+                alt={tile.label}
                 fill
                 sizes="(max-width: 768px) 25vw, 14vw"
                 style={{ objectFit: 'cover', transition: 'transform 0.5s cubic-bezier(0.16,1,0.3,1)' }}
@@ -524,11 +683,65 @@ export default function HomePage({
         </div>
       </section>
 
+      {/* ═══ FEATURED POST — PLEX GUIDE ═══ */}
+      <section style={{ position: 'relative', minHeight: '100svh', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', overflow: 'hidden', borderTop: '1px solid rgba(236,234,229,0.06)' }}>
+        {/* Background image */}
+        <div style={{ position: 'absolute', inset: 0 }}>
+          <Image
+            src="https://cdn.prod.website-files.com/68ba28534a070e692e441089/68baf35dc28553a17f2d6d78_8-IMG_6610.jpg"
+            alt=""
+            fill
+            sizes="100vw"
+            style={{ objectFit: 'cover', objectPosition: 'center 30%', filter: 'brightness(0.28) contrast(1.1) grayscale(0.3)' }}
+          />
+        </div>
+        {/* Gradient vignette */}
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, var(--color-void) 0%, rgba(14,16,17,0.6) 50%, rgba(14,16,17,0.1) 100%)' }} />
+        {/* Content */}
+        <div style={{ position: 'relative', zIndex: 2, maxWidth: '1440px', margin: '0 auto', padding: 'clamp(5rem,8vw,8rem) clamp(2rem,5vw,6rem)', width: '100%' }}>
+          {/* Top label row */}
+          <div className="reveal" style={{ display: 'flex', alignItems: 'center', gap: '2rem', marginBottom: 'clamp(3rem,5vw,5rem)' }}>
+            <span style={{ fontSize: '9px', letterSpacing: '0.28em', textTransform: 'uppercase', fontWeight: 700, background: 'var(--color-cream)', color: 'var(--color-void)', padding: '5px 12px' }}>
+              {isFr ? 'Nouveau Guide' : 'New Guide'}
+            </span>
+            <span style={{ fontSize: '9px', letterSpacing: '0.22em', textTransform: 'uppercase', opacity: 0.3 }}>
+              — Mar 2026 — {isFr ? 'Investissement' : 'Investment'}
+            </span>
+          </div>
+          {/* Title */}
+          <h2 className="reveal" style={{ fontFamily: "var(--font-barlow), 'Barlow', sans-serif", fontWeight: 900, fontSize: 'clamp(2.8rem,7vw,7.5rem)', lineHeight: 0.92, letterSpacing: '0.02em', textTransform: 'uppercase', maxWidth: '900px', marginBottom: 'clamp(2rem,4vw,4rem)' }}>
+            {isFr
+              ? <>Acheter un Plex<br />à Montréal</>
+              : <>Buying a Plex<br />in Montreal</>}
+          </h2>
+          {/* Divider */}
+          <div className="reveal" style={{ width: '100%', height: '1px', background: 'rgba(236,234,229,0.12)', marginBottom: 'clamp(2rem,4vw,4rem)' }} />
+          {/* Bottom row */}
+          <div className="reveal" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '2rem' }}>
+            <p style={{ fontSize: 'clamp(0.85rem,1.4vw,1.05rem)', lineHeight: 1.7, opacity: 0.4, maxWidth: '520px' }}>
+              {isFr
+                ? 'Duplex, triplex ou quadruplex — ce que valent vraiment les chiffres en 2026, où acheter, et comment financer.'
+                : "Duplex, triplex, or fourplex — what the numbers actually look like in 2026, where to buy, and how to finance it."}
+            </p>
+            <Link
+              href={`/${locale}/blog/plex-investment-montreal-guide-2026`}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '16px', fontWeight: 700, fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--color-cream)', textDecoration: 'none', opacity: 0.7, transition: 'opacity 0.3s, gap 0.3s', flexShrink: 0 }}
+              onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.opacity = '1'; (e.currentTarget as HTMLAnchorElement).style.gap = '24px' }}
+              onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.opacity = '0.7'; (e.currentTarget as HTMLAnchorElement).style.gap = '16px' }}
+            >
+              {isFr ? 'Lire le guide' : 'Read the guide'} <span style={{ fontSize: '18px' }}>&rarr;</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* ═══ TOOLS (cream) ═══ */}
       <section style={{ background: 'var(--color-cream)', color: 'var(--color-void)', padding: 'clamp(6rem,10vw,8rem) 0', position: 'relative' }}>
         <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '0 clamp(2rem,5vw,6rem)', position: 'relative', zIndex: 2, display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: 'clamp(3rem,6vw,6rem)', alignItems: 'center' }} className="tools-grid-responsive">
           <div>
-            <div className="reveal" style={{ fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase', opacity: 0.3, marginBottom: '2rem' }}>(06) &mdash; {isFr ? 'Outils' : 'Tools'}</div>
+            <div className="reveal" style={{ fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase', opacity: 0.3, marginBottom: '2rem' }}>
+              <ScrambleText text={isFr ? '(06) — Outils' : '(06) — Tools'} trigger="inview" duration={800} />
+            </div>
             <h2 className="reveal" style={{ fontFamily: "var(--font-barlow), 'Barlow', sans-serif", fontWeight: 900, fontSize: 'clamp(2.5rem,4vw,4rem)', lineHeight: 1, letterSpacing: 0, textTransform: 'uppercase', marginBottom: '1.5rem' }}>
               {isFr ? <>Bâti pour<br />l&apos;immobilier</> : <>Built for<br />real estate</>}
             </h2>
@@ -549,20 +762,25 @@ export default function HomePage({
                   onMouseEnter={e => (e.currentTarget.style.paddingLeft = '8px')}
                   onMouseLeave={e => (e.currentTarget.style.paddingLeft = '0')}
                 >
-                  <span style={{ fontWeight: 700, fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', opacity: 0.5 }}>{tool.label}</span>
+                  <span style={{ fontWeight: 700, fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', opacity: 0.5 }}>
+                    {/* Scramble only the AI-related tool label */}
+                    {tool.url === 'https://aimmo.ca'
+                      ? <ScrambleText text={tool.label} trigger="hover" duration={600} />
+                      : tool.label}
+                  </span>
                   <span style={{ fontSize: '14px', opacity: 0.15 }}>&rarr;</span>
                 </a>
               ))}
             </div>
           </div>
-          {/* Before/After compare images */}
+          {/* Before/After compare images — replace src with actual staging before/after */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px' }}>
             <div className="reveal-scale" style={{ overflow: 'hidden', position: 'relative' }}>
-              <Image src="/images/ART/68ffd81b8713b52534974207_AdobeStock_200635254-p-2600.jpg" alt="Before staging" width={400} height={300} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover' }} />
+              <Image src="https://cdn.prod.website-files.com/68ba28534a070e692e441089/68ba5ef402a2ead761e430cb_espace a loeur centre ville.jpg" alt="Before staging" width={400} height={300} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover' }} />
               <div style={{ position: 'absolute', top: '12px', left: '12px', fontSize: '8px', letterSpacing: '0.18em', textTransform: 'uppercase', background: 'var(--color-void)', color: 'var(--color-cream)', padding: '4px 10px', fontWeight: 700 }}>Before</div>
             </div>
             <div className="reveal-scale" style={{ overflow: 'hidden', position: 'relative' }}>
-              <Image src="/images/brand/68eecd92a89fcbc80184bdc2_MAGAZINE.jpg" alt="After staging" width={400} height={300} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover' }} />
+              <Image src="https://cdn.prod.website-files.com/68ba28534a070e692e441089/68ba5ef471476cae93101dd4_Mockup.jpg" alt="After AI staging" width={400} height={300} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover' }} />
               <div style={{ position: 'absolute', top: '12px', left: '12px', fontSize: '8px', letterSpacing: '0.18em', textTransform: 'uppercase', background: 'var(--color-void)', color: 'var(--color-cream)', padding: '4px 10px', fontWeight: 700 }}>After</div>
             </div>
           </div>
@@ -605,7 +823,11 @@ export default function HomePage({
               <div className="stat-number" style={{ fontFamily: "var(--font-dm-serif), 'DM Serif Display', serif", fontStyle: 'italic', fontSize: 'clamp(2.5rem,4vw,3.5rem)', marginBottom: '0.5rem' }}>
                 {stat.num}
               </div>
-              <div style={{ fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase', opacity: 0.2 }}>{stat.label}</div>
+              <div style={{ fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase', opacity: 0.2 }}>
+                {i === 1
+                  ? <ScrambleText text={stat.label} trigger="inview" duration={900} />
+                  : stat.label}
+              </div>
             </div>
           ))}
         </div>
@@ -648,6 +870,7 @@ export default function HomePage({
             ].map(tag => (
               <button
                 key={tag}
+                className="tag"
                 onClick={e => e.currentTarget.classList.toggle('selected')}
                 style={{ fontSize: '9px', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 700, border: '1px solid rgba(236,234,229,0.12)', color: 'var(--color-cream)', padding: '5px 12px', cursor: 'pointer', transition: 'all 0.25s', opacity: 0.35, background: 'transparent' }}
               >
@@ -690,11 +913,29 @@ export default function HomePage({
           </form>
         </div>
 
-        {/* Big SOARES wordmark */}
-        <div style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: '1440px', overflow: 'hidden', lineHeight: 1, marginTop: '4rem' }}>
-          <p style={{ fontFamily: "var(--font-barlow), 'Barlow', sans-serif", fontWeight: 900, fontSize: 'clamp(5rem, 16vw, 16rem)', letterSpacing: '-0.03em', textTransform: 'uppercase', color: 'var(--color-cream)', opacity: 0.06, margin: 0, userSelect: 'none' }}>
-            SOARES
-          </p>
+        {/* Big SOARES marquee */}
+        <div style={{ position: 'relative', zIndex: 1, width: '100%', overflow: 'hidden', lineHeight: 1, marginTop: '4rem', userSelect: 'none' }}>
+          <div style={{ display: 'flex', width: 'max-content', animation: 'soares-marquee 28s linear infinite' }}>
+            {[...Array(12)].map((_, i) => (
+              <span
+                key={i}
+                style={{
+                  fontFamily: "var(--font-barlow), 'Barlow', sans-serif",
+                  fontWeight: 900,
+                  fontSize: 'clamp(5rem, 14vw, 14rem)',
+                  letterSpacing: '-0.03em',
+                  textTransform: 'uppercase',
+                  color: 'var(--color-cream)',
+                  opacity: 0.055,
+                  flexShrink: 0,
+                  paddingRight: '0.4em',
+                  lineHeight: 0.9,
+                }}
+              >
+                SOARES{i % 2 === 0 ? '\u00a0·' : ''}
+              </span>
+            ))}
+          </div>
         </div>
 
         {/* Footer links */}
@@ -750,9 +991,17 @@ export default function HomePage({
           .footer-links-responsive { grid-template-columns: repeat(2, 1fr) !important; }
           .service-desc-responsive { display: none; }
           .sold-mosaic { grid-template-columns: repeat(4, 1fr) !important; gap: 4px !important; }
+          /* Hero mobile: reduce font size and left padding so SOARES fits on one line */
+          .hero-name { font-size: clamp(2.8rem, 13vw, 4.5rem) !important; padding-left: 0 !important; }
+          .hero-content { padding-left: 1.5rem !important; }
+          /* Carousel: enable horizontal scroll on mobile */
+          .carousel-wrapper { overflow-x: auto !important; -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; }
+          .carousel-track { cursor: default !important; }
+          .carousel-track > a { scroll-snap-align: start; flex: 0 0 72vw !important; }
         }
         @media (max-width: 480px) {
           .sold-mosaic { grid-template-columns: repeat(3, 1fr) !important; gap: 3px !important; }
+          .hero-name { font-size: clamp(2.2rem, 14vw, 3.2rem) !important; }
         }
         .link-under:hover { opacity: 0.85 !important; gap: 20px !important; }
         .split-panel:hover img { transform: scale(1.04) !important; filter: brightness(0.5) !important; }
@@ -760,6 +1009,13 @@ export default function HomePage({
         .tag.selected { border-color: rgba(236,234,229,0.5) !important; opacity: 0.85 !important; background: rgba(236,234,229,0.08) !important; }
         .form-submit:hover, button[type="submit"]:hover { background: var(--color-cream) !important; color: var(--color-void) !important; border-color: var(--color-cream) !important; }
         .quick-btn:hover { border-color: var(--color-cream) !important; background: rgba(236,234,229,0.06) !important; }
+        @keyframes soares-marquee {
+          from { transform: translateX(0) }
+          to   { transform: translateX(-50%) }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          [style*="soares-marquee"] { animation: none !important; }
+        }
       `}</style>
     </>
   )

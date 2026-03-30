@@ -22,6 +22,8 @@ module.exports = {
       { path: '/services', priority: 0.8, changefreq: 'monthly' },
       { path: '/about', priority: 0.8, changefreq: 'monthly' },
       { path: '/studio', priority: 0.7, changefreq: 'monthly' },
+      { path: '/studio/web', priority: 0.8, changefreq: 'monthly' },
+      { path: '/services/website-building', priority: 0.8, changefreq: 'monthly' },
       { path: '/blog', priority: 0.8, changefreq: 'weekly' },
       { path: '/tools', priority: 0.7, changefreq: 'monthly' },
       { path: '/contact', priority: 0.8, changefreq: 'monthly' },

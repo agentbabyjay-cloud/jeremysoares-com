@@ -132,13 +132,108 @@ export default async function PreSalePage({
       </Section>
 
       {/* Stats */}
-      <Section theme="cream" className="py-24 md:py-32">
+      <Section theme="void" className="py-20 border-t border-[rgba(236,234,229,0.06)]">
         <Container size="lg">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-12 mb-16">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-12 mb-0">
             <StatCounter value={50} suffix="+" label={isFr ? 'Domaines' : 'Domains'} />
             <StatCounter value={14000} label={isFr ? 'Courtiers' : 'Brokers'} />
             <StatCounter value={10} suffix="+" label={isFr ? "Années d'exp." : 'Years Exp.'} />
             <StatCounter value={2} label={isFr ? 'Marchés' : 'Markets'} />
+          </div>
+        </Container>
+      </Section>
+
+      {/* Services detail */}
+      <Section theme="cream" className="py-24 md:py-32">
+        <Container size="lg">
+          <SectionReveal>
+            <p style={{ fontSize: '9px', letterSpacing: '0.28em', textTransform: 'uppercase', opacity: 0.4, marginBottom: '1.5rem' }}>
+              — {isFr ? 'Ce que nous faisons' : 'What we do'}
+            </p>
+          </SectionReveal>
+          <TextReveal
+            as="h2"
+            split="words"
+            className="text-[clamp(2rem,5vw,3.75rem)] font-black leading-none tracking-tight text-[#0e1011] uppercase mb-16"
+            style={{ fontFamily: FONT_BARLOW }}
+          >
+            {isFr ? 'Deux offres. Un seul partenaire.' : 'Two offers. One partner.'}
+          </TextReveal>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(2rem,5vw,6rem)', borderTop: '1px solid rgba(14,16,17,0.1)' }} className="service-cols-responsive">
+            {/* Service 1 */}
+            <SectionReveal>
+              <div style={{ paddingTop: '2.5rem' }}>
+                <span style={{ fontSize: '9px', letterSpacing: '0.28em', textTransform: 'uppercase', opacity: 0.3, fontWeight: 700 }}>01</span>
+                <h3 style={{ fontFamily: FONT_BARLOW, fontWeight: 900, fontSize: 'clamp(1.5rem,2.5vw,2rem)', textTransform: 'uppercase', letterSpacing: '0.03em', color: '#0e1011', margin: '1rem 0' }}>
+                  {isFr ? 'Marketing & Vente Prévente' : 'Pre-Sale Marketing & Sales'}
+                </h3>
+                <p style={{ fontSize: '0.95rem', lineHeight: 1.8, opacity: 0.55, color: '#0e1011', marginBottom: '1.5rem' }}>
+                  {isFr
+                    ? "De l'identité visuelle jusqu'à la vente complète — nous gérons l'intégralité de votre campagne de prévente. Accès direct à 14 000 courtiers actifs à Montréal, une infrastructure de 50+ domaines immobiliers thématiques, et des campagnes ciblées sur Google, Meta et les portails immobiliers."
+                    : "From visual identity to sell-out — we manage your entire pre-sale campaign. Direct access to 14,000 active brokers in Montreal, an infrastructure of 50+ thematic real estate domains, and targeted campaigns across Google, Meta, and listing portals."}
+                </p>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                  {(isFr ? [
+                    'Identité visuelle & branding du projet',
+                    'Site web dédié de prévente',
+                    'Distribution à 14 000 courtiers',
+                    'Campagnes Google & Meta ciblées',
+                    'Rendus architecturaux IA (aimmo)',
+                    'Événements de lancement & suivi des ventes',
+                  ] : [
+                    'Project visual identity & branding',
+                    'Dedicated pre-sale website',
+                    '14,000-broker distribution',
+                    'Targeted Google & Meta campaigns',
+                    'AI architectural renders (aimmo)',
+                    'Launch events & sales tracking',
+                  ]).map((item, i) => (
+                    <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', fontSize: '0.85rem', opacity: 0.6, color: '#0e1011' }}>
+                      <span style={{ marginTop: '2px', opacity: 0.5 }}>—</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </SectionReveal>
+
+            {/* Service 2 */}
+            <SectionReveal delay={0.15}>
+              <div style={{ paddingTop: '2.5rem' }}>
+                <span style={{ fontSize: '9px', letterSpacing: '0.28em', textTransform: 'uppercase', opacity: 0.3, fontWeight: 700 }}>02</span>
+                <h3 style={{ fontFamily: FONT_BARLOW, fontWeight: 900, fontSize: 'clamp(1.5rem,2.5vw,2rem)', textTransform: 'uppercase', letterSpacing: '0.03em', color: '#0e1011', margin: '1rem 0' }}>
+                  {isFr ? 'Sites Web IA pour Petits Promoteurs' : 'AI-Powered Websites for Developers'}
+                </h3>
+                <p style={{ fontSize: '0.95rem', lineHeight: 1.8, opacity: 0.55, color: '#0e1011', marginBottom: '1.5rem' }}>
+                  {isFr
+                    ? "Nous créons des sites web de projet complets assistés par IA — en quelques jours, pas en semaines — pour les promoteurs de petits et moyens projets partout au Québec. Chaque site est optimisé pour le SEO, le bilinguisme EN/FR, et la conversion de leads, avec un formulaire de réservation intégré et un tableau de bord de suivi des intérêts."
+                    : "We build complete AI-assisted project websites — in days, not weeks — for small-to-medium developers across Quebec. Every site is SEO-optimized, bilingual EN/FR, built for lead conversion, with an integrated reservation form and interest-tracking dashboard."}
+                </p>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                  {(isFr ? [
+                    'Site web bilingue EN/FR clé en main',
+                    'SEO optimisé — Google & portails locaux',
+                    'Formulaire de réservation & liste d\'intérêt',
+                    'Galerie de rendus & plans d\'étage interactifs',
+                    'Tableau de bord de suivi en temps réel',
+                    'Hébergement, maintenance & mises à jour inclus',
+                  ] : [
+                    'Turnkey bilingual EN/FR website',
+                    'SEO-optimized — Google & local portals',
+                    'Reservation form & interest list',
+                    'Interactive render gallery & floor plans',
+                    'Real-time lead tracking dashboard',
+                    'Hosting, maintenance & updates included',
+                  ]).map((item, i) => (
+                    <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', fontSize: '0.85rem', opacity: 0.6, color: '#0e1011' }}>
+                      <span style={{ marginTop: '2px', opacity: 0.5 }}>—</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </SectionReveal>
           </div>
         </Container>
       </Section>

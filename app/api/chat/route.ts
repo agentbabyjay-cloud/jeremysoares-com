@@ -1,47 +1,65 @@
 import { NextRequest } from 'next/server'
 
-const SYSTEM_PROMPT = `You are a sharp, warm, bilingual (EN/FR) real estate concierge for Jeremy Soares — Montreal broker, OACIQ H2731. Your job is to qualify leads and book conversations with Jeremy, not just answer questions.
+const SYSTEM_PROMPT = `You are the personal AI assistant for Jeremy Soares — warm, sharp, and genuinely curious. You work for Soares Agency, a boutique Montreal real estate and AI consulting firm (OACIQ H2731).
 
-CONVERSION STRATEGY:
-- First message: always ask one qualifying question (what are they looking for? budget range? timeline?)
-- After 2–3 exchanges: gently ask for their name and best way to reach them ("so Jeremy can follow up directly")
-- Never give a generic answer when you can ask a question that gets more info
-- If they mention a specific neighbourhood, price range, or timeline — acknowledge it and dig deeper
-- Always end your message with either a question OR a specific call-to-action
+Your personality: Think of yourself as a knowledgeable friend who works closely with Jeremy. You are enthusiastic, occasionally witty, and genuinely interested in the person you are talking with. You adapt naturally to their energy — relaxed if they are casual, sharp and concise if they are businesslike.
 
-QUALIFYING QUESTIONS (pick the most relevant):
-- "Are you looking to buy, sell, or invest?"
-- "What's your ideal timeline — next few months, or planning ahead?"
-- "Are you focused on a specific neighbourhood, or open across Montreal?"
-- "Is this for personal use or investment?"
-- "What's your approximate budget range? I can point you to the right resources."
-- "Have you been pre-approved yet, or is that a next step?"
-
-JEREMY'S SERVICES:
-- Residential buy/sell/rent across Montreal
+WHAT JEREMY DOES:
+- Real estate: buying, selling, renting, investing across Montreal
 - Pre-construction advisory (priority access before public launch)
-- Commercial leasing (office, retail, industrial)
-- Investment strategy (cap rates, cash flow modelling)
-- Property marketing (AI staging via aimmo, 14,000-broker email network)
-- Relocation (full accompaniment, bilingual)
+- Commercial, industrial, and multi-unit acquisitions
+- Investment strategy: cap rates, cash flow modeling, market timing
+- AI consulting: custom websites for real estate developers, AI virtual staging via aimmo.ca
+- Relocation services, bilingual EN/FR
 
-TECHNOLOGY EDGE:
-- aimmo.ca — AI virtual staging platform
-- 50+ niche real estate domains
-- Network of 14,000 Quebec brokers
+CONVERSATION APPROACH:
+- First message: open with a warm, genuine question about what they are looking for
+- Listen and respond to what they actually said — not a script
+- Offer brief, interesting insights when relevant
+- After 2–3 exchanges: gently ask for their name and best way to reach them ("Jeremy follows up personally")
+- At a natural moment, ask: "Is there anything else on your mind — even something that feels unrelated?"
+- When you have their name AND contact info: include a JSON block at the END of your response ONLY:
+  {"lead_captured": true, "name": "...", "contact": "...", "intent": "..."}
 
-CONTACT:
-- Phone/text: 514 519-8177
-- Email: JeremySoares@icloud.com
-- Office: 106-220 Av des Pins O, Montreal, QC H2W1R9
+TONE: Warm, consultative, genuinely curious. Not salesy. Keep responses to 2–4 sentences. Always respond in the language the user writes in.`
 
-TONE: Confident, direct, warm. Not salesy — consultative. Short responses (2–4 sentences max). Always respond in the language the user writes in. If they write in French, respond in French.`
+async function sendTelegram(message: string) {
+  const token = process.env.TELEGRAM_BOT_TOKEN
+  const chatId = process.env.TELEGRAM_CHAT_ID
+  if (!token || !chatId) return
+  await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'HTML' }),
+  }).catch(() => {})
+}
+
+async function sendLeadEmail(lead: { name: string; contact: string; intent: string }, conversation: { role: string; content: string }[]) {
+  const resendKey = process.env.RESEND_API_KEY
+  if (!resendKey) return
+
+  const transcript = conversation
+    .map(m => `${m.role === 'user' ? '👤 Client' : '🤖 Agent'}: ${m.content}`)
+    .join('\n\n')
+
+  await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${resendKey}` },
+    body: JSON.stringify({
+      from: 'Soares Chat <noreply@jeremysoares.com>',
+      to: ['JeremySoares@icloud.com'],
+      cc: ['JeremySoares@icloud.com'],
+      subject: `🔥 New Lead: ${lead.name} — ${lead.intent}`,
+      text: `New lead captured via jeremysoares.com chat.\n\nName: ${lead.name}\nContact: ${lead.contact}\nIntent: ${lead.intent}\n\n---\nCONVERSATION TRANSCRIPT\n---\n\n${transcript}`,
+    }),
+  }).catch(() => {})
+}
 
 export async function POST(req: NextRequest) {
   try {
     const { messages, locale } = await req.json()
 
-    const apiKey = process.env.ANTHROPIC_API_KEY || process.env.OPENAI_API_KEY
+    const apiKey = process.env.ANTHROPIC_API_KEY
     if (!apiKey) {
       return new Response(
         JSON.stringify({ message: locale === 'fr-ca'
@@ -51,59 +69,51 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // Use Anthropic API if available
-    if (process.env.ANTHROPIC_API_KEY) {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': process.env.ANTHROPIC_API_KEY,
-          'anthropic-version': '2023-06-01',
-        },
-        body: JSON.stringify({
-          model: 'claude-haiku-4-5-20251001',
-          max_tokens: 500,
-          system: SYSTEM_PROMPT,
-          messages: messages.map((m: { role: string; content: string }) => ({
-            role: m.role,
-            content: m.content,
-          })),
-        }),
-      })
-
-      if (!res.ok) {
-        throw new Error('Anthropic API error')
-      }
-
-      const data = await res.json()
-      return new Response(
-        JSON.stringify({ message: data.content[0]?.text ?? '' }),
-        { headers: { 'Content-Type': 'application/json' } }
-      )
-    }
-
-    // Fallback to OpenAI
-    const res = await fetch('https://api.openai.com/v1/chat/completions', {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'claude-haiku-4-5-20251001',
         max_tokens: 500,
-        messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          ...messages,
-        ],
+        system: SYSTEM_PROMPT,
+        messages: messages.map((m: { role: string; content: string }) => ({
+          role: m.role,
+          content: m.content,
+        })),
       }),
     })
 
-    if (!res.ok) throw new Error('OpenAI API error')
+    if (!res.ok) throw new Error('Anthropic API error')
 
     const data = await res.json()
+    const rawText: string = data.content[0]?.text ?? ''
+
+    // Extract lead JSON if present, strip it from displayed message
+    let displayText = rawText
+    let leadData: { name: string; contact: string; intent: string } | null = null
+
+    const jsonMatch = rawText.match(/\{"lead_captured":\s*true[^}]*\}/)
+    if (jsonMatch) {
+      try {
+        leadData = JSON.parse(jsonMatch[0])
+        displayText = rawText.replace(jsonMatch[0], '').trim()
+      } catch { /* ignore parse errors */ }
+    }
+
+    // Fire-and-forget lead notifications
+    if (leadData) {
+      const allMessages = [...messages, { role: 'assistant', content: displayText }]
+      const tgMsg = `🔥 <b>New Lead — jeremysoares.com</b>\n\n👤 <b>${leadData.name}</b>\n📞 ${leadData.contact}\n🏠 ${leadData.intent}`
+      sendTelegram(tgMsg)
+      sendLeadEmail(leadData, allMessages)
+    }
+
     return new Response(
-      JSON.stringify({ message: data.choices[0]?.message?.content ?? '' }),
+      JSON.stringify({ message: displayText }),
       { headers: { 'Content-Type': 'application/json' } }
     )
   } catch {

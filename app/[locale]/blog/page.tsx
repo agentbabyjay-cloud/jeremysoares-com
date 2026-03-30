@@ -4,7 +4,7 @@ import { Section } from '@/components/ui/Section'
 import { Container } from '@/components/ui/Container'
 import { Label } from '@/components/ui/Label'
 import { TextReveal } from '@/components/animation/TextReveal'
-import { BlogPostRow } from '@/components/content/BlogPostRow'
+import { BlogFilter } from '@/components/content/BlogFilter'
 import { SubscribeBand } from '@/components/content/SubscribeBand'
 import type { Locale } from '@/lib/content/types'
 
@@ -102,20 +102,10 @@ export default async function BlogPage({
         </Container>
       </Section>
 
-      {/* Post list */}
+      {/* Post list with search + tag filter */}
       <Section theme="void" className="pb-24">
         <Container size="lg">
-          {posts.length > 0 ? (
-            <div>
-              {posts.map((post) => (
-                <BlogPostRow key={post.slug} post={post} locale={locale} />
-              ))}
-            </div>
-          ) : (
-            <p className="text-[1rem] text-[#eceae5] opacity-40">
-              {isFr ? 'Articles à venir.' : 'Articles coming soon.'}
-            </p>
-          )}
+          <BlogFilter posts={posts} locale={locale} isFr={isFr} />
         </Container>
       </Section>
 

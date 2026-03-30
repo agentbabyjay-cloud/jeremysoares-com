@@ -1,0 +1,39 @@
+{
+  "id": "active-2060-peel-1412",
+  "status": "active",
+  "address": "2060 Rue Peel, #1412",
+  "neighbourhood": "Centre-Ville",
+  "city": "Montreal",
+  "type": "residential",
+  "images": [
+    "/images/properties/IMG_2607.JPG",
+    "/images/properties/11B9F025-42C4-4BCB-99FC-BD93F1F8308F-6332-00000108A14FE3E2.JPG",
+    "/images/properties/24F84133-081F-472A-AC2D-8817C17AE812-6332-000001089ED0352D.JPG",
+    "/images/properties/60EB9A4A-43D7-49A3-892C-DAC5B0DC08DB-375-00000001D9581E50.JPG",
+    "/images/properties/A1050ACC-EB51-4D95-B17D-A1A388CE8695-375-0000000167C6B627.JPG",
+    "/images/properties/B66B1FB0-EEA0-4279-A8EC-7B6A87EB7837-375-0000000162781C61.JPG",
+    "/images/properties/F8D0F27D-C370-414C-B777-0BAD168ADA8A-6332-00000108A6B7E965.JPG",
+    "/images/properties/FE3D27B5-471D-446A-89B9-39D11DF7F5D3-6332-00000108A506EE1E.JPG"
+  ],
+  "featured": true,
+  "price": "$659,000",
+  "bedrooms": 1,
+  "bathrooms": 1,
+  "area": "649 sq.ft",
+  "amenities": [
+    { "icon": "pool",       "en": "Indoor Pool",             "fr": "Piscine intérieure" },
+    { "icon": "sauna",      "en": "Sauna & Steam Room",      "fr": "Sauna et hammam" },
+    { "icon": "gym",        "en": "Fitness Centre",          "fr": "Centre de conditionnement" },
+    { "icon": "rooftop",    "en": "Rooftop Terrace",         "fr": "Terrasse sur le toit" },
+    { "icon": "concierge",  "en": "24/7 Concierge",          "fr": "Conciergerie 24/7" },
+    { "icon": "metro",      "en": "100m — Peel Metro",       "fr": "100m — Métro Peel" },
+    { "icon": "metro",      "en": "300m — Guy-Concordia",    "fr": "300m — Guy-Concordia" },
+    { "icon": "balcony",    "en": "Double-Sized Balcony",    "fr": "Balcon double" },
+    { "icon": "parking",    "en": "Underground Parking",     "fr": "Stationnement souterrain" },
+    { "icon": "elevator",   "en": "High-Speed Elevators",    "fr": "Ascenseurs rapides" }
+  ],
+  "description": {
+    "en": "Stunning 1 bed / 1 bath at MAA — one of Downtown Montreal's most sought-after addresses. 649 sq.ft with a rare double-sized private balcony. Hotel-inspired amenities, rooftop terrace, concierge, and steps from everything the city has to offer. Listed by Jeremy Soares, OACIQ H2731.",
+    "fr": "Magnifique 1 ch / 1 sdb au MAA — l'une des adresses les plus recherchées du centre-ville de Montréal. 649 pi² avec un rare balcon privé double. Commodités hôtelières, terrasse sur le toit, conciergerie, à quelques pas de tout. Présenté par Jeremy Soares, OACIQ H2731."
+  }
+}
